@@ -1,0 +1,243 @@
+<template>
+  <body>
+    <!-- Navigation-->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+          <router-link
+            to="/"
+            aria-label="Lien vers la page d'accueil"
+            class="navbar-brand"
+            ><img src="../assets/icon-white.png" alt="Logo Groupomania"
+          /></router-link>
+
+          <!--Responsive burger menu-->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <router-link
+                  class="nav-link"
+                  :to="'/'"
+                  aria-label="Lien vers la page d'accueil"
+                >
+                  ACCUEIL
+                  <span class="sr-only">(current)</span>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  :to="'/user/login'"
+                  aria-label="Lien vers la page de connection"
+                >
+                  CONNECTION</router-link
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Content -->
+    <main>
+      <div id="signup">
+        <div class="container">
+          <div id="signup-row" class="row justify-content-center">
+            <div id="signup-column" class="col-md-6">
+              <div id="signup-box" class="col-md-12">
+                <form id="signup-form" class="form"  @submit="signup">
+                  <h1 class="text-center text-color">INSCRIPTION</h1>
+                  <br />
+                  <div class="form-group text-left">
+                    <label for="username" class="text-color"
+                      >🧍 Nom d'utilisateur :</label
+                    >
+                    <br />
+                    <input
+                      type="text"
+                      name="username"
+                      id="username"
+                      class="form-control"
+                      placeholder="Nom Prénom"
+                      required="required"
+                      v-model="user.username"
+                    />
+                  </div>
+                  <div class="form-group text-left">
+                    <label for="email" class="text-color">📧 Email :</label
+                    ><br />
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      class="form-control"
+                      placeholder="email@domaine.com"
+                      required="required"
+                      v-model="user.email"
+                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,15}$"
+                    /><!---->
+                  </div>
+                  <div class="form-group text-left">
+                    <label for="password" class="text-color"
+                      >🔒 Mot de passe :</label
+                    >
+                    <br />
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      class="form-control"
+                      placeholder="8 caractères"
+                      required="required"
+                      v-model="user.password"
+                      pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
+                    /><!---->
+                  </div>
+                  <div class="form-group text-left">
+                    <label for="confirm-password" class="text-color"
+                      >🔒 Confirmation du mot de passe :</label
+                    >
+                    <br />
+                    <input
+                      type="password"
+                      name="confirm-password"
+                      id="confirm-password"
+                      class="form-control"
+                      placeholder="8 caractères"
+                      required="required"
+                      v-model="passwordConfirm"
+                      pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
+                    /><!---->
+                  </div>
+                  <div class="form-group text-left">
+                    <br />
+                    <button
+                      type="submit"
+                      name="submit"
+                      class="btn text-white btn-md"
+                      value="S'enregistrer"
+                     
+                    >S'enregistrer</button>
+                  </div>
+                  <div id="register-link" class="text-right">
+                    <router-link class="text-color" :to="'/user/login'"
+                      >Se connecter</router-link>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</template>
+
+<script>
+export default {
+  name: "signup",
+  data() {
+    return {
+      user: {
+        //userId: null,
+        username: "",
+        email: "",
+        password: "",
+      },
+      submitted: false,
+      successful: false,
+      passwordConfirm: "",
+      message:""
+    };
+  },
+  methods: {
+    signup(e) {
+      //if (this.user.password === this.passwordConfirm) {
+        e.preventDefault();
+        const headers = new Headers();
+        headers.append("content-type", "application/json");
+        const myInit = {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(this.user),
+        };
+        console.log(JSON.parse(myInit.body));
+        fetch("http://localhost:3000/api/user/signup", myInit)
+          .then((success) => {
+            
+            this.$router.push({ path: "/user/profile" }); 
+            console.log(success + "Le compte a bien été créé");
+          })
+          .catch((error) => {
+            console.log(error + "Le compte n'a pas été créé");
+          });
+     // } else {
+      //  alert("Les mots de passe ne sont pas identiques");
+     // }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.navbar {
+  background-color: #0b505b;
+}
+header img {
+  width: 200px;
+}
+h1 {
+  font-size: 30px;
+}
+main {
+  margin: 0;
+  padding: 0;
+  background-color: rgba(252, 94, 59, 0.8) !important;
+  height: 100vh;
+}
+#signup .container #signup-row #signup-column #signup-box {
+  margin-top: 30px;
+  max-width: 600px;
+  height: 530px;
+  border: 1px solid #0b505b;
+  background-color: rgb(252, 252, 111);
+}
+#signup .container #signup-row #signup-column #signup-box #signup-form {
+  padding: 20px;
+}
+#signup
+  .container
+  #signup-row
+  #signup-column
+  #signup-box
+  #signup-form
+  #register-link {
+  margin-top: -85px;
+}
+.text-color {
+  color: #0b505b !important;
+}
+.btn {
+  background-color: #0b505b !important;
+}
+#signup-box {
+  box-shadow: 10px 10px 10px #b32204;
+}
+#signup-box:hover {
+  box-shadow: 5px 5px 5px #b32204;
+  transition: transform 5s;
+}
+</style>
