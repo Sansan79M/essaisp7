@@ -97,7 +97,8 @@
                       id="media"
                       class="btn text-white btn-md button"
                       value="Enregistrer un nouveau média"
-                      @submit="fileDownload"
+                      accept=".png, .jpg, .jpeg, .gif"
+                      @change="onFileChange"
                     />
                   </div>
                   
@@ -140,6 +141,28 @@ export default {
     };
   },
    methods: {
+     //Modification du média
+onFileChange(e) {
+           var files = e.target.files || e.dataTransfer.files
+           if (!files.length) {
+             return
+           }
+           this.createImage(files[0])
+         },
+         createImage(file) {
+           var reader = new FileReader()
+           var vm = this
+
+           reader.onload = (e) => {
+             vm.userImage = e.target.result
+           }
+           reader.readAsDataURL(file)
+         },
+          removeImage: function () {
+            this.userImage = ''
+          },
+   
+     
     updatePost(e) {
       e.preventDefault();
       const headers = new Headers();
@@ -159,21 +182,7 @@ export default {
           console.log(error+ "Le message n'a pas été modifié");
         });
     },
-//Téléchargement du média
-    fileDownload(e) {
-       console.log(e);
-         this.updatePost.media = e.target.files[0] || e.dataTransfer.files;
-       console.log(this.post.media);
 
-       let input = event.target;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = (e) => {
-                    this.post.media = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-   },
 
         disconnect() {
       localStorage.clear();

@@ -1,5 +1,5 @@
+//Importation des librairies
 import Vue from 'vue'
-
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import VueRouter from 'vue-router'
@@ -25,7 +25,7 @@ import News from './views/News.vue'
 import CreatePost from './components/CreatePost.vue'
 import Post from './components/Post.vue'
 import UpdatePost from './components/UpdatePost.vue'
-
+import Comments from './components/Comments.vue'
 
 
 //ROUTER
@@ -45,6 +45,7 @@ const router = new VueRouter({
     {path: "/posts/create", component: CreatePost, meta: {title:"Création d'un message Groupomania"}},
     {path: "/posts/post", component: Post, meta: {title:"Message Groupomania"}},
     {path: "/posts/update", component: UpdatePost, meta: {title:"Modification du message Groupomania"}},
+    {path: "/posts/comments", component: Comments, meta: {title:"commentaire"}},
   ]
   
 });

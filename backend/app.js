@@ -9,7 +9,7 @@ const app = express();
 //Fichiers de projet requis
 const db = require('./models/dbConnect')
 const userRoutes = require('./routes/userRoutes.js');
-//const postRoutes = require('./routes/postRoutes.js');
+const postRoutes = require('./routes/postRoutes.js');
 
 db.sequelize.sync();
 
@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 
 //Routes
 app.use('/api/user', userRoutes);
-//app.use('/api/posts', postRoutes);
+app.use('/api/posts', postRoutes);
 
 //Message de test du localhost
 app.get("/", (req, res) => {

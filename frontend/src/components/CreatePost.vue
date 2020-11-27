@@ -116,7 +116,8 @@
                       class="btn text-white btn-md button"
                       value="Ajouter une photo"
                       accept=".png, .jpg, .jpeg, .gif"
-                      @submit="fileDownload"
+                      @change="fileDownload"
+                      aria-label="Bouton pour télécharger un média"
                     />
                     <!--v-model="post.media"-->
                   </div>
@@ -128,7 +129,10 @@
                       name="submit"
                       class="btn text-white btn-md button"
                       value="Publier votre message"
-                    >Publier votre message</button>
+                      aria-label="Bouton de publication du message et fait un lien vers la vue du message"
+                    >
+                      Publier votre message
+                    </button>
                   </div>
                 </form>
               </div>
@@ -141,26 +145,47 @@
 </template>
 
 <script>
-
 export default {
   name: "create",
   data() {
     return {
       post: {
-        id: null,
+        userId:null,
         title: "",
         description: "",
         media: "",
       },
+
       submitted: false,
-      successful: false
+      successful: false,
     };
   },
   methods: {
+    //Téléchargement du média
+    fileDownload(e) {
+      console.log(e);
+      this.post.media = e.target.files[0] || e.dataTransfer.files;
+      console.log(this.post.media);
+      let input = event.target;
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          this.post.media = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+   
+     
+    //Création du message
     createPost(e) {
       e.preventDefault();
-      const headers = new Headers ();
+      console.log(this.post);
+      const headers = new Headers();
       headers.append("content-type", "application/json");
+      //headers.append("name", "my-picture");
+      //headers.append("file", event.target.files[0]);
+      headers.append("content-type", "image/jpg");
       const myInit = {
         method: "POST",
         headers: headers,
@@ -177,23 +202,7 @@ export default {
         });
     },
 
-    //Téléchargement du média
-  fileDownload(e) {
-       console.log(e);
-         this.post.media = e.target.files[0] || e.dataTransfer.files;
-       console.log(this.post.media);
-
-       let input = event.target;
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    this.post.media = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-   },
-
-   //Déconnection
+    //Déconnection
     disconnect() {
       localStorage.clear();
       setTimeout(() => {

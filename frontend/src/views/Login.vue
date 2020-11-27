@@ -75,13 +75,13 @@
                       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,15}$"
                     />
                   </div>
-                  <div class="form-group text-left">
+                  <div class="form-group text-left flex">
                     <label for="password" class="text-color"
                       >🔒 Mot de passe:</label
                     >
                     <br />
                     <input
-                      type="password"
+                      :type="show ? 'text': 'password'"
                       name="password"
                       id="password"
                       class="form-control"
@@ -90,6 +90,11 @@
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
+                    <button type="button" class="text-color" @click="show = !show">
+                    <img src="../assets/view-show.svg" class="eyes text-color" v-show="show">
+                    <img src="../assets/view-hide.svg" class="eyes text-color" v-show="!show">
+                    Affichage du mot de passe
+                    </button>
                   </div>
                   <div class="form-group text-left">
                     <br />
@@ -127,6 +132,7 @@ export default {
         password: "",
       },
       loading: false,
+      show: false
     };
   },
   methods: {
@@ -144,7 +150,6 @@ export default {
         fetch("http://localhost:3000/api/user/login", myInit)
           .then((result) => {
             result.json().then((data) => {
-              console.log(data);
               if (data.error) {
                 console.log(data);
                 return;
@@ -180,7 +185,7 @@ main {
 #login .container #login-row #login-column #login-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 360px;
+  height: 380px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -208,5 +213,8 @@ main {
 #login-box:hover {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
+}
+.eyes{
+  width : 20px;
 }
 </style>

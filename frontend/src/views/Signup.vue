@@ -87,6 +87,7 @@
                       placeholder="email@domaine.com"
                       required="required"
                       v-model="user.email"
+                      unique="true"
                       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,15}$"
                     /><!---->
                   </div>
@@ -96,7 +97,7 @@
                     >
                     <br />
                     <input
-                      type="password"
+                      :type="show1 ? 'text': 'password'"
                       name="password"
                       id="password"
                       class="form-control"
@@ -104,15 +105,19 @@
                       required="required"
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
-                    /><!---->
+                    />
+                     <button type="button" class="text-color" @click="show1 = !show1">
+                    <img src="../assets/view-show.svg" class="eyes text-color" v-show="show1">
+                    <img src="../assets/view-hide.svg" class="eyes text-color" v-show="!show1">
+                    Affichage du mot de passe
+                    </button>
                   </div>
                   <div class="form-group text-left">
                     <label for="confirm-password" class="text-color"
-                      >🔒 Confirmation du mot de passe :</label
-                    >
+                      >🔒 Confirmation du mot de passe :</label>
                     <br />
                     <input
-                      type="password"
+                      :type="show2 ? 'text': 'password'"
                       name="confirm-password"
                       id="confirm-password"
                       class="form-control"
@@ -120,7 +125,12 @@
                       required="required"
                       v-model="passwordConfirm"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
-                    /><!---->
+                    />
+                     <button type="button" class="text-color" @click="show2 = !show2">
+                    <img src="../assets/view-show.svg" class="eyes text-color" v-show="show2">
+                    <img src="../assets/view-hide.svg" class="eyes text-color" v-show="!show2">
+                    Affichage du mot de passe
+                    </button>
                   </div>
                   <div class="form-group text-left">
                     <br />
@@ -152,7 +162,6 @@ export default {
   data() {
     return {
       user: {
-        //userId: null,
         username: "",
         email: "",
         password: "",
@@ -160,12 +169,13 @@ export default {
       submitted: false,
       successful: false,
       passwordConfirm: "",
-      message:""
+      show1: false,
+      show2: false,
     };
   },
   methods: {
     signup(e) {
-      //if (this.user.password === this.passwordConfirm) {
+      if (this.user.password === this.passwordConfirm) {
         e.preventDefault();
         const headers = new Headers();
         headers.append("content-type", "application/json");
@@ -177,16 +187,15 @@ export default {
         console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/signup", myInit)
           .then((success) => {
-            
             this.$router.push({ path: "/user/profile" }); 
             console.log(success + "Le compte a bien été créé");
           })
           .catch((error) => {
             console.log(error + "Le compte n'a pas été créé");
           });
-     // } else {
-      //  alert("Les mots de passe ne sont pas identiques");
-     // }
+     } else {
+       alert("Les mots de passe ne sont pas identiques");
+      }
     },
   },
 };
@@ -206,12 +215,12 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 100vh;
+  height: 120vh;
 }
 #signup .container #signup-row #signup-column #signup-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 530px;
+  height: 590px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -239,5 +248,8 @@ main {
 #signup-box:hover {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
+}
+.eyes{
+  width : 20px;
 }
 </style>

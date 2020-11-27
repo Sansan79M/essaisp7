@@ -11,7 +11,6 @@ const TOKEN = process.env.TOKEN;
 
 //Création d'un nouveau nouvel utilisateur
 exports.signup = (req, res, next) => {
-  console.log("signup #######################")
   const validEmail = regex.validEmail(req.body.email);
   if (validEmail.error) {
     return res.status(401).json(validEmail, { error: "L'email n'est pas valide !" })
@@ -20,11 +19,9 @@ exports.signup = (req, res, next) => {
   if (validPassword.error) {
     return res.status(401).json(validPassword, { error: "Le mot de passe n'est pas valide !" })
   }
-  /*if (email == null|| username == null || password == null){
-    return res.status(400).json({ error: "Tous les champs ne sont pas remplis"})
-  }*/
-  /*if (username.length >=50 || username.length <=4){
-    return res.status(400).json({ error: "Le nom d'utilisateur doit comporter entre 4 et 50 caractères"})
+  /*const existingEmail = email;
+  if (existingEmail === req.body.email){
+    return res.status(401).json({ error: 'Email déjà existant !' });
   }*/
   bcrypt.hash((req.body.password), 10)
     .then(hash => {
@@ -53,14 +50,14 @@ exports.login = (req, res, next) => {
   })
     .then(user => {
       if (!user) {
-       res.status(401).json({ error: 'Utilisateur non trouvé !' });
-       return;
+        return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+      
       }
       bcrypt.compare(req.body.password, user.password)
         .then(valid => {
           if (!valid) {
-             res.status(401).json({ error: 'Le mot de passe est incorrect !' });
-             return;
+            return res.status(401).json({ error: 'Le mot de passe est incorrect !' });
+            
           }
            res.status(200).json({
             userId: user.id,

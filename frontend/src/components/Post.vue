@@ -83,6 +83,7 @@
                       name="update"
                       id="update"
                       class="btn text-white btn-md"
+                      aria-label="Bouton de modification du message"
                       value="MODIFIER"
                     >MODIFIER</button>
                     </router-link>
@@ -92,20 +93,17 @@
                       id="delete"
                       class="btn text-white btn-md"
                       value="SUPPRIMER"
+                      aria-label="Bouton de suppression du message"
                       @click="deletePost"
                     >SUPPRIMER
                     </button>
-                    <button
-                      type="submit"
-                      name="like"
-                      id="like"
-                      class="btn text-white btn-md"
-                      @click="likes">🤍
+                    <button type="button" class="btn btn-md" value="like" @click="show = !show" aria-label="Coeur pour liker">
+                    <img src="../assets/heart-red.png" class="heart" v-show="show" alt="coeur rouge">
+                    <img src="../assets/heart-white.png" class="heart" v-show="!show" alt="coeur blanc">
                     </button>
                     </div>
                     <br />
                     <br />
-                    
                     <div>
                         <router-link :to="'/posts/news'">
                     <button
@@ -113,6 +111,7 @@
                       name="back-news"
                       class="btn text-white btn-md"
                       value="back-back-news"
+                      aria-label="Lien vers le fil d'actualité"
                     >FIL D'ACTUALITE
                     </button></router-link>
                     </div>
@@ -138,7 +137,8 @@ export default {
       title: "titre du message", 
       description: "description du message", 
       media: "../../../backend/medias/NY.jpeg"
-    }
+    },
+    show: false
     };
   },
    
@@ -183,6 +183,7 @@ export default {
           console.log(error + "Le message n'a pas été supprimé");
         });
     },
+
         disconnect() {
       localStorage.clear();
       setTimeout(() => {
@@ -192,13 +193,6 @@ export default {
           },
   },
 
-  mounted: {
-             //Bouton like
-  likes(){
-   const like = document.getElementById("like")
-    like.innerHtml = "❤️";
-  }
-  }
  
 }; 
 </script>
@@ -214,7 +208,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important; /*#fc5d3a*/
-  height: 110vh;
+  height: 130vh;
 }
 h1{
     font-size: 30px;
@@ -222,7 +216,7 @@ h1{
 #post .container #post-row #post-column #post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 620px;
+  height: 640px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);/*#fcfc6f*/
 }
@@ -263,5 +257,9 @@ color: #626262;
   display: flex;
   justify-content: space-between;
 }
+.heart{
+  width : 20px;
+}
+
 
 </style>
