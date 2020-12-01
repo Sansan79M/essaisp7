@@ -116,10 +116,10 @@
                       class="btn text-white btn-md button"
                       value="Ajouter une photo"
                       accept=".png, .jpg, .jpeg, .gif"
-                      @change="fileDownload"
+                      
                       aria-label="Bouton pour télécharger un média"
                     />
-                    <!--v-model="post.media"-->
+                    <!--v-model="post.media" @change="fileDownload"-->
                   </div>
 
                   <div class="form-group text-right">
@@ -150,19 +150,28 @@ export default {
   data() {
     return {
       post: {
-        userId:null,
+        userId:"",
+        username:"",
         title: "",
         description: "",
-        media: "",
+        //media: "",
       },
-
+      token:"",
       submitted: false,
       successful: false,
     };
+    
   },
+  
+  mounted: () => {
+    const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+    this.post.userId = storage.userId;
+    this.token = storage.token;
+  },
+
   methods: {
     //Téléchargement du média
-    fileDownload(e) {
+   /* fileDownload(e) {
       console.log(e);
       this.post.media = e.target.files[0] || e.dataTransfer.files;
       console.log(this.post.media);
@@ -174,32 +183,41 @@ export default {
         };
         reader.readAsDataURL(input.files[0]);
       }
-    },
+    },*/
    
      
     //Création du message
     createPost(e) {
       e.preventDefault();
-      console.log(this.post);
       const headers = new Headers();
       headers.append("content-type", "application/json");
       //headers.append("name", "my-picture");
       //headers.append("file", event.target.files[0]);
-      headers.append("content-type", "image/jpg");
+      //headers.append("content-type", "image/jpg");
       const myInit = {
         method: "POST",
         headers: headers,
         body: JSON.stringify(this.post),
       };
-      console.log(JSON.parse(myInit.body));
+      console.log(this.post)
       fetch("http://localhost:3000/api/posts/create", myInit)
-        .then((success) => {
+      .then((result) => {
+        result.json().then((data) => {
+          if (data.error) {
+            console.log(data);
+            return;
+          }
+          console.log(data);
+          console.log(result + "Un message a été créé");
           this.$router.push({ path: '/posts/post' });
-          console.log(success + "Un message a été créé");
         })
         .catch((error) => {
           console.log(error + "Le message n'a pas été créé");
         });
+      })
+      .catch((error) => {
+        console.log(error + "La création de message ne fonctionne pas");
+      })
     },
 
     //Déconnection

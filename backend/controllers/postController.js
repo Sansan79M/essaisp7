@@ -15,20 +15,15 @@ exports.listPosts = (req, res, next) => {
 //Créer un nouveau message 
 exports.createPost = (req, res, next) => {
     Post.create({
-        userId:user.id,
+        userId:req.body.userId,
+        username:req.body.username,
         title: req.body.title,
         description: req.body.description,
-        media: `${req.protocol}://${req.get('host')}/medias/${req.file.filename}`,
-        likes: [],
-        created_at: created_at,
-        updated_at: updated_at
-
+        //media: `${req.protocol}://${req.get('host')}/medias/${req.file.filename}`,
+        //likes: [],
     })
-    console.log("1" + req.body.title)
-    console.log("2" + req.body.description)
-    console.log("3" + req.body.Post)
-    console.log("4" + req.body.post)
         .then(() => {
+            res.status(200).json({ success: "Le message a été enregistré" })
             //Ajout d'un média
             /*const postObject = JSON.parse(req.body.post);
             console.log(req.body.post + "2222222222222222222222222");
@@ -47,8 +42,9 @@ exports.createPost = (req, res, next) => {
 
 //Affiche un message
 exports.getOnePost = (req, res, next) => {
+    console.log("Je veux afficher le message posté")
     Post.findOne({
-        attributes: ['title', 'description', 'media', 'likes'],
+        attributes: ['id', 'userId', 'username', 'createdAt', 'title', 'description' ], //'media', 'likes'
         where: { id: req.params.id }
     })
         .then(post => res.status(200).json(post))
@@ -57,7 +53,7 @@ exports.getOnePost = (req, res, next) => {
 
 //Modifier un message
 exports.updatePost = (req, res, next) => {
-    Post.findOne({ _id: req.params.id })
+    Post.findOne({ id: req.params.id })
         .then((post) => {
             if (post.userId === req.body.userId) {
                 const postObject = req.file ?

@@ -154,6 +154,9 @@ export default {
                 console.log(data);
                 return;
               }
+              console.log(data);
+              const storage = {userId:data.userId, token:data.token}
+              sessionStorage.setItem("groupomaniaP7", JSON.stringify(storage));
               this.$router.push({ path: "/posts/news" });
             });
           })

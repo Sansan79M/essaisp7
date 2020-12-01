@@ -4,9 +4,10 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <img class="navbar-brand"  
-            aria-label="Lien vers la page d'accueil" 
-            src="../assets/icon-white.png" 
+          <img
+            class="navbar-brand"
+            aria-label="Lien vers la page d'accueil"
+            src="../assets/icon-white.png"
             alt="Logo Groupomania"
           />
           <!--Responsive burger menu-->
@@ -25,27 +26,42 @@
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item active">
-                 <router-link class="nav-link" :to="'/posts/news'"
-                  aria-label="Lien vers la page fil d'actualité">
+                <router-link
+                  class="nav-link"
+                  :to="'/posts/news'"
+                  aria-label="Lien vers la page fil d'actualité"
+                >
                   FIL D'ACTUALITE
                   <span class="sr-only">(current)</span>
                 </router-link>
               </li>
-               <li class="nav-item">
-                 <router-link class="nav-link" :to="'/posts/create'"
-                  aria-label="Lien vers la page de création de message">
-                  CREER UN MESSAGE</router-link>
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  :to="'/posts/create'"
+                  aria-label="Lien vers la page de création de message"
+                >
+                  CREER UN MESSAGE</router-link
+                >
               </li>
               <li class="nav-item">
-                 <router-link class="nav-link" :to="'/user/profile'"
-                  aria-label="Lien vers la page du profil utilisateur">
-                  PROFIL</router-link>
+                <router-link
+                  class="nav-link"
+                  :to="'/user/profile'"
+                  aria-label="Lien vers la page du profil utilisateur"
+                >
+                  PROFIL</router-link
+                >
               </li>
               <li class="nav-item">
-                 <router-link class="nav-link" :to="'/'"
+                <router-link
+                  class="nav-link"
+                  :to="'/'"
                   aria-label="Déconnexion et retour vers la page d'accueil"
-                  @click="disconnect">
-                  DECONNEXION</router-link>
+                  @click="disconnect"
+                >
+                  DECONNEXION</router-link
+                >
               </li>
             </ul>
           </div>
@@ -64,28 +80,36 @@
                   <h1 class="text-center text-color">MESSAGE</h1>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">📝 {{post.title}}</p>
+                    <p class="text-color">
+                      🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                    </p>
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">⌨️ {{post.description}}</p>
+                    <p class="text-color">📝 {{ post.title }}</p>
                   </div>
                   <br />
-                    <div class="justify-content-center">
+                  <div class="text-left">
+                    <p class="text-color">⌨️ {{ post.description }}</p>
+                  </div>
+                  <br />
+                  <!-- <div class="justify-content-center">
                     <img src="../../../backend/medias/NY.jpeg" width="400px" alt="Image déposée par le créateur du post" />
                   </div>
-                  <br />
+                  <br />-->
                   <br />
                   <div id="buttons">
                     <router-link :to="'update'">
-                    <button
-                      type="submit"
-                      name="update"
-                      id="update"
-                      class="btn text-white btn-md"
-                      aria-label="Bouton de modification du message"
-                      value="MODIFIER"
-                    >MODIFIER</button>
+                      <button
+                        type="submit"
+                        name="update"
+                        id="update"
+                        class="btn text-white btn-md"
+                        aria-label="Bouton de modification du message"
+                        value="MODIFIER"
+                      >
+                        MODIFIER
+                      </button>
                     </router-link>
                     <button
                       type="submit"
@@ -95,27 +119,45 @@
                       value="SUPPRIMER"
                       aria-label="Bouton de suppression du message"
                       @click="deletePost"
-                    >SUPPRIMER
+                    >
+                      SUPPRIMER
                     </button>
-                    <button type="button" class="btn btn-md" value="like" @click="show = !show" aria-label="Coeur pour liker">
-                    <img src="../assets/heart-red.png" class="heart" v-show="show" alt="coeur rouge">
-                    <img src="../assets/heart-white.png" class="heart" v-show="!show" alt="coeur blanc">
-                    </button>
-                    </div>
-                    <br />
-                    <br />
-                    <div>
-                        <router-link :to="'/posts/news'">
                     <button
-                      type="submit"
-                      name="back-news"
-                      class="btn text-white btn-md"
-                      value="back-back-news"
-                      aria-label="Lien vers le fil d'actualité"
-                    >FIL D'ACTUALITE
-                    </button></router-link>
-                    </div>
-                  
+                      type="button"
+                      class="btn btn-md"
+                      value="like"
+                      @click="show = !show"
+                      aria-label="Coeur pour liker"
+                    >
+                      <img
+                        src="../assets/heart-red.png"
+                        class="heart"
+                        v-show="show"
+                        alt="coeur rouge"
+                      />
+                      <img
+                        src="../assets/heart-white.png"
+                        class="heart"
+                        v-show="!show"
+                        alt="coeur blanc"
+                      />
+                    </button>
+                  </div>
+                  <br />
+                  <br />
+                  <div>
+                    <router-link :to="'/posts/news'">
+                      <button
+                        type="submit"
+                        name="back-news"
+                        class="btn text-white btn-md"
+                        value="back-back-news"
+                        aria-label="Lien vers le fil d'actualité"
+                      >
+                        FIL D'ACTUALITE
+                      </button></router-link
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -129,19 +171,29 @@
 <script>
 export default {
   name: "post",
+  props: ["storage"],
   data() {
     return {
-       post: {
-      id:"",
-      userId:"",
-      title: "titre du message", 
-      description: "description du message", 
-      media: "../../../backend/medias/NY.jpeg"
-    },
-    show: false
+      post: {
+        id: "", //this.storage.id
+        userId: "", //this.storage.userId
+        username: "",
+        createdAt: "",
+        title: "",
+        description: "",
+        //media: "../../../backend/medias/NY.jpeg",
+        //likes:"",
+      },
+      show: false,
     };
   },
-   
+
+mounted: () => {
+    const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+    this.post.id = storage.id
+    this.post.userId = storage.userId;
+    this.token = storage.token;
+  },
 
   methods: {
     //Affichage du post
@@ -152,17 +204,20 @@ export default {
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.stringify(this.post),
+        body: JSON.parse(this.post),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/post", myInit)
-        .then((success) => {
-          console.log(success + "Le message s'affiche");
+      fetch("http://localhost:3000/api/posts/post/id", myInit)
+        .then(response => {
+          this.post = response.data;
+          console.log(response.data);
+          console.log(response + "Un message s'affiche");
         })
         .catch((error) => {
-          console.log(error+ "Le message ne s'affiche pas");
+          console.log(error + "Le message ne s'affiche pas");
         });
     },
+
     //suppression du post
     deletePost(e) {
       e.preventDefault();
@@ -176,7 +231,7 @@ export default {
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/delete", myInit)
         .then((success) => {
-          this.$router.push({ path: '/posts/news' });
+          this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
         })
         .catch((error) => {
@@ -184,17 +239,15 @@ export default {
         });
     },
 
-        disconnect() {
+    disconnect() {
       localStorage.clear();
       setTimeout(() => {
-      this.$router.push({ path: '/' })
+        this.$router.push({ path: "/" });
         window.location.reload();
-         }, 500);
-          },
+      }, 500);
+    },
   },
-
- 
-}; 
+};
 </script>
 
 <style scoped>
@@ -210,15 +263,15 @@ main {
   background-color: rgba(252, 94, 59, 0.8) !important; /*#fc5d3a*/
   height: 130vh;
 }
-h1{
-    font-size: 30px;
+h1 {
+  font-size: 30px;
 }
 #post .container #post-row #post-column #post-box {
   margin-top: 30px;
   max-width: 600px;
   height: 640px;
   border: 1px solid #0b505b;
-  background-color: rgb(252, 252, 111);/*#fcfc6f*/
+  background-color: rgb(252, 252, 111); /*#fcfc6f*/
 }
 #post .container #post-row #post-column #post-box #post-displayed {
   padding: 20px;
@@ -245,21 +298,21 @@ button {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
 }
-#delete, #like {
-  margin-left : 20px;
+#delete,
+#like {
+  margin-left: 20px;
 }
-.icon{
-font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-font-size: 1.6rem;
-color: #626262;
+.icon {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 1.6rem;
+  color: #626262;
 }
-#buttons{
+#buttons {
   display: flex;
   justify-content: space-between;
 }
-.heart{
-  width : 20px;
+.heart {
+  width: 20px;
 }
-
-
 </style>

@@ -74,6 +74,7 @@
                       id="topic"
                       class="form-control"
                       required="required"
+                      v-model="post.title"
                     />
                   </div>
                   <div class="form-group text-left">
@@ -84,6 +85,7 @@
                       id="description"
                       class="form-control"
                       required="required"
+                      v-model="post.description"
                     ></textarea>
                   </div>
                   <div class="form-group text-left">
@@ -132,9 +134,11 @@ export default {
       post: {
         id: "",
         userId:"",
+        username:"",
+        updatedAt:"",
         title: "",
         description: "",
-        media: "",
+        //media: "",
         published: false
       },
       submitted: false,

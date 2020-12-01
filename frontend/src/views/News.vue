@@ -101,7 +101,12 @@
                 <v-list-item-title
                   v-text="post"
                   class="text-color"
-                >{{onePost.title}} {{onePost.datetime}}</v-list-item-title>
+                >🧍 {{onePost.username}} - ⌚ {{onePost.createdAt}}
+                  <br>
+                  📝 {{onePost.title}}
+                   <br>
+                  ⌨️ {{onePost.description}}
+                  </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           
@@ -159,15 +164,17 @@
 <script>
 export default {
   name: "news",
+  props:['allPosts'],
   data() {
     return {
       onePost: 
-          { id:"",
+          { 
+            Id:"",
             userId:"",
-            title: "📝 Title", 
-            datetime: "⌚ Datetime"
+            username:"",
+            title: "", 
+            createdAt: "",
           },
-      allPosts: [],
       page: ""
     };
   },
@@ -180,7 +187,7 @@ export default {
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.stringify(this.allPosts),
+        body: JSON.parse(this.allPosts),
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/news", myInit)

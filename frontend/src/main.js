@@ -26,7 +26,7 @@ import CreatePost from './components/CreatePost.vue'
 import Post from './components/Post.vue'
 import UpdatePost from './components/UpdatePost.vue'
 import Comments from './components/Comments.vue'
-
+import CommentForm from './components/CommentForm.vue'
 
 //ROUTER
 const router = new VueRouter({
@@ -45,7 +45,8 @@ const router = new VueRouter({
     {path: "/posts/create", component: CreatePost, meta: {title:"Création d'un message Groupomania"}},
     {path: "/posts/post", component: Post, meta: {title:"Message Groupomania"}},
     {path: "/posts/update", component: UpdatePost, meta: {title:"Modification du message Groupomania"}},
-    {path: "/posts/comments", component: Comments, meta: {title:"commentaire"}},
+    {path: "/posts/comments", component: Comments, meta: {title:"commentaire-essai"}},
+    {path: "/posts/commentForm", component: CommentForm, meta: {title:"commentaire-formlaire"}},
   ]
   
 });
