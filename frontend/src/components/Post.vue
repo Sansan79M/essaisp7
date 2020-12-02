@@ -1,73 +1,7 @@
 <template>
   <body>
-    <!-- Navigation-->
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <img
-            class="navbar-brand"
-            aria-label="Lien vers la page d'accueil"
-            src="../assets/icon-white.png"
-            alt="Logo Groupomania"
-          />
-          <!--Responsive burger menu-->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarResponsive"
-            aria-controls="navbarResponsive"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <router-link
-                  class="nav-link"
-                  :to="'/posts/news'"
-                  aria-label="Lien vers la page fil d'actualité"
-                >
-                  FIL D'ACTUALITE
-                  <span class="sr-only">(current)</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/posts/create'"
-                  aria-label="Lien vers la page de création de message"
-                >
-                  CREER UN MESSAGE</router-link
-                >
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/user/profile'"
-                  aria-label="Lien vers la page du profil utilisateur"
-                >
-                  PROFIL</router-link
-                >
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/'"
-                  aria-label="Déconnexion et retour vers la page d'accueil"
-                  @click="disconnect"
-                >
-                  DECONNEXION</router-link
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+ <!--<header>-->
+   <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -86,7 +20,7 @@
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">📝 {{ post.title }}</p>
+                    <p class="text-color" >📝 {{ post.title }}</p>
                   </div>
                   <br />
                   <div class="text-left">
@@ -169,36 +103,36 @@
 </template>
 
 <script>
+import HeaderConnected from './HeaderConnected.vue';
+
 export default {
+  components: { HeaderConnected },
   name: "post",
-  props: ["storage"],
+
   data() {
     return {
       post: {
-        id: "", //this.storage.id
-        userId: "", //this.storage.userId
+        id: "", 
+        userId: "",
         username: "",
         createdAt: "",
+        updatedAt: "",
         title: "",
         description: "",
-        //media: "../../../backend/medias/NY.jpeg",
+        //media:"",
         //likes:"",
       },
       show: false,
     };
   },
 
-mounted: () => {
-    const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
-    this.post.id = storage.id
-    this.post.userId = storage.userId;
-    this.token = storage.token;
-  },
 
   methods: {
     //Affichage du post
     getOnePost(e) {
       e.preventDefault();
+      const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+      this.post.id = storage.id;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -207,10 +141,11 @@ mounted: () => {
         body: JSON.parse(this.post),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/post/id", myInit)
+      console.log(this.post)
+      fetch("http://localhost:3000/api/posts/post${id}", myInit)
         .then(response => {
-          this.post = response.data;
-          console.log(response.data);
+          
+          
           console.log(response + "Un message s'affiche");
         })
         .catch((error) => {
@@ -221,6 +156,8 @@ mounted: () => {
     //suppression du post
     deletePost(e) {
       e.preventDefault();
+      const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+      this.post.id = storage.id;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -239,24 +176,11 @@ mounted: () => {
         });
     },
 
-    disconnect() {
-      localStorage.clear();
-      setTimeout(() => {
-        this.$router.push({ path: "/" });
-        window.location.reload();
-      }, 500);
-    },
   },
 };
 </script>
 
 <style scoped>
-.navbar {
-  background-color: #0b505b;
-}
-header img {
-  width: 200px;
-}
 main {
   margin: 0;
   padding: 0;

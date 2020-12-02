@@ -1,55 +1,7 @@
 <template>
   <body>
-    <!-- Navigation-->
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <router-link
-            to="/"
-            aria-label="Lien vers la page d'accueil"
-            class="navbar-brand"
-            ><img src="../assets/icon-white.png" alt="Logo Groupomania"
-          /></router-link>
-
-          <!--Responsive burger menu-->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarResponsive"
-            aria-controls="navbarResponsive"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <router-link
-                  class="nav-link"
-                  :to="'/'"
-                  aria-label="Lien vers la page d'accueil"
-                >
-                  ACCUEIL
-                  <span class="sr-only">(current)</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/user/login'"
-                  aria-label="Lien vers la page de connection"
-                >
-                  CONNECTION</router-link
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <!--<header>-->
+    <header-not-connected></header-not-connected>
 
     <!-- Page Content -->
     <main>
@@ -157,8 +109,12 @@
 </template>
 
 <script>
+import HeaderNotConnected from "../components/HeaderNotConnected.vue";
+
 export default {
   name: "signup",
+  components: { HeaderNotConnected },
+
   data() {
     return {
       user: {
@@ -202,12 +158,6 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
-  background-color: #0b505b;
-}
-header img {
-  width: 200px;
-}
 h1 {
   font-size: 30px;
 }

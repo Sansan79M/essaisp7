@@ -4,19 +4,11 @@ const fs = require('fs');
 const db = require('../models/dbConnect');
 const Post = db.post;
 
-//Affiche le fil d'actualité
-exports.listPosts = (req, res, next) => {
-    Post.findAll()
-        .then(posts => res.status(200).json(posts))
-        .catch(error => res.status(400).json({ error }));
-}
-
 
 //Créer un nouveau message 
 exports.createPost = (req, res, next) => {
     Post.create({
         userId:req.body.userId,
-        username:req.body.username,
         title: req.body.title,
         description: req.body.description,
         //media: `${req.protocol}://${req.get('host')}/medias/${req.file.filename}`,
@@ -42,14 +34,31 @@ exports.createPost = (req, res, next) => {
 
 //Affiche un message
 exports.getOnePost = (req, res, next) => {
-    console.log("Je veux afficher le message posté")
+    console.log("Je veux afficher le message que je viens de poster")
     Post.findOne({
-        attributes: ['id', 'userId', 'username', 'createdAt', 'title', 'description' ], //'media', 'likes'
+        /*id:req.body.id,
+        userId:req.body.userId,
+        username:req.body.username,
+        createdAt: req.body.createdAt,
+        updatedAt: req.body.updatedAt,
+        title: req.body.title,
+        description: req.body.description,*/
+        attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description', 'media', 'likes' ], 
         where: { id: req.params.id }
+        
     })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({ error }));
 }
+console.log(Post.findOne)
+
+//Affiche le fil d'actualité
+exports.listPosts = (req, res, next) => {
+    Post.findAll({attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description' ]})
+        .then(posts => res.status(200).json(posts))
+        .catch(error => res.status(400).json({ error }));
+}
+
 
 //Modifier un message
 exports.updatePost = (req, res, next) => {

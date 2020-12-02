@@ -82,12 +82,9 @@
                   </h1>
                   <br />
                   <div class="text-center">
-                    <v-avatar>
-                      <img id="avatar"
-                        src="../../../backend/faces/NY.jpeg"
-                        alt="Avatar de l'utilisateur"
-                      />
-                    </v-avatar>
+                    <b-avatar class="avatar rounded-circle bg-primary" size="5rem" >
+                    <img  src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
+                    </b-avatar>
                   </div>
                   <br />
                   <div class="text-left">
@@ -141,11 +138,11 @@ export default {
     return {
       user: {
         userId:"",
-        username: "Will SMITH",
+        username: "",
         avatar:"",
-        service: "Service informatique",
-        bio: "Développeur front-end, recetteur. Aime la musique et les jeux vidéos.",
-        email: "will.smith@groupomania.com",
+        service: "",
+        bio: "",
+        email: "",
       },
     };
   },

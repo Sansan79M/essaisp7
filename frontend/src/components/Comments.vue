@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="border-b pb-4 mb-8">
-      <!--Afffichage d'un message-->
+      <!--Affichage d'un message-->
       <comment
         class="mb-4 text-left"
         v-for="comment in comments"
@@ -61,7 +61,7 @@ export default {
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/comments", myInit + btoa(window.location.href))
       .then(({ data: pagination }) => {
-          this.comments= pagination.data;
+          this.comments = pagination.data;
           this.nextPage = pagination.next_page_url
         }
       );
