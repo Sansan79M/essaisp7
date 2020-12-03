@@ -1,7 +1,7 @@
 <template>
   <body>
- <!--<header>-->
-   <header-connected></header-connected>
+    <!--<header>-->
+    <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -20,7 +20,7 @@
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color" >📝 {{ post.title }}</p>
+                    <p class="text-color">📝 {{ post.title }}</p>
                   </div>
                   <br />
                   <div class="text-left">
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import HeaderConnected from './HeaderConnected.vue';
+import HeaderConnected from "./HeaderConnected.vue";
 
 export default {
   components: { HeaderConnected },
@@ -111,8 +111,8 @@ export default {
 
   data() {
     return {
-      post: {
-        id: "", 
+      post: [],/*{
+        id: "",
         userId: "",
         username: "",
         createdAt: "",
@@ -121,18 +121,24 @@ export default {
         description: "",
         //media:"",
         //likes:"",
-      },
+      },*/
       show: false,
+
     };
   },
 
+ /*mounted(){
+        this.getOnePost();
+    },  */
 
   methods: {
     //Affichage du post
-    getOnePost(e) {
-      e.preventDefault();
-      const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+    getOnePost() {
+      //e.preventDefault();
+      //Récupération de l'id du post
+      const storage = JSON.parse(localStorage.getItem("storage_post"));
       this.post.id = storage.id;
+
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -141,12 +147,11 @@ export default {
         body: JSON.parse(this.post),
       };
       console.log(JSON.parse(myInit.body));
-      console.log(this.post)
-      fetch("http://localhost:3000/api/posts/post${id}", myInit)
-        .then(response => {
-          
-          
-          console.log(response + "Un message s'affiche");
+      console.log(this.post);
+      fetch("http://localhost:3000/api/posts/post/${storage.id}", myInit)
+        .then(res => {
+        this.post = res.data[0];
+           console.log(res.data + "Un message s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le message ne s'affiche pas");
@@ -156,8 +161,6 @@ export default {
     //suppression du post
     deletePost(e) {
       e.preventDefault();
-      const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
-      this.post.id = storage.id;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -175,7 +178,6 @@ export default {
           console.log(error + "Le message n'a pas été supprimé");
         });
     },
-
   },
 };
 </script>

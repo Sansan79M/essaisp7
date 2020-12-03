@@ -100,7 +100,7 @@ export default {
   },
   
   /*mounted: () => {
-    const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+    const storage = JSON.parse(sessionStorage.getItem("storage_user"));
     this.post.userId = storage.userId;
     this.token = storage.token;
   },*/
@@ -125,7 +125,7 @@ export default {
     //Création du message
     createPost(e) {
       e.preventDefault();
-      const storage = JSON.parse(sessionStorage.getItem("groupomaniaP7"));
+      const storage = JSON.parse(sessionStorage.getItem("storage_user"));
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -147,6 +147,10 @@ export default {
           }
           console.log(data);
           console.log(result + "Un message a été créé");
+          //Sauvegarder  l'id du post
+          const storage = {id:data.id, token:data.token}
+          localStorage.setItem("storage_post", JSON.stringify(storage));
+
           this.$router.push({ path: '/posts/post' });
         })
         .catch((error) => {

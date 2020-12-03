@@ -1,7 +1,7 @@
 <template>
   <!-- Navigation-->
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" role="navigation">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" role="navigation">
       <div class="container">
         <router-link
           to="/"
@@ -18,8 +18,7 @@
           data-target="#navbarResponsive"
           aria-controls="navbarResponsive"
           aria-expanded="false"
-          aria-label="Bouton de navigation"
-          href="#navbarResponsive"
+          aria-label="Bouton de navigation"          
         >
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,7 +27,7 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
               <router-link
-                class="nav-link"
+                class="nav-link waves-effect"
                 :to="'/user/login'"
                 aria-label="Lien vers la page de connection"
               >
@@ -38,7 +37,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                class="nav-link"
+                class="nav-link waves-effect"
                 :to="'/user/signup'"
                 aria-label="Lien vers la page d'inscription"
               >
@@ -50,6 +49,7 @@
       </div>
     </nav>
   </header>
+  
 </template>
 
 <script>

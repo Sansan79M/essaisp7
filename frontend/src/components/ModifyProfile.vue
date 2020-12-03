@@ -13,12 +13,10 @@
                 <form id="modify-profile-form">
                   <h1 class="text-center text-color">MODIFICATION DU PROFIL</h1>
                   <br />
-                  <div class="form-group">
+                  <div class="form-group text-center">
                     <label for="avatar" class="text-color">
                       <span> Cliquez sur l'avatar pour le modifier : </span>
-                         <b-avatar class="avatar rounded-circle bg-primary" size="4rem" >
-                    <img  src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
-                    </b-avatar>
+                      <img class="avatar img-fluid rounded-circle" src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
                     </label>
                     <input
                       type="file"
@@ -200,14 +198,19 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-size: 30px;
-}
 main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
   height: 140vh;
+}
+h1 {
+  font-size: 30px;
+}
+.avatar{
+  width: 100px;
+  height:100px;
+  cursor: pointer; 
 }
 #modify-profile
   .container
@@ -216,7 +219,7 @@ main {
   #modify-profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 750px;
+  height: 800px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

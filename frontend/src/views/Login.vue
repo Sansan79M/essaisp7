@@ -111,8 +111,11 @@ export default {
                 return;
               }
               console.log(data);
+
+             //Sauvegarde du userId pour l'affichage du profil et la création de post
               const storage = {userId:data.userId, token:data.token}
-              sessionStorage.setItem("groupomaniaP7", JSON.stringify(storage));
+              sessionStorage.setItem("storage_user", JSON.stringify(storage));
+
               this.$router.push({ path: "/posts/news" });
             });
           })

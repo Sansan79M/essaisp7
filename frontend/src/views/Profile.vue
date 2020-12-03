@@ -1,73 +1,7 @@
 <template>
   <body>
-    <!-- Navigation-->
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <img
-            class="navbar-brand"
-            aria-label="Lien vers la page d'accueil"
-            src="../assets/icon-white.png"
-            alt="Logo Groupomania"
-          />
-          <!--Responsive burger menu-->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarResponsive"
-            aria-controls="navbarResponsive"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <router-link
-                  class="nav-link"
-                  :to="'/posts/news'"
-                  aria-label="Lien vers la page fil d'actualité"
-                >
-                  FIL D'ACTUALITE
-                  <span class="sr-only">(current)</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/posts/create'"
-                  aria-label="Lien vers la page de création de message"
-                >
-                  CREER UN MESSAGE</router-link
-                >
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/user/profile'"
-                  aria-label="Lien vers la page du profil utilisateur"
-                >
-                  PROFIL</router-link
-                >
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  :to="'/'"
-                  aria-label="Déconnexion et retour vers la page d'accueil"
-                  @click="disconnect"
-                >
-                  DECONNEXION</router-link
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+<!--<header>-->
+  <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -82,9 +16,9 @@
                   </h1>
                   <br />
                   <div class="text-center">
-                    <b-avatar class="avatar rounded-circle bg-primary" size="5rem" >
-                    <img  src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
-                    </b-avatar>
+                    <!--<a class="avatar avatar-xl rounded-circle bg-primary" size="5rem"-->
+                    <img  class="avatar img-fluid rounded-circle" src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
+                    <!--</a>-->
                   </div>
                   <br />
                   <div class="text-left">
@@ -132,8 +66,12 @@
 </template>
 
 <script>
+import HeaderConnected from '../components/HeaderConnected.vue';
+
 export default {
   name: "profile",
+  components: { HeaderConnected },
+
   data() {
     return {
       user: {
@@ -178,12 +116,6 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
-  background-color: #0b505b;
-}
-header img {
-  width: 200px;
-}
 main {
   margin: 0;
   padding: 0;
@@ -192,6 +124,10 @@ main {
 }
 h1 {
   font-size: 30px;
+}
+.avatar{
+  width: 100px;
+  height:100px; 
 }
 #profile .container #profile-row #profile-column #profile-box {
   margin-top: 30px;

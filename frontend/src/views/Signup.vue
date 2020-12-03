@@ -129,6 +129,7 @@ export default {
       show2: false,
     };
   },
+
   methods: {
     signup(e) {
       if (this.user.password === this.passwordConfirm) {
@@ -143,6 +144,7 @@ export default {
         console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/signup", myInit)
           .then((success) => {
+
             this.$router.push({ path: "/user/profile" }); 
             console.log(success + "Le compte a bien été créé");
           })
@@ -153,6 +155,11 @@ export default {
        alert("Les mots de passe ne sont pas identiques");
       }
     },
+   /* beforeMount(){
+      //Sauvegarde du userId pour l'affichage du profil et la création de post
+            const storage = {userId:data.userId, token:data.token}
+            sessionStorage.getItem("storage_user", JSON.stringify(storage));
+    }*/
   },
 };
 </script>
