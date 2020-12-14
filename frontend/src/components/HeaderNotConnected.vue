@@ -1,7 +1,7 @@
 <template>
   <!-- Navigation-->
   <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top" role="navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" role="navigation">
       <div class="container">
         <router-link
           to="/"

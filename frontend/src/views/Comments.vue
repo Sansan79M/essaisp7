@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import CommentForm from "./CommentForm";
-import Comment from "./Comment.vue";
+import CommentForm from "../components/CommentForm";
+import Comment from "../components/Comment";
 
 export default {
   name: "comments",

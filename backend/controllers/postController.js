@@ -8,7 +8,7 @@ const Post = db.post;
 //Créer un nouveau message 
 exports.createPost = (req, res, next) => {
     Post.create({
-        userId:req.body.userId,
+        userId: req.body.userId,
         title: req.body.title,
         description: req.body.description,
         //media: `${req.protocol}://${req.get('host')}/medias/${req.file.filename}`,
@@ -43,9 +43,8 @@ exports.getOnePost = (req, res, next) => {
         updatedAt: req.body.updatedAt,
         title: req.body.title,
         description: req.body.description,*/
-        attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description', 'media', 'likes' ], 
-        where: { id: req.params.id }
-        
+        where: { id: req.params.id },
+        attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description', 'media', 'likes']
     })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({ error }));
@@ -54,7 +53,10 @@ console.log(Post.findOne)
 
 //Affiche le fil d'actualité
 exports.listPosts = (req, res, next) => {
-    Post.findAll({attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description' ]})
+    Post.findAll({
+        where: { id: req.params.id },
+        attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description']
+    })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ error }));
 }

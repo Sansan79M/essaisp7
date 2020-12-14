@@ -1,7 +1,7 @@
 <template>
   <body>
-   <!--<header>-->
-     <header-connected></header-connected>
+    <!--<header>-->
+    <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -15,8 +15,11 @@
                   <br />
                   <div class="form-group text-center">
                     <label for="avatar" class="text-color">
-                      <span> Cliquez sur l'avatar pour le modifier : </span>
-                      <img class="avatar img-fluid rounded-circle" src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
+                      <img
+                        class="avatar img-fluid rounded-circle"
+                        src="../../../backend/faces/NY.jpeg"
+                        alt="Avatar de l'utilisateur"
+                      />
                     </label>
                     <input
                       type="file"
@@ -24,7 +27,6 @@
                       name="avatar"
                       id="avatar"
                       accept=".png, .jpg, .jpeg"
-                      value="Modifier l'avatar"
                       @change="downloadFile"
                     />
                   </div>
@@ -57,8 +59,7 @@
                     />
                   </div>
                   <div class="form-group text-left">
-                    <label for="bio" class="text-color"
-                      >⌨️ Biographie :</label
+                    <label for="bio" class="text-color">⌨️ Biographie :</label
                     ><br />
                     <textarea
                       type="input"
@@ -124,7 +125,7 @@
 </template>
 
 <script>
-import HeaderConnected from './HeaderConnected.vue';
+import HeaderConnected from "./HeaderConnected.vue";
 
 export default {
   name: "modify",
@@ -134,24 +135,25 @@ export default {
     return {
       user: {
         userId: "",
-        face: null,
-        username: "Will SMITH",
-        service: null,
-        bio: null,
-        email: "will.smith@groupomania.com",
+        face: "",
+        username: "",
+        service: "",
+        bio: "",
+        email: "",
         password: "",
       },
-      submitted: false,
-      successful: false,
     };
   },
+
   methods: {
-    downloadFile(e) {
-      this.$emit('input', e.target.files[0])
+    downloadFile() {
+      
     },
 
     modifyProfile(e) {
-      e.preventDefault();
+      e.preventDefault(e);
+      const storage = JSON.parse(localStorage.getItem("storage_user"));
+      this.user.id = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -161,38 +163,39 @@ export default {
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/user/modify", myInit)
-        .then((success) => {
-          this.$router.push({ path: '/user/profile' });
-          console.log(success + "Le profil utilisateur a été modifié");
+        .then((response) => {
+          this.user = response.data.results;
+          this.$router.push({ path: "/user/profile" });
+          console.log(response + "Le profil utilisateur a été modifié");
         })
         .catch((error) => {
           console.log(error + "Le profil utilisateur n'a pas a été modifié");
         });
     },
- 
+
     deleteProfile(e) {
       e.preventDefault();
-      if (confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")) {
-      
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "DELETE",
-        headers: headers,
-        body: JSON.stringify(this.user),
-      };
-      console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/user/delete", myInit)
-        .then((success) => {
-          this.$router.push({ path: '/' });
-          console.log(success + "Le profil utilisateur a été supprimé");
-        })
-        .catch((error) => {
-          console.log(error + "Le profil utilisateur n'a pas a été supprimé");
-        });
+      if (
+        confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")
+      ) {
+        const headers = new Headers();
+        headers.append("content-type", "application/json");
+        const myInit = {
+          method: "DELETE",
+          headers: headers,
+          body: JSON.stringify(this.user),
+        };
+        console.log(JSON.parse(myInit.body));
+        fetch("http://localhost:3000/api/user/delete", myInit)
+          .then((success) => {
+            this.$router.push({ path: "/" });
+            console.log(success + "Le profil utilisateur a été supprimé");
+          })
+          .catch((error) => {
+            console.log(error + "Le profil utilisateur n'a pas a été supprimé");
+          });
       }
     },
-
   },
 };
 </script>
@@ -207,10 +210,10 @@ main {
 h1 {
   font-size: 30px;
 }
-.avatar{
+.avatar {
   width: 100px;
-  height:100px;
-  cursor: pointer; 
+  height: 100px;
+  cursor: pointer;
 }
 #modify-profile
   .container

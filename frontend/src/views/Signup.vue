@@ -10,7 +10,7 @@
           <div id="signup-row" class="row justify-content-center">
             <div id="signup-column" class="col-md-6">
               <div id="signup-box" class="col-md-12">
-                <form id="signup-form" class="form"  @submit="signup">
+                <form id="signup-form" class="form" @submit="signup">
                   <h1 class="text-center text-color">INSCRIPTION</h1>
                   <br />
                   <div class="form-group text-left">
@@ -49,7 +49,7 @@
                     >
                     <br />
                     <input
-                      :type="show1 ? 'text': 'password'"
+                      :type="show1 ? 'text' : 'password'"
                       name="password"
                       id="password"
                       class="form-control"
@@ -58,18 +58,31 @@
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
-                     <button type="button" class="text-color" @click="show1 = !show1">
-                    <img src="../assets/view-show.svg" class="eyes text-color" v-show="show1">
-                    <img src="../assets/view-hide.svg" class="eyes text-color" v-show="!show1">
-                    Affichage du mot de passe
+                    <button
+                      type="button"
+                      class="text-color"
+                      @click="show1 = !show1"
+                    >
+                      <img
+                        src="../assets/view-show.svg"
+                        class="eyes text-color"
+                        v-show="show1"
+                      />
+                      <img
+                        src="../assets/view-hide.svg"
+                        class="eyes text-color"
+                        v-show="!show1"
+                      />
+                      Affichage du mot de passe
                     </button>
                   </div>
                   <div class="form-group text-left">
                     <label for="confirm-password" class="text-color"
-                      >🔒 Confirmation du mot de passe :</label>
+                      >🔒 Confirmation du mot de passe :</label
+                    >
                     <br />
                     <input
-                      :type="show2 ? 'text': 'password'"
+                      :type="show2 ? 'text' : 'password'"
                       name="confirm-password"
                       id="confirm-password"
                       class="form-control"
@@ -78,10 +91,22 @@
                       v-model="passwordConfirm"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
-                     <button type="button" class="text-color" @click="show2 = !show2">
-                    <img src="../assets/view-show.svg" class="eyes text-color" v-show="show2">
-                    <img src="../assets/view-hide.svg" class="eyes text-color" v-show="!show2">
-                    Affichage du mot de passe
+                    <button
+                      type="button"
+                      class="text-color"
+                      @click="show2 = !show2"
+                    >
+                      <img
+                        src="../assets/view-show.svg"
+                        class="eyes text-color"
+                        v-show="show2"
+                      />
+                      <img
+                        src="../assets/view-hide.svg"
+                        class="eyes text-color"
+                        v-show="!show2"
+                      />
+                      Affichage du mot de passe
                     </button>
                   </div>
                   <div class="form-group text-left">
@@ -91,12 +116,14 @@
                       name="submit"
                       class="btn text-white btn-md"
                       value="S'enregistrer"
-                     
-                    >S'enregistrer</button>
+                    >
+                      S'enregistrer
+                    </button>
                   </div>
                   <div id="register-link" class="text-right">
                     <router-link class="text-color" :to="'/user/login'"
-                      >Se connecter</router-link>
+                      >Se connecter</router-link
+                    >
                   </div>
                 </form>
               </div>
@@ -122,8 +149,6 @@ export default {
         email: "",
         password: "",
       },
-      submitted: false,
-      successful: false,
       passwordConfirm: "",
       show1: false,
       show2: false,
@@ -144,22 +169,16 @@ export default {
         console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/signup", myInit)
           .then((success) => {
-
-            this.$router.push({ path: "/user/profile" }); 
+            this.$router.push({ path: "/user/profile" });
             console.log(success + "Le compte a bien été créé");
           })
           .catch((error) => {
             console.log(error + "Le compte n'a pas été créé");
           });
-     } else {
-       alert("Les mots de passe ne sont pas identiques");
+      } else {
+        alert("Les mots de passe ne sont pas identiques");
       }
     },
-   /* beforeMount(){
-      //Sauvegarde du userId pour l'affichage du profil et la création de post
-            const storage = {userId:data.userId, token:data.token}
-            sessionStorage.getItem("storage_user", JSON.stringify(storage));
-    }*/
   },
 };
 </script>
@@ -206,7 +225,7 @@ main {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
 }
-.eyes{
-  width : 20px;
+.eyes {
+  width: 20px;
 }
 </style>

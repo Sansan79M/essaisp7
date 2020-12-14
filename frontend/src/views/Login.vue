@@ -77,13 +77,14 @@
 <script>
 import HeaderNotConnected from "../components/HeaderNotConnected.vue";
 
+
 export default {
   name: "login",
   components: { HeaderNotConnected },
   
   data() {
     return {
-      user: {
+      user:{
         email: "",
         password: "",
       },
@@ -91,9 +92,9 @@ export default {
       show: false
     };
   },
+ 
   methods: {
     login(e) {
-      if (this.user.email !== null || this.user.password !== null) {
         e.preventDefault();
         const headers = new Headers();
         headers.append("content-type", "application/json");
@@ -114,15 +115,15 @@ export default {
 
              //Sauvegarde du userId pour l'affichage du profil et la création de post
               const storage = {userId:data.userId, token:data.token}
-              sessionStorage.setItem("storage_user", JSON.stringify(storage));
+              localStorage.setItem("storage_user", JSON.stringify(storage));
 
               this.$router.push({ path: "/posts/news" });
+              console.log("L'utilisateur s'est bien connectée");
             });
           })
           .catch((error) => {
             console.log(error, "La connexion n'a pas été établie");
           });
-      }
     },
   },
 };

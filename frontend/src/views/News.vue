@@ -1,7 +1,7 @@
 <template>
   <body>
     <!--<header>-->
-      <header-connected></header-connected>
+    <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -26,19 +26,20 @@
                 <router-link
                   :to="'create'"
                   aria-label="Lien vers la page de création de message"
+                  class="effect-blue"
                 >
-                  <h2 class="text-color text-center">💬 CREER UN MESSAGE</h2>
+                  <h2 class="text-color text-center effect-blue">💬 CREER UN MESSAGE</h2>
                 </router-link>
               </div>
               <br />
 
               <div>
-                <ul id="news-list" v-for="post in postedPosts" :key="post">
+                <ul id="news-list" v-for="post in posts" :key="post.id">
                   <li class="card effect-shadow">
                     <div class="card effect-bg text-color">
-                      🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                      🧍 {{ post.username }} - ⌚ {{ post.createdAt}}
                       <br />
-                      📝 {{ post.title }}
+                      📝 {{ post.title}}
                       <br />
                       ⌨️ {{ post.description }}
                     </div>
@@ -52,11 +53,19 @@
                   aria-label="Page de navigation"
                 >
                   <li class="page-item disabled">
-                    <a class="page-link text-color" href="#" tabindex="-1">Précédente</a>
+                    <a class="page-link text-color" href="#" tabindex="-1"
+                      >Précédente</a
+                    >
                   </li>
-                  <li class="page-item"><a class="page-link text-color" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link text-color" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link text-color" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link text-color" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link text-color" href="#">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link text-color" href="#">3</a>
+                  </li>
                   <li class="page-item">
                     <a class="page-link text-color" href="#">Suivante</a>
                   </li>
@@ -71,7 +80,7 @@
 </template>
 
 <script>
-import HeaderConnected from '../components/HeaderConnected.vue';
+import HeaderConnected from "../components/HeaderConnected.vue";
 
 export default {
   name: "news",
@@ -79,39 +88,55 @@ export default {
 
   data() {
     return {
-      postedPosts: "",
+      posts: [],
       post: {
-        Id: "",
+        id: "",
         userId: "",
-        username: "",
-        createdAt: "",
-        title: "",
+        username: "fdsd",
+        createdAt: "fdsfs",
+        title: "fdssd",
       },
       page: "",
     };
   },
+
+ /* computed: {
+    infoPost() {
+      //return this.post.id;
+      this.post.array.forEach(post => {
+        post += this.post.id
+      });
+      return post
+    },
+  },*/
+
   methods: {
     //Affichage du fil d'actualité
     listPosts(e) {
       e.preventDefault();
+      //Récupération des id des posts
+      const storage = JSON.parse(localStorage.getItem("storage_post"));
+      this.post.id = storage.id;
+
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.parse(this.postedPosts),
+        body: JSON.parse(this.post),
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/news", myInit)
-        .then((success) => {
-          console.log(success + "Le fil d'actualité s'affiche");
+        .then(res => {
+          this.posts = res.data.id
+           console.log(res.data + "Le fil d'actualité s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le fil d'actualité ne s'affiche pas");
         });
     },
     //Clic sur un message pour voir le message
-    getOnePost(e) {
+    /*getOnePost(e) {
       e.preventDefault();
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -129,8 +154,7 @@ export default {
         .catch((error) => {
           console.log(error + "Le lien vers le post choisi ne fonctionne pas");
         });
-    },
-    
+    },*/
   },
 };
 </script>
@@ -165,6 +189,7 @@ h2:hover {
 .effect-blue:hover {
   text-decoration: none;
   background-color: #0b505b !important;
+  color: white;
 }
 
 main {

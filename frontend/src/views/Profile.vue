@@ -1,7 +1,7 @@
 <template>
   <body>
-<!--<header>-->
-  <header-connected></header-connected>
+    <!--<header>-->
+    <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -12,27 +12,29 @@
               <div id="profile-box" class="col-md-12">
                 <div id="profile-displayed">
                   <h1 class="text-center text-color">
-                    Profil de {{user.username}}
+                    Profil de {{ user.username }}
                   </h1>
                   <br />
                   <div class="text-center">
                     <!--<a class="avatar avatar-xl rounded-circle bg-primary" size="5rem"-->
-                    <img  class="avatar img-fluid rounded-circle" src="../../../backend/faces/NY.jpeg" alt="Avatar de l'utilisateur"/>
-                    <!--</a>-->
+                    <img
+                      class="avatar img-fluid rounded-circle"
+                      src="../../../backend/faces/NY.jpeg"
+                      alt="Avatar de l'utilisateur"
+                    />
+                    <!--{{user.avatar}}</a>-->
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">👔 {{user.service}}</p>
+                    <p class="text-color">👔 {{ user.service }}</p>
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">
-                      ⌨️ {{user.bio}}
-                    </p>
+                    <p class="text-color">⌨️ {{ user.bio }}</p>
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">📧 {{user.email}}</p>
+                    <p class="text-color">📧 {{ user.email }}</p>
                   </div>
                   <br />
                   <div id="buttons">
@@ -43,17 +45,21 @@
                         id="update"
                         class="btn text-white btn-md"
                         value="submit"
-                      >MODIFIER</button>
+                      >
+                        MODIFIER
+                      </button>
                     </router-link>
                     <router-link :to="'/posts/news'">
-                        <button
-                          type="submit"
-                          name="back-news"
-                          id="back-news"
-                          class="btn text-white btn-md"
-                          value="FIL D'ACTUALITE"
-                        >FIL D'ACTUALITE
-                        </button></router-link>
+                      <button
+                        type="submit"
+                        name="back-news"
+                        id="back-news"
+                        class="btn text-white btn-md"
+                        value="FIL D'ACTUALITE"
+                      >
+                        FIL D'ACTUALITE
+                      </button></router-link
+                    >
                   </div>
                 </div>
               </div>
@@ -66,7 +72,7 @@
 </template>
 
 <script>
-import HeaderConnected from '../components/HeaderConnected.vue';
+import HeaderConnected from "../components/HeaderConnected.vue";
 
 export default {
   name: "profile",
@@ -74,43 +80,40 @@ export default {
 
   data() {
     return {
-      user: {
+      user: [],
+      /*user: {
         userId:"",
         username: "",
         avatar:"",
         service: "",
         bio: "",
         email: "",
-      },
+      },*/
     };
   },
 
   methods: {
     userProfile(e) {
       e.preventDefault();
+      const storage = JSON.parse(localStorage.getItem("storage_user"));
+      this.user.id = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.stringify(this.user),
+        body: JSON.parse(this.user),
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/user/profile", myInit)
-        .then((success) => {
-          console.log(success + "Le profil utilisateur s'affiche");
+        .then((response) => {
+          this.user = response.data.results;
+          console.log(response + "Le profil utilisateur s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le profil utilisateur ne s'affiche pas");
         });
     },
-     disconnect() {
-      localStorage.clear();
-      setTimeout(() => {
-      this.$router.push({ path: '/' })
-        window.location.reload();
-         }, 500);
-          }
   },
 };
 </script>
@@ -125,9 +128,9 @@ main {
 h1 {
   font-size: 30px;
 }
-.avatar{
+.avatar {
   width: 100px;
-  height:100px; 
+  height: 100px;
 }
 #profile .container #profile-row #profile-column #profile-box {
   margin-top: 30px;
@@ -166,10 +169,10 @@ button {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
 }
-#delete{
-  margin-left : 20px;
+#delete {
+  margin-left: 20px;
 }
-#buttons{
+#buttons {
   display: flex;
   justify-content: space-between;
 }

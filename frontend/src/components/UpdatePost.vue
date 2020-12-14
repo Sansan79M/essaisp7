@@ -1,7 +1,7 @@
 <template>
   <body>
     <!--<header>-->
-      <header-connected></header-connected>
+    <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -11,12 +11,12 @@
             <div id="update-post-column" class="col-md-6">
               <div id="update-post-box" class="col-md-12">
                 <form id="update-post-form" class="form" @submit="updatePost">
-                  <h1 class="text-center text-color">MODIFICATION DU MESSAGE</h1>
+                  <h1 class="text-center text-color">
+                    MODIFICATION DU MESSAGE
+                  </h1>
                   <br />
                   <div class="form-group text-left">
-                    <label for="topic" class="text-color"
-                      >📝 Titre :</label
-                    >
+                    <label for="topic" class="text-color">📝 Titre :</label>
                     <br />
                     <input
                       type="text"
@@ -28,7 +28,9 @@
                     />
                   </div>
                   <div class="form-group text-left">
-                    <label for="description" class="text-color">⌨️ Description :</label><br />
+                    <label for="description" class="text-color"
+                      >⌨️ Description :</label
+                    ><br />
                     <textarea
                       type="text"
                       name="description"
@@ -39,8 +41,8 @@
                     ></textarea>
                   </div>
                   <div class="form-group text-left">
-                    <label for="media" class="text-color"
-                      >Ajouter une image ou un gif :</label
+                    <label for="media" class="btn text-white btn-md button"
+                      >Ajouter une image ou un gif</label
                     >
                     <br />
                     <input
@@ -53,18 +55,22 @@
                       @change="onFileChange"
                     />
                   </div>
-                  
+                  <br />
                   <div class="form-group text-right">
-                    <br />
-                    
-                    <button
+                    <input
                       type="submit"
                       name="submit"
-                      class="btn text-white btn-md"
-                      value="Mettre à jour votre message"
-                      
-                    >Mettre à jour votre message
-                    </button>
+                      class="btn text-white btn-md button"
+                      value="Mettre à jour"
+                      @submit="updatePost"
+                    />
+                    <input
+                      type="submit"
+                      name="delete"
+                      class="btn text-white btn-md button"
+                      value="Supprimer votre message"
+                      @click="deletePost"
+                    />
                   </div>
                 </form>
               </div>
@@ -77,7 +83,7 @@
 </template>
 
 <script>
-import HeaderConnected from './HeaderConnected.vue';
+import HeaderConnected from "./HeaderConnected.vue";
 
 export default {
   name: "update",
@@ -87,42 +93,35 @@ export default {
     return {
       post: {
         id: "",
-        userId:"",
-        username:"",
-        updatedAt:"",
+        userId: "",
+        username: "",
+        updatedAt: "",
         title: "",
         description: "",
-        //media: "",
-        published: false
+        media: "",
       },
-      submitted: false,
     };
   },
-   methods: {
-     //Modification du média
-onFileChange(e) {
-           var files = e.target.files || e.dataTransfer.files
-           if (!files.length) {
-             return
-           }
-           this.createImage(files[0])
-         },
-         createImage(file) {
-           var reader = new FileReader()
-           var vm = this
 
-           reader.onload = (e) => {
-             vm.userImage = e.target.result
-           }
-           reader.readAsDataURL(file)
-         },
-          removeImage: function () {
-            this.userImage = ''
-          },
-   
-     
+  methods: {
+    //Modification du média
+    onFileChange() {
+      /*this.post.media = e.target.files[0] || e.dataTransfer.files;
+      console.log(this.post.media);
+      let input = event.target;
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          this.post.media = e.target.result;
+        };
+      }*/
+    },
+
+
     updatePost(e) {
       e.preventDefault();
+      const storage = JSON.parse(localStorage.getItem("storage_post"));
+      this.post.id = storage.id;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -133,21 +132,40 @@ onFileChange(e) {
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/update", myInit)
         .then((success) => {
-          this.$router.push({ path: "/posts/post" });
+          this.$router.push({ path: "/posts/:id" });
           console.log(success + "Le message a été modifié");
         })
         .catch((error) => {
-          console.log(error+ "Le message n'a pas été modifié");
+          console.log(error + "Le message n'a pas été modifié");
         });
     },
 
+    deletePost(e) {
+      e.preventDefault();
+      const headers = new Headers();
+      headers.append("content-type", "application/json");
+      const myInit = {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(this.post),
+      };
+      console.log(JSON.parse(myInit.body));
+      fetch("http://localhost:3000/api/posts/delete", myInit)
+        .then((success) => {
+          this.$router.push({ path: "/posts/news" });
+          console.log(success + "Le message a été supprimé");
+        })
+        .catch((error) => {
+          console.log(error + "Le message n'a pas été supprimé");
+        });
+    },
   },
 };
 </script>
 
 <style scoped>
-h1{
-    font-size: 30px;
+h1 {
+  font-size: 30px;
 }
 main {
   margin: 0;
@@ -162,7 +180,12 @@ main {
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
-#update-post .container #update-post-row #update-post-column #update-post-box #update-post-form {
+#update-post
+  .container
+  #update-post-row
+  #update-post-column
+  #update-post-box
+  #update-post-form {
   padding: 20px;
 }
 #update-post
@@ -177,7 +200,8 @@ main {
 .text-color {
   color: #0b505b !important;
 }
-button, .button {
+button,
+.button {
   background-color: #0b505b !important;
 }
 #update-post-box {
@@ -186,5 +210,8 @@ button, .button {
 #update-post-box:hover {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
+}
+#media {
+  display: none;
 }
 </style>

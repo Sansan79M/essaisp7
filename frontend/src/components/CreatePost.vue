@@ -1,7 +1,7 @@
 <template>
   <body>
-<!--<header>-->
-  <header-connected></header-connected>
+    <!--<header>-->
+    <header-connected></header-connected>
 
     <!-- Page Content -->
     <main>
@@ -13,7 +13,7 @@
                 <form id="create-post-form" class="form" @submit="createPost">
                   <h1 class="text-center text-color">CREATION D'UN MESSAGE</h1>
                   <br />
-                  <div class="form-group text-left" v-if="!submitted">
+                  <div class="form-group text-left">
                     <label for="title" class="text-color">📝 Titre :</label>
                     <br />
                     <input
@@ -39,9 +39,9 @@
                     ></textarea>
                   </div>
                   <div class="form-group text-left">
-                    <label for="media" class="text-color"
-                      >Ajouter une image ou un gif :</label
-                    >
+                    <label for="media" class="btn text-white btn-md button">
+                      Ajouter une image ou un gif
+                    </label>
                     <br />
                     <input
                       type="file"
@@ -51,6 +51,7 @@
                       value="Ajouter une photo"
                       accept=".png, .jpg, .jpeg, .gif"
                       aria-label="Bouton pour télécharger un média"
+                      @change="fileDownload"
                     />
                     <!--v-model="post.media" @change="fileDownload"-->
                   </div>
@@ -60,7 +61,7 @@
                     <button
                       type="submit"
                       name="submit"
-                      class="btn text-white btn-md button"
+                      class="btn text-white btn-md"
                       value="Publier votre message"
                       aria-label="Bouton de publication du message et fait un lien vers la vue du message"
                     >
@@ -78,7 +79,7 @@
 </template>
 
 <script>
-import HeaderConnected from './HeaderConnected.vue';
+import HeaderConnected from "./HeaderConnected.vue";
 
 export default {
   name: "create",
@@ -87,28 +88,17 @@ export default {
   data() {
     return {
       post: {
-        userId:"",
+        userId: "",
         title: "",
         description: "",
-        //media: "",
+        media: "",
       },
-      token:"",
-      submitted: false,
-      successful: false,
     };
-    
   },
-  
-  /*mounted: () => {
-    const storage = JSON.parse(sessionStorage.getItem("storage_user"));
-    this.post.userId = storage.userId;
-    this.token = storage.token;
-  },*/
 
   methods: {
     //Téléchargement du média
-   /* fileDownload(e) {
-      console.log(e);
+    fileDownload(e) {
       this.post.media = e.target.files[0] || e.dataTransfer.files;
       console.log(this.post.media);
       let input = event.target;
@@ -117,51 +107,46 @@ export default {
         reader.onload = (e) => {
           this.post.media = e.target.result;
         };
-        reader.readAsDataURL(input.files[0]);
       }
-    },*/
-   
-     
+    },
+
     //Création du message
     createPost(e) {
       e.preventDefault();
-      const storage = JSON.parse(sessionStorage.getItem("storage_user"));
+      const storage = JSON.parse(localStorage.getItem("storage_user"));
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      //headers.append("name", "my-picture");
-      //headers.append("file", event.target.files[0]);
-      //headers.append("content-type", "image/jpg");
+      //headers.append("media", this.post.media);
       const myInit = {
         method: "POST",
         headers: headers,
         body: JSON.stringify(this.post),
       };
-      console.log(this.post)
+      console.log(this.post);
       fetch("http://localhost:3000/api/posts/create", myInit)
-      .then((result) => {
-        result.json().then((data) => {
-          if (data.error) {
-            console.log(data);
-            return;
-          }
-          console.log(data);
-          console.log(result + "Un message a été créé");
-          //Sauvegarder  l'id du post
-          const storage = {id:data.id, token:data.token}
-          localStorage.setItem("storage_post", JSON.stringify(storage));
+        .then((result) => {
+          result.json()
+            .then((data) => {
+              if (data.error) {
+                console.log(data);
+                return;
+              }
+              console.log(result + "Un message a été créé");
+              //Sauvegarder l'id du post
+              const storage = { id: data.id, token: data.token };
+              localStorage.setItem("storage_post", JSON.stringify(storage));
 
-          this.$router.push({ path: '/posts/post' });
+              this.$router.push({ path: "/posts/post" });
+            })
+            .catch((error) => {
+              console.log(error + "Le message n'a pas été créé");
+            });
         })
         .catch((error) => {
-          console.log(error + "Le message n'a pas été créé");
+          console.log(error + "La création de message ne fonctionne pas");
         });
-      })
-      .catch((error) => {
-        console.log(error + "La création de message ne fonctionne pas");
-      })
     },
-
   },
 };
 </script>
@@ -213,5 +198,8 @@ button,
 #create-post-box:hover {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
+}
+#media {
+  display: none;
 }
 </style>

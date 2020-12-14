@@ -103,7 +103,8 @@
 </template>
 
 <script>
-import HeaderConnected from "./HeaderConnected.vue";
+import HeaderConnected from '../components/HeaderConnected.vue';
+
 
 export default {
   components: { HeaderConnected },
@@ -111,7 +112,7 @@ export default {
 
   data() {
     return {
-      post: [],/*{
+      post: {
         id: "",
         userId: "",
         username: "",
@@ -121,11 +122,17 @@ export default {
         description: "",
         //media:"",
         //likes:"",
-      },*/
+      },
       show: false,
 
     };
   },
+
+computed: {
+  infoPost () {
+    return this.post.id
+  }
+},
 
  /*mounted(){
         this.getOnePost();
@@ -133,8 +140,8 @@ export default {
 
   methods: {
     //Affichage du post
-    getOnePost() {
-      //e.preventDefault();
+    getOnePost(e) {
+      e.preventDefault();
       //Récupération de l'id du post
       const storage = JSON.parse(localStorage.getItem("storage_post"));
       this.post.id = storage.id;
@@ -147,11 +154,10 @@ export default {
         body: JSON.parse(this.post),
       };
       console.log(JSON.parse(myInit.body));
-      console.log(this.post);
-      fetch("http://localhost:3000/api/posts/post/${storage.id}", myInit)
-        .then(res => {
-        this.post = res.data[0];
-           console.log(res.data + "Un message s'affiche");
+      fetch("http://localhost:3000/api/posts/:id", myInit)
+        .then(response => {
+          this.post.value = response.data.id;
+           console.log(response + "Un message s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le message ne s'affiche pas");

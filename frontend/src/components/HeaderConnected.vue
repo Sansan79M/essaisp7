@@ -1,7 +1,10 @@
 <template>
   <!-- Navigation-->
   <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top" role="navigation">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark fixed-top"
+      role="navigation"
+    >
       <div class="container">
         <img
           class="navbar-brand"
@@ -53,14 +56,14 @@
               >
             </li>
             <li class="nav-item">
-              <router-link
+              <div
+                id="disconnect"
                 class="nav-link"
-                :to="'/'"
                 aria-label="Déconnexion et retour vers la page d'accueil"
                 @click="disconnect"
               >
-                DECONNEXION</router-link
-              >
+                DECONNEXION
+              </div>
             </li>
           </ul>
         </div>
@@ -78,8 +81,8 @@ export default {
       localStorage.clear();
       setTimeout(() => {
         this.$router.push({ path: "/" });
-        window.location.reload();
-      }, 500);
+        console.log("L'utilisateur s'est déconnecté")
+      }, 600);
     },
   },
 };
@@ -91,5 +94,8 @@ export default {
 }
 header img {
   width: 200px;
+}
+#disconnect {
+  cursor: pointer;
 }
 </style>

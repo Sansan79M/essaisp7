@@ -8,7 +8,7 @@ const multer = require('../middleware/multer-config'); //Gestion des medias
 //Router des posts
 router.get('/news', auth, postCtrl.listPosts); //Affiche le fil d'actualité
 router.post('/create',  postCtrl.createPost); //Créer un nouveau message 
-router.get('/post', auth, postCtrl.getOnePost); //Affiche un message
+router.get('/:id', auth, postCtrl.getOnePost); //Affiche un message
 router.put('/update', auth, multer, postCtrl.updatePost); //Modifier un message
 router.delete('/delete', auth, multer, postCtrl.deletePost); //Supprimer un message
 router.post('/like', auth, postCtrl.likePost); //Liker les messages
