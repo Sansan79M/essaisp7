@@ -92,13 +92,13 @@ export default {
   data() {
     return {
       post: {
-        id: "",
-        userId: "",
-        username: "",
-        updatedAt: "",
-        title: "",
-        description: "",
-        media: "",
+        id: this.id,
+        userId: this.user.userId,
+        username: this.user.username,
+        updatedAt: this.user.updatedAt,
+        title: this.post.title,
+        description: this.post.description,
+        media: this.post.media,
       },
     };
   },
@@ -131,9 +131,10 @@ export default {
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/update", myInit)
-        .then((success) => {
-          this.$router.push({ path: "/posts/:id" });
-          console.log(success + "Le message a été modifié");
+        .then(response => {
+          this.post = response.data;
+          this.$router.push({ path: "/posts/post" });
+          console.log(response + "Le message a été modifié");
         })
         .catch((error) => {
           console.log(error + "Le message n'a pas été modifié");

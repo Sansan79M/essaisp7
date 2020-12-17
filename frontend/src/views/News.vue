@@ -46,6 +46,7 @@
                   </li>
                 </ul>
               </div>
+              <!--<div><router-view @refreshData="refreshList"></router-view></div>-->
               <br />
               <div class="text-center">
                 <ul
@@ -85,18 +86,19 @@ import HeaderConnected from "../components/HeaderConnected.vue";
 export default {
   name: "news",
   components: { HeaderConnected },
-
+  //props: ['post'],
   data() {
     return {
       posts: [],
       post: {
-        id: "",
-        userId: "",
-        username: "fdsd",
-        createdAt: "fdsfs",
-        title: "fdssd",
+        id: '',
+        userId: '',
+        username: 'georges',
+        createdAt: '17/12/2020',
+        title: 'titre',
+        description: 'description'
       },
-      page: "",
+      //page: "",
     };
   },
 
@@ -115,26 +117,41 @@ export default {
     listPosts(e) {
       e.preventDefault();
       //Récupération des id des posts
-      const storage = JSON.parse(localStorage.getItem("storage_post"));
-      this.post.id = storage.id;
+      //const storage = JSON.parse(localStorage.getItem("storage_post"));
+      //this.post.id = storage.id;
+      /*let data = {
+        id: this.post.id,
+        userId: this.post.userId,
+        username: this.post.username,
+        createdAt: this.post.createdAt,
+        title: this.post.title,
+      }*/
 
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.parse(this.post),
+        body: JSON.stringify(this.post),
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/news", myInit)
-        .then(res => {
-          this.posts = res.data.id
-           console.log(res.data + "Le fil d'actualité s'affiche");
+        /*.then(response => {
+          this.post = response.data
+           console.log(response.data + "Le fil d'actualité s'affiche");
+        })*/
+        .then((success) => {
+          console.log(success + "Le fil d'actualité s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le fil d'actualité ne s'affiche pas");
         });
     },
+
+    /*refreshList() {
+      this.listPosts();
+    },*/
+
     //Clic sur un message pour voir le message
     /*getOnePost(e) {
       e.preventDefault();
@@ -155,6 +172,10 @@ export default {
           console.log(error + "Le lien vers le post choisi ne fonctionne pas");
         });
     },*/
+
+    /*mounted() {
+    this.listPosts();
+  }*/
   },
 };
 </script>

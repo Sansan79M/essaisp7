@@ -80,6 +80,7 @@
 
 <script>
 import HeaderConnected from "./HeaderConnected.vue";
+import Post from "../models/postModel";
 
 export default {
   name: "create",
@@ -87,12 +88,13 @@ export default {
 
   data() {
     return {
-      post: {
+      post: new Post ('', '', '','', '', '', ''),
+      /*post: {
         userId: "",
         title: "",
         description: "",
         media: "",
-      },
+      },*/
     };
   },
 
@@ -137,7 +139,7 @@ export default {
               const storage = { id: data.id, token: data.token };
               localStorage.setItem("storage_post", JSON.stringify(storage));
 
-              this.$router.push({ path: "/posts/post" });
+              this.$router.push({ path: "/posts/news" });
             })
             .catch((error) => {
               console.log(error + "Le message n'a pas été créé");

@@ -1,7 +1,7 @@
 const post = require('../models/postModels');
 const fs = require('fs');
 
-const db = require('../models/dbConnect');
+const db = require('../config/dbConfig');
 const Post = db.post;
 
 

@@ -137,6 +137,7 @@
 
 <script>
 import HeaderNotConnected from "../components/HeaderNotConnected.vue";
+import User from '../models/userModel';
 
 export default {
   name: "signup",
@@ -144,11 +145,12 @@ export default {
 
   data() {
     return {
-      user: {
+       user: new User ('', '', '','', '', ''),
+      /*user: {
         username: "",
         email: "",
         password: "",
-      },
+      },*/
       passwordConfirm: "",
       show1: false,
       show2: false,

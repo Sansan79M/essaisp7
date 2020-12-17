@@ -1,113 +1,58 @@
 <template>
   <div>
-    <div class="border rounded px-3 pt-3 pb-2">
-      <div class="mb-2">
-        <p class="text-sm text-grey-dark mb-2">
-          {{ comment.author }} - Il y a {{ dateformat }}
-        </p>
-        <p v-if="edit">
-          <textarea class="w-full border rounded p-3" v-model="newBody"></textarea>
-        </p>
-
-        <p v-else>{{ comment.body }}</p>
-      </div>
+    <div>
+      <p>{{ comment.username }} - le {{ comment.createdAt }}</p>
+      <p v-if="edit">
+        <textarea v-model="newDescription"></textarea>
+      </p>
+      <p v-else>
+        {{ comment.title }}<br>
+        {{ comment.description }}
+      </p>
+    </div>
+    <div>
       <p v-if="edit" class="flex -mx-2">
-        <button
-          type="button"
-          class="mx-2 flex-items-center text-xs text-grey-dark font-semibold"
-          @click="$emit('respond-to', comment)"
-        >
-          <img
-            id="fleche"
-            src="../assets/reply.svg"
-            alt="Flèche répondre"
-            class="fill-current text-grey-dark mr-px"
-          />
-          Répondre
+        <button type="button" class="flex items-center text-xs mx-2" @click="cancel()">
+          <img src="../assets/close.svg" alt="flèche répondre" class="h-3"/>
+          Annuler
         </button>
-
-        <button
-          type="button"
-          class="mx-2 flex-items-center text-xs text-grey-dark font-semibold"
-          @click="edit = true"
-        >
-          <img
-            id="crayon"
-            src="../assets/edit-pencil.svg"
-            alt="Crayon de modification"
-            class="fill-current text-grey-dark mr-px"
-          />
-          Modifier
+        <button type="button" class="flex items-center text-xs mx-2" @click="update()">
+          <img src="../assets/save-disk.svg" alt="crayon modifier" class="h-3"/>
+          Sauvegarder
         </button>
       </p>
       <p v-else class="flex -mx-2">
-        <button
-          type="button"
-          class="mx-2 flex-items-center text-xs text-grey-dark font-semibold"
-          @click="cancel()"
-        >
-          <img
-            id="fleche"
-            src="../assets/close.svg"
-            alt="Flèche répondre"
-            class="fill-current text-grey-dark mr-px"
-          />
-          Annuler
+        <button type="button" class="flex items-center text-xs mx-2" @click="$emit('respond-to', comment)"><!--respond-to pour répondre à un commentaire-->
+          <img src="../assets/reply.svg" alt="flèche répondre" class="h-3"/>
+          Répondre
         </button>
-
-        <button
-          type="button"
-          class="mx-2 flex-items-center text-xs text-grey-dark font-semibold"
-          @click="update()"
-        >
-          <img
-            id="crayon"
-            src="../assets/save-disk.svg"
-            alt="Crayon de modification"
-            class="fill-current text-grey-dark mr-px"
-          />
-          Sauvegarder
+        <button type="button" class="flex items-center text-xs mx-2" @click="edit=true"><!--respond-to pour répondre à un commentaire-->
+          <img src="../assets/edit-pencil.svg" alt="crayon modifier" class="h-3"/>
+          Modifier
         </button>
       </p>
     </div>
     <div class="mt-4 border-l-4 pl-4">
       <comment
-        class="mb-4"
         v-for="child in comment.children"
         :key="child.id"
         :comment="child"
-        :now="now"
-        @respond-to="$emit('respond-to', $event)"
+        @respond-to="$emit((respondTo = $even))"
       ></comment>
     </div>
   </div>
 </template>
 
 <script>
-import { formatDistance } from "date-fns";
-import { fr } from "date-fns/esm/locale";
-
 export default {
   name: "comment",
-
-  props: ["comment", "now"],
-
+  props: ["comment"],
   data() {
     return {
       edit: false,
-      newBody: this.comment.body
+      newDescription: this.comment.description,
     };
   },
-
-  computed: {
-    //l'heure et la date s'actualise automatiquement
-    dateformat() {
-      return formatDistance(new Date(this.comment.created_at), this.now, {
-        local: fr,
-      });
-    },
-  },
-
   methods:{
       cancel(){
           this.edit = false,
@@ -123,8 +68,5 @@ export default {
 </script>
 
 <style scoped>
-#fleche,
-#crayon {
-  width: 20px;
-}
+
 </style>

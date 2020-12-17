@@ -165,7 +165,7 @@ export default {
       fetch("http://localhost:3000/api/user/modify", myInit)
         .then((response) => {
           this.user = response.data.results;
-          this.$router.push({ path: "/user/profile" });
+          this.$router.push({ path: "/user/profile/:userId" });
           console.log(response + "Le profil utilisateur a été modifié");
         })
         .catch((error) => {

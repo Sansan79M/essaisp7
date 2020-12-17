@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+//const { user } = require('../config/dbConfig');
 //const xss = require('xss');
-const regex = require('../utils/regex');
 
-const db = require('../models/dbConnect');
+const db = require('../config/dbConfig');
 const User = db.user;
 
 //Cryptage du token
@@ -11,18 +11,6 @@ const TOKEN = process.env.TOKEN;
 
 //Création d'un nouveau nouvel utilisateur
 exports.signup = (req, res, next) => {
-  const validEmail = regex.validEmail(req.body.email);
-  if (validEmail.error) {
-    return res.status(401).json(validEmail, { error: "L'email n'est pas valide !" })
-  }
-  const validPassword = regex.validPassword(req.body.password);
-  if (validPassword.error) {
-    return res.status(401).json(validPassword, { error: "Le mot de passe n'est pas valide !" })
-  }
-  /*const existingEmail = email;
-  if (existingEmail === req.body.email){
-    return res.status(401).json({ error: 'Email déjà existant !' });
-  }*/
   bcrypt.hash((req.body.password), 10)
     .then(hash => {
       User.create({
@@ -30,18 +18,12 @@ exports.signup = (req, res, next) => {
         email: req.body.email,
         password: hash,
       })
-        .then(success => { return res.status(200).json(success); })
-        .catch(err => {
-          console.log('############## usercreate error...', err.errors[0].message);
-          return res.status(404).send(new Error(err.errors[0].message));
-        });
-
+      user.save()
+        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+        .catch(error => res.status(400).json({ error }));
     })
-    .catch(err => {
-      console.log('############## bcrypt error...', err);
-          return res.status(501).send(err);
-    });
-}
+    .catch(error => res.status(500).json({ error }));
+};
 
 //Connexion d'un utilisateur
 exports.login = (req, res, next) => {
@@ -51,13 +33,11 @@ exports.login = (req, res, next) => {
     .then(user => {
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-      
       }
       bcrypt.compare(req.body.password, user.password)
         .then(valid => {
           if (!valid) {
             return res.status(401).json({ error: 'Le mot de passe est incorrect !' });
-            
           }
            res.status(200).json({
             userId: user.id,
@@ -69,26 +49,49 @@ exports.login = (req, res, next) => {
             )
           });
         })
-        .catch(error => res.status(500).json({ error: "Une erreur inconnue est survenue", content: error }));
+        .catch(error => res.status(500).json({ error: "Une erreur provenant du mot de passe est survenue", content: error }));
     })
-    .catch(error => res.status(500).json({ error: "Une 2e erreur inconnue est survenue", content: error }));
+    .catch(error => res.status(500).json({ error: "Une erreur provenant de l'email est survenue", content: error }));
 };
 
 
 //Consultation du profil par l'utilisateur
 exports.userProfile = (req, res, next) => {
-  User.findOne({
-    attributes: ['username'],
-    where: { username: req.body.username }
+  /*User.findOne({
+    where: { userId: req.params.id },
+    //attributes: ['username', 'avatar', 'service', 'bio', 'email']
   })
-    .then(user => res.status(200).json(user))
-    .catch(error => res.status(400).json({ error }));
-}
+  .then(user => res.status(200).json(user))
+  .catch(error => res.status(400).json({ error }));*/
+  
+  /*User.findById({
+    where: {id : req.body.id},
+  })
+  .then(userId => {
+		res.status(200).send({
+          userId: user.id,
+          username: user.username,
+          email: user.email,
+          service: user.service,
+          bio: user.bio,
+          face: user.face,
+          token : TOKEN
+    });
+  })
+  .catch(error => res.status(500).send({ error : "Une erreur d'affichage du profil est survenue" }));*/
+  User.findById(req.params.userId).then(user => {
+		res.send(user);
+	}).catch(err => {
+		res.status(500).send("Error -> " + err);
+	})
+  
+    
+};
 
 
 //Modification du profil par l'utilisateur
 exports.modifyProfile = (req, res, next) => {
-    User.findOne({ id: req.params.id })
+    User.findById({ id: req.params.id })
       .then(() => {
         //Ajout d'un avatar
         const img = new img({
@@ -99,18 +102,18 @@ exports.modifyProfile = (req, res, next) => {
           .then(() => res.status(200).json({ message: "L'avatar' a été enregistrée !" }))
           .catch(error => res.status(400).json({ error }));
         //Mise à jour du profil
-        User.updateOne({ userId: user.id })
-          .then(() => res.status(200).json({ message: 'Le profil a été modifié !' }))
-          .catch(error => res.status(400).json({ error }));
+        User.update({ userId: user.id })
+          .then(() => res.status(200).json({ message: "Le profil a été modifié !" }))
+          .catch(error => res.status(400).json({ error: "Erreur dans la modification du profil" }));
       });
 }
 
 //Suppression du profil utilisateur
 exports.deleteProfile = (req, res, next) => {
-  User.findOne({ id: req.params.id })
+  User.findById({ id: req.params.id })
     .then(() => {
-      User.deleteOne({ id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Le profil a été supprimé !' }))
-        .catch(error => res.status(400).json({ error }));
+      User.destroy({ id: req.params.id })
+        .then(() => res.status(200).json({ message: "Le profil a bien été supprimé !" }))
+        .catch(error => res.status(400).json({ error : "Erreur dans la suppression du profil" }));
     });
 };

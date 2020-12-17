@@ -22,7 +22,7 @@
                       src="../../../backend/faces/NY.jpeg"
                       alt="Avatar de l'utilisateur"
                     />
-                    <!--{{user.avatar}}</a>-->
+                    <!--{{user.face}}</a>-->
                   </div>
                   <br />
                   <div class="text-left">
@@ -38,7 +38,7 @@
                   </div>
                   <br />
                   <div id="buttons">
-                    <router-link :to="'modify'">
+                    <router-link :to="'/user/modify'">
                       <button
                         type="submit"
                         name="update"
@@ -74,6 +74,7 @@
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
 
+
 export default {
   name: "profile",
   components: { HeaderConnected },
@@ -84,7 +85,7 @@ export default {
       /*user: {
         userId:"",
         username: "",
-        avatar:"",
+        face:"",
         service: "",
         bio: "",
         email: "",
@@ -102,12 +103,12 @@ export default {
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.parse(this.user),
+        body: JSON.parse(this.user.id),
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/user/profile", myInit)
         .then((response) => {
-          this.user = response.data.results;
+          this.user = response.data;
           console.log(response + "Le profil utilisateur s'affiche");
         })
         .catch((error) => {
@@ -115,7 +116,10 @@ export default {
         });
     },
   },
-};
+  /*mounted() {
+    this.userProfile();//(this.$router.params.id);
+  }*/
+}
 </script>
 
 <style scoped>

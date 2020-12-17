@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 
 //Fichiers de projet requis
-const db = require('./models/dbConnect')
+const db = require('./config/dbConfig')
 const userRoutes = require('./routes/userRoutes.js');
 const postRoutes = require('./routes/postRoutes.js');
 

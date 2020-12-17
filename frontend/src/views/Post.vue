@@ -176,7 +176,8 @@ computed: {
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/delete", myInit)
-        .then((success) => {
+        .then(success => {
+          this.$emit("refreshData");
           this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
         })
