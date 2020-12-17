@@ -58,30 +58,11 @@ exports.login = (req, res, next) => {
 //Consultation du profil par l'utilisateur
 exports.userProfile = (req, res, next) => {
   User.findOne({
-    where: { userId: req.params.id },
-    attributes: ['username', 'email', 'service', 'bio', 'face']
+    where: { id: req.params.id },
+    attributes: ['id','username', 'email', 'service', 'bio', 'face']
   })
   .then(user => res.status(200).json(user))
-  .catch(error => res.status(400).json({ error : "Une erreur d'affichage du profil est survenue" }));
-  
-  /*User.findOne({
-    where: {id : req.params.id},
-  })
-  .then(userId => {
-		res.status(200).send({
-          userId: user.id,
-          username: user.username,
-          email: user.email,
-          service: user.service,
-          bio: user.bio,
-          face: user.face,
-          token : TOKEN
-    });
-  })
-  .catch(error => res.status(500).send({ error : "Une erreur d'affichage du profil est survenue" }));*/
- 
-  
-    
+  .catch(error => res.status(400).json({ error : "Une erreur d'affichage du profil est survenue" }));  
 };
 
 

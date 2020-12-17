@@ -81,38 +81,32 @@ export default {
 
   data() {
     return {
-      user: [],
-      /*user: {
+      user: {
         userId:"",
         username: "",
         face:"",
         service: "",
         bio: "",
         email: "",
-      },*/
+      },
     };
   },
 
-  /*mounted() {
-    this.userProfile(); //(this.$router.params.id);
-  },*/
+  mounted() {
+    this.userProfile();
+  },
 
   methods: {
-    userProfile(e) {
-      e.preventDefault();
+    userProfile() { //this.$route.params.id
       const storage = JSON.parse(localStorage.getItem("storage_user"));
-      this.user.id = storage.userId;
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "GET",
-        headers: headers,
-        body: JSON.parse(this.user),
-      };
-      console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/user/profile" + this.user.id, myInit)
+      console.log(storage);
+      fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
-          this.user = response.data;
+          response.json()
+          .then(user => {
+            this.user = user.id;
+            console.log(user)
+          })
           console.log(response + "Le profil utilisateur s'affiche");
         })
         .catch((error) => {

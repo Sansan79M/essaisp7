@@ -28,29 +28,36 @@
                   aria-label="Lien vers la page de création de message"
                   class="effect-blue"
                 >
-                  <h2 class="text-color text-center effect-blue">💬 CREER UN MESSAGE</h2>
+                  <h2 class="text-color text-center effect-blue">
+                    💬 CREER UN MESSAGE
+                  </h2>
                 </router-link>
               </div>
               <br />
 
               <div>
-                <ul id="news-list" >
-                  
-                  <li class="card effect-shadow" v-for="post in posts" :key="post.id" >
-                    <router-link :to="{name: 'post', params:{id:post.id}}">
-                    <div class="card effect-bg text-color">
-                      🧍 {{ post.username }} - ⌚ {{ post.createdAt}}
-                      <br />
-                      📝 {{ post.title}}
-                      <br />
-                      ⌨️ {{ post.description }}
-                    </div>
+                <ul id="news-list">
+                  <li
+                    class="card effect-shadow"
+                    v-for="post in posts"
+                    :key="post.id"
+                  >
+                    <router-link
+                      :to="{ name: 'post', params: { id: post.id } }"
+                    >
+                      <div class="card effect-bg text-color">
+                        🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                        <br />
+                        📝 {{ post.title }}
+                        <br />
+                        ⌨️ {{ post.description }}
+                      </div>
                     </router-link>
                   </li>
                 </ul>
               </div>
-              <!--<div><router-view @refreshData="refreshList"></router-view></div>-->
               <br />
+              <!--
               <div class="text-center">
                 <ul
                   class="pagination pagination-md justify-content-center"
@@ -74,7 +81,7 @@
                     <a class="page-link text-color" href="#">Suivante</a>
                   </li>
                 </ul>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>
@@ -89,78 +96,28 @@ import HeaderConnected from "../components/HeaderConnected.vue";
 export default {
   name: "news",
   components: { HeaderConnected },
-  //props: ['post'],
-
-  mounted() {
-    this.listPosts();
-    console.log('coucou')
-    },
   data() {
     return {
-     /* post: {
-        id: '',
-        userId: '',
-        username: '',
-        createdAt: '',
-        title: '',
-        description: ''
-      },*/
       posts: [],
-      //page: "",
     };
   },
-
- 
-
+  mounted() {
+    this.listPosts();
+  },
   methods: {
-    //Affichage du fil d'actualité
     listPosts() {
       fetch("http://localhost:3000/api/posts/news")
-        /*.then(response => {
-          this.post = response.data
-           console.log(response.data + "Le fil d'actualité s'affiche");
-        })*/
         .then((success) => {
-          success.json()
-            .then((posts) =>{
-              this.posts = posts
-              console.log(posts)
-            })
-          
+          success.json().then((posts) => {
+            this.posts = posts;
+            console.log(posts);
+          });
           console.log(success + "Le fil d'actualité s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le fil d'actualité ne s'affiche pas");
         });
     },
-
-   
-    /*refreshList() {
-      this.listPosts();
-    },*/
-
-    //Clic sur un message pour voir le message
-    /*getOnePost(e) {
-      e.preventDefault();
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "GET",
-        headers: headers,
-        body: JSON.stringify(this.onePost),
-      };
-      console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/news", myInit)
-        .then((success) => {
-          this.$router.push({ path: "/posts/post" });
-          console.log(success + "Le lien vers le post choisi fonctionne");
-        })
-        .catch((error) => {
-          console.log(error + "Le lien vers le post choisi ne fonctionne pas");
-        });
-    },*/
-
-    
   },
 };
 </script>
@@ -202,7 +159,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 130vh;
+  height: 400vh;
 }
 #news .container #news-row #news-column #news-box {
   margin-top: 20px;

@@ -49,7 +49,7 @@
             <li class="nav-item">
               <router-link
                 class="nav-link"
-                :to="'/user/profile'"
+                :to="{ name: 'user', params: { id: user.id } }"
                 aria-label="Lien vers la page du profil utilisateur"
               >
                 PROFIL</router-link
@@ -75,6 +75,13 @@
 <script>
 export default {
   name: "headerConnected",
+  data() {
+    return {
+      user: {
+        id: '',
+      },
+    };
+  },
   methods: {
     //Déconnection
     disconnect() {

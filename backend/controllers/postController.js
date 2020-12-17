@@ -34,16 +34,14 @@ exports.createPost = (req, res, next) => {
 
 //Affiche un message
 exports.getOnePost = (req, res, next) => {
-    console.log("Je veux afficher le message que je viens de poster")
     Post.findOne({
-        
         where: { id: req.params.id },
         attributes: ['id', 'userId', 'createdAt', 'updatedAt', 'title', 'description', 'media', 'likes']
     })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({ error }));
 }
-console.log(Post.findOne)
+
 
 //Affiche le fil d'actualité
 exports.listPosts = (req, res, next) => {

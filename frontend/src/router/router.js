@@ -26,7 +26,7 @@ const router = new VueRouter({
       {path: "/", component: Home, meta: {title:"Accueil Groupomania"}},
       {path: "/user/signup", component: Signup, meta: {title:"Inscription à Groupomania"}},
       {path: "/user/login", component: Login, meta: {title:"Connexion à Groupomania"}},
-      {path: "/user/profile", component: Profile, meta: {title:"Profil utilisateur, Groupomania"}},
+      {path: "/profile/:id", component: Profile, name: 'user', meta: {title:"Profil utilisateur, Groupomania"}},
       {path: "/user/modify", component: ModifyProfile, meta: {title:"Modification du profil utilisateur, Groupomania"}},
       //Chemins et titres des pages concernant les posts
       {path: "/posts/news", component: News, meta: {title:"News de Groupomania"}},

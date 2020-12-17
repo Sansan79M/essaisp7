@@ -102,9 +102,9 @@
   </body>
 </template>
 
+
 <script>
 import HeaderConnected from '../components/HeaderConnected.vue';
-
 
 export default {
   components: { HeaderConnected },
@@ -113,7 +113,7 @@ export default {
   data() {
     return {
       post: {
-        id: "",
+        /*id: "",
         userId: "",
         username: "",
         createdAt: "",
@@ -121,21 +121,15 @@ export default {
         title: "",
         description: "",
         //media:"",
-        //likes:"",
+        //likes:"",*/
       },
       show: false,
-
     };
   },
-
-
- mounted(){
+  mounted(){
         this.getOnePost();
     },  
-
   methods: {
-    //Affichage du post
-    
     getOnePost() {
       const postId = this.$route.params.id
       fetch("http://localhost:3000/api/posts/post/" + postId)
@@ -165,7 +159,6 @@ export default {
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/delete", myInit)
         .then(success => {
-          this.$emit("refreshData");
           this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
         })
@@ -173,6 +166,7 @@ export default {
           console.log(error + "Le message n'a pas été supprimé");
         });
     },
+
   },
 };
 </script>
@@ -181,7 +175,7 @@ export default {
 main {
   margin: 0;
   padding: 0;
-  background-color: rgba(252, 94, 59, 0.8) !important; /*#fc5d3a*/
+  background-color: rgba(252, 94, 59, 0.8) !important; 
   height: 130vh;
 }
 h1 {
@@ -192,7 +186,7 @@ h1 {
   max-width: 600px;
   height: 640px;
   border: 1px solid #0b505b;
-  background-color: rgb(252, 252, 111); /*#fcfc6f*/
+  background-color: rgb(252, 252, 111);
 }
 #post .container #post-row #post-column #post-box #post-displayed {
   padding: 20px;
