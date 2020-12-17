@@ -1,19 +1,19 @@
 <template>
-  <form @submit.prevent="submitComment">
-    <div>
-      <h3>Nouveau commentaire</h3>
-      <p v-if="respondTo">
-        En réponse à {{respondTo.username}} : "{{respondTo.title}}"
+  <form class="flex flex-col" @submit.prevent="submitComment">
+    <div class="mb-3">
+      <h3 class="text-primary text-left text-sm ml-3">Nouveau commentaire</h3>
+      <p v-if="respondTo" class="text-grey-darkest test-xs ml-3">
+        En réponse à : 🧍 Machin {{respondTo.username}} : "{{respondTo.title}}"
         <button type="button" @click="$emit('cancel-respond-to')"></button>
       </p>
     </div>
-    <div>
-      <input type="text" v-model="title" placeholder="Titre" />
+    <div class="mb-3">
+      <input type="text" class="w-full border rounded p-3 ml-3" v-model="title" placeholder="Titre" />
     </div>
     <div>
-      <textarea v-model="comment" placeholder="Commentaire"></textarea>
+      <textarea class="w-full border rounded p-3 ml-3" v-model="comment" placeholder="Commentaire"></textarea>
     </div>
-    <button type="submit">Commenter</button>
+    <button type="submit" class="border rounded py-2 text-white bg-color ml-3 mt-2 mb-2" >Commenter</button>
   </form>
 </template>
 
@@ -47,7 +47,7 @@ export default {
   methods: {
     submitComment() {
       axios
-        .post("posts/comments", this.fullForm)
+        .post("/posts/comments", this.fullForm)
         .then((result) => {
           console.log(result);
           this.$emit("newComment", this.data);
@@ -62,5 +62,8 @@ export default {
 </script>
 
 <style scoped>
+.bg-color{
+  background-color: #0b505b;
+}
 
 </style>

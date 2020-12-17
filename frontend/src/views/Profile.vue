@@ -93,6 +93,10 @@ export default {
     };
   },
 
+  /*mounted() {
+    this.userProfile(); //(this.$router.params.id);
+  },*/
+
   methods: {
     userProfile(e) {
       e.preventDefault();
@@ -103,10 +107,10 @@ export default {
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.parse(this.user.id),
+        body: JSON.parse(this.user),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/user/profile", myInit)
+      fetch("http://localhost:3000/api/user/profile" + this.user.id, myInit)
         .then((response) => {
           this.user = response.data;
           console.log(response + "Le profil utilisateur s'affiche");
@@ -116,9 +120,7 @@ export default {
         });
     },
   },
-  /*mounted() {
-    this.userProfile();//(this.$router.params.id);
-  }*/
+ 
 }
 </script>
 

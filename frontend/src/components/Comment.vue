@@ -1,43 +1,59 @@
 <template>
   <div>
-    <div>
-      <p>{{ comment.username }} - le {{ comment.createdAt }}</p>
-      <p v-if="edit">
-        <textarea v-model="newDescription"></textarea>
-      </p>
-      <p v-else>
-        {{ comment.title }}<br>
-        {{ comment.description }}
-      </p>
-    </div>
-    <div>
-      <p v-if="edit" class="flex -mx-2">
-        <button type="button" class="flex items-center text-xs mx-2" @click="cancel()">
-          <img src="../assets/close.svg" alt="flèche répondre" class="h-3"/>
-          Annuler
-        </button>
-        <button type="button" class="flex items-center text-xs mx-2" @click="update()">
-          <img src="../assets/save-disk.svg" alt="crayon modifier" class="h-3"/>
-          Sauvegarder
-        </button>
+    <div class="border rounded px-3 pt-3 pb-2">
+      <div class="mb-2">
+        <p class="text-sm text-grey-dark mb-2">
+          🧍 Nom du user{{ comment.username }} - ⌚ le (date de publication){{comment.createdAt}}
+        </p>
+        <p v-if="edit" class="flex ">
+          <textarea
+            class="w-full border rounded p-3"
+            v-model="newDescription"
+          ></textarea>
+        </p>
+        <p v-else>
+          📝 {{ comment.title }}<br />
+          ⌨️ {{ comment.description }}
+        </p>
+      </div>
+
+      <p v-if="edit" class="flex ">
+        <button
+          type="button"
+          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color"
+          @click="cancel()"
+        >❌ Annuler</button>
+        <button
+          type="button"
+          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color"
+          @click="update()"
+        >💾 Sauvegarder</button>
       </p>
       <p v-else class="flex -mx-2">
-        <button type="button" class="flex items-center text-xs mx-2" @click="$emit('respond-to', comment)"><!--respond-to pour répondre à un commentaire-->
-          <img src="../assets/reply.svg" alt="flèche répondre" class="h-3"/>
-          Répondre
-        </button>
-        <button type="button" class="flex items-center text-xs mx-2" @click="edit=true"><!--respond-to pour répondre à un commentaire-->
-          <img src="../assets/edit-pencil.svg" alt="crayon modifier" class="h-3"/>
-          Modifier
-        </button>
+        <button
+          type="button"
+          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color"
+          @click="$emit('respond-to', comment)"
+        >↩️ Répondre</button>
+        <button
+          type="button"
+          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color"
+          @click="edit = true"
+        >✏️ Modifier</button>
+        <button
+          type="button"
+          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color"
+          @click="deleteMssg"
+        >❌ Supprimer</button>
       </p>
     </div>
     <div class="mt-4 border-l-4 pl-4">
       <comment
+        class="mb-4"
         v-for="child in comment.children"
         :key="child.id"
         :comment="child"
-        @respond-to="$emit((respondTo = $even))"
+        @respond-to="$emit('respondTo', $event)"
       ></comment>
     </div>
   </div>
@@ -53,20 +69,23 @@ export default {
       newDescription: this.comment.description,
     };
   },
-  methods:{
-      cancel(){
-          this.edit = false,
-          this.newBody = this.comment.body
-      },
-      update(){
-          console.log('Updating')
-          this.comment.body = this.newBody
-          this.edit = false
-      }
-  }
+  methods: {
+    cancel() {
+      (this.edit = false), (this.newDescription = this.comment.description);
+    },
+    update() {
+      console.log("Updating");
+      (this.comment.description = this.newDescription), (this.edit = false);
+    },
+    deleteMssg() {
+
+    }
+  },
 };
 </script>
 
 <style scoped>
-
+.bg-color{
+  background-color: #0b505b
+}
 </style>

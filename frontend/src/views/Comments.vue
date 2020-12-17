@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div>
+    <div class="border-b pb-4 mb-8">
       <comment
+        class="mb-4 text-left"
         v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
-        @respond-to="respondTo = $event"
-      ></comment>
+        @respond-to="respondTo = $event" 
+      ></comment><!--"$emit('respond-to', $event)"-->
     </div>
     <div>
       <comment-form
@@ -30,12 +31,16 @@ export default {
   components: { CommentForm, Comment },
   data() {
     return {
-      comments: [],
+      comments: //[],
+      [
+                {title: 'Titre 1', description:'1er commentaire'},
+                {title: 'Titre 2', description:'2e commentaire'},
+            ],
       respondTo: null,
     };
   },
   mounted() {
-    axios.get("posts/comments").then(({ data }) => {
+    axios.get("/posts/comments").then(({ data }) => {
       console.log(data);
       this.comments = data;
     });

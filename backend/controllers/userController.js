@@ -57,15 +57,15 @@ exports.login = (req, res, next) => {
 
 //Consultation du profil par l'utilisateur
 exports.userProfile = (req, res, next) => {
-  /*User.findOne({
+  User.findOne({
     where: { userId: req.params.id },
-    //attributes: ['username', 'avatar', 'service', 'bio', 'email']
+    attributes: ['username', 'email', 'service', 'bio', 'face']
   })
   .then(user => res.status(200).json(user))
-  .catch(error => res.status(400).json({ error }));*/
+  .catch(error => res.status(400).json({ error : "Une erreur d'affichage du profil est survenue" }));
   
-  /*User.findById({
-    where: {id : req.body.id},
+  /*User.findOne({
+    where: {id : req.params.id},
   })
   .then(userId => {
 		res.status(200).send({
@@ -79,11 +79,7 @@ exports.userProfile = (req, res, next) => {
     });
   })
   .catch(error => res.status(500).send({ error : "Une erreur d'affichage du profil est survenue" }));*/
-  User.findById(req.params.userId).then(user => {
-		res.send(user);
-	}).catch(err => {
-		res.status(500).send("Error -> " + err);
-	})
+ 
   
     
 };
@@ -91,7 +87,7 @@ exports.userProfile = (req, res, next) => {
 
 //Modification du profil par l'utilisateur
 exports.modifyProfile = (req, res, next) => {
-    User.findById({ id: req.params.id })
+    User.findOne({ id: req.params.id })
       .then(() => {
         //Ajout d'un avatar
         const img = new img({
@@ -110,7 +106,7 @@ exports.modifyProfile = (req, res, next) => {
 
 //Suppression du profil utilisateur
 exports.deleteProfile = (req, res, next) => {
-  User.findById({ id: req.params.id })
+  User.findOne({ id: req.params.id })
     .then(() => {
       User.destroy({ id: req.params.id })
         .then(() => res.status(200).json({ message: "Le profil a bien été supprimé !" }))

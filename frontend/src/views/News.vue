@@ -34,9 +34,9 @@
               <br />
 
               <div>
-                <ul id="news-list" v-for="post in posts" :key="post.id">
+                <ul id="news-list" v-for="post in posts" :key="post">
                   <li class="card effect-shadow">
-                    <div class="card effect-bg text-color">
+                    <div class="card effect-bg text-color" v-text="post">
                       🧍 {{ post.username }} - ⌚ {{ post.createdAt}}
                       <br />
                       📝 {{ post.title}}
@@ -89,15 +89,15 @@ export default {
   //props: ['post'],
   data() {
     return {
-      posts: [],
       post: {
         id: '',
         userId: '',
-        username: 'georges',
-        createdAt: '17/12/2020',
-        title: 'titre',
-        description: 'description'
+        username: '',
+        createdAt: '',
+        title: '',
+        description: ''
       },
+      posts: [],
       //page: "",
     };
   },
@@ -132,7 +132,7 @@ export default {
       const myInit = {
         method: "GET",
         headers: headers,
-        body: JSON.stringify(this.post),
+        body: JSON.stringify(this.posts),
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/news", myInit)
