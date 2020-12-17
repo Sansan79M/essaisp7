@@ -31,7 +31,7 @@ const router = new VueRouter({
       //Chemins et titres des pages concernant les posts
       {path: "/posts/news", component: News, meta: {title:"News de Groupomania"}},
       {path: "/posts/create", component: CreatePost, meta: {title:"Création d'un message Groupomania"}},
-      {path: "/posts/post", component: Post, meta: {title:"Message Groupomania"}},
+      {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message Groupomania"}},
       {path: "/posts/update", component: UpdatePost, meta: {title:"Modification du message Groupomania"}},
      
       {path: "/posts/comments", component: Comments, meta: {title:"commentaire-essai"}},

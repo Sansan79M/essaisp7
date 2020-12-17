@@ -36,15 +36,9 @@ exports.createPost = (req, res, next) => {
 exports.getOnePost = (req, res, next) => {
     console.log("Je veux afficher le message que je viens de poster")
     Post.findOne({
-        /*id:req.body.id,
-        userId:req.body.userId,
-        username:req.body.username,
-        createdAt: req.body.createdAt,
-        updatedAt: req.body.updatedAt,
-        title: req.body.title,
-        description: req.body.description,*/
+        
         where: { id: req.params.id },
-        attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description', 'media', 'likes']
+        attributes: ['id', 'userId', 'createdAt', 'updatedAt', 'title', 'description', 'media', 'likes']
     })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({ error }));
@@ -54,8 +48,8 @@ console.log(Post.findOne)
 //Affiche le fil d'actualité
 exports.listPosts = (req, res, next) => {
     Post.findAll({
-        where: { id: req.params.id },
-        attributes: ['id', 'userId', 'username', 'createdAt', 'updatedAt', 'title', 'description']
+        
+        attributes: ['id', 'userId', 'createdAt', 'updatedAt', 'title', 'description']
     })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ error }));

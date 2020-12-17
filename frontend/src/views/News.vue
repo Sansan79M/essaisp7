@@ -34,15 +34,18 @@
               <br />
 
               <div>
-                <ul id="news-list" v-for="post in posts" :key="post">
-                  <li class="card effect-shadow">
-                    <div class="card effect-bg text-color" v-text="post">
+                <ul id="news-list" >
+                  
+                  <li class="card effect-shadow" v-for="post in posts" :key="post.id" >
+                    <router-link :to="{name: 'post', params:{id:post.id}}">
+                    <div class="card effect-bg text-color">
                       🧍 {{ post.username }} - ⌚ {{ post.createdAt}}
                       <br />
                       📝 {{ post.title}}
                       <br />
                       ⌨️ {{ post.description }}
                     </div>
+                    </router-link>
                   </li>
                 </ul>
               </div>
@@ -87,60 +90,43 @@ export default {
   name: "news",
   components: { HeaderConnected },
   //props: ['post'],
+
+  mounted() {
+    this.listPosts();
+    console.log('coucou')
+    },
   data() {
     return {
-      post: {
+     /* post: {
         id: '',
         userId: '',
         username: '',
         createdAt: '',
         title: '',
         description: ''
-      },
+      },*/
       posts: [],
       //page: "",
     };
   },
 
- /* computed: {
-    infoPost() {
-      //return this.post.id;
-      this.post.array.forEach(post => {
-        post += this.post.id
-      });
-      return post
-    },
-  },*/
+ 
 
   methods: {
     //Affichage du fil d'actualité
-    listPosts(e) {
-      e.preventDefault();
-      //Récupération des id des posts
-      //const storage = JSON.parse(localStorage.getItem("storage_post"));
-      //this.post.id = storage.id;
-      /*let data = {
-        id: this.post.id,
-        userId: this.post.userId,
-        username: this.post.username,
-        createdAt: this.post.createdAt,
-        title: this.post.title,
-      }*/
-
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "GET",
-        headers: headers,
-        body: JSON.stringify(this.posts),
-      };
-      console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/news", myInit)
+    listPosts() {
+      fetch("http://localhost:3000/api/posts/news")
         /*.then(response => {
           this.post = response.data
            console.log(response.data + "Le fil d'actualité s'affiche");
         })*/
         .then((success) => {
+          success.json()
+            .then((posts) =>{
+              this.posts = posts
+              console.log(posts)
+            })
+          
           console.log(success + "Le fil d'actualité s'affiche");
         })
         .catch((error) => {
@@ -148,6 +134,7 @@ export default {
         });
     },
 
+   
     /*refreshList() {
       this.listPosts();
     },*/
@@ -173,9 +160,7 @@ export default {
         });
     },*/
 
-    /*mounted() {
-    this.listPosts();
-  }*/
+    
   },
 };
 </script>

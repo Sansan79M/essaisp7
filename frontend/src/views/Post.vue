@@ -128,35 +128,23 @@ export default {
     };
   },
 
-computed: {
-  infoPost () {
-    return this.post.id
-  }
-},
 
- /*mounted(){
+ mounted(){
         this.getOnePost();
-    },  */
+    },  
 
   methods: {
     //Affichage du post
-    getOnePost(e) {
-      e.preventDefault();
-      //Récupération de l'id du post
-      const storage = JSON.parse(localStorage.getItem("storage_post"));
-      this.post.id = storage.id;
-
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "GET",
-        headers: headers,
-        body: JSON.parse(this.post),
-      };
-      console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/:id", myInit)
+    
+    getOnePost() {
+      const postId = this.$route.params.id
+      fetch("http://localhost:3000/api/posts/post/" + postId)
         .then(response => {
-          this.post.value = response.data.id;
+          response.json()
+          .then(post => {
+            this.post = post
+            console.log(post)
+          })
            console.log(response + "Un message s'affiche");
         })
         .catch((error) => {
