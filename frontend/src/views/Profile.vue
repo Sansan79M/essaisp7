@@ -82,12 +82,12 @@ export default {
   data() {
     return {
       user: {
-        userId:"",
+        /*userId:"",
         username: "",
         face:"",
         service: "",
         bio: "",
-        email: "",
+        email: "",*/
       },
     };
   },
@@ -97,14 +97,14 @@ export default {
   },
 
   methods: {
-    userProfile() { //this.$route.params.id
+    userProfile() { 
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       console.log(storage);
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
           response.json()
           .then(user => {
-            this.user = user.id;
+            this.user = user;
             console.log(user)
           })
           console.log(response + "Le profil utilisateur s'affiche");

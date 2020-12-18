@@ -98,11 +98,13 @@
                     >
                       <img
                         src="../assets/view-show.svg"
+                        alt="mot de passe visible"
                         class="eyes text-color"
                         v-show="show2"
                       />
                       <img
                         src="../assets/view-hide.svg"
+                        alt="mot de passe invisible"
                         class="eyes text-color"
                         v-show="!show2"
                       />
@@ -171,7 +173,7 @@ export default {
         console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/signup", myInit)
           .then((success) => {
-            this.$router.push({ path: "/user/profile" });
+            this.$router.push({ path: "/posts/news" });
             console.log(success + "Le compte a bien été créé");
           })
           .catch((error) => {
