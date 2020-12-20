@@ -15,7 +15,7 @@ exports.createComment = (req, res, next) => {
 exports.readOneComment = (req, res, next) => {
     Comment.findOne({ 
         where: { id: req.params.id },
-        attributes: ['id', 'userId', 'posteId', 'content', 'createdAt', 'updatedAt']
+        attributes: ['id', 'userId', 'postId', 'content', 'createdAt', 'updatedAt']
      })
         .then((comment) => { res.status(200).json(comment) })
         .catch(error => res.status(400).json({ error }));
@@ -26,7 +26,7 @@ exports.readAllComment = (req, res, next) => {
     console.log(req.params.postId, "###########################################");
     Comment.findAll({
         where: { postId: req.params.postId },
-        attributes: ['id', 'userId', 'posteId', 'content', 'createdAt', 'updatedAt']
+        attributes: ['id', 'userId', 'postId', 'content', 'createdAt', 'updatedAt']
     })
         .then(comments => res.status(200).json(comments))
         .catch(error => res.status(400).json({ error }));

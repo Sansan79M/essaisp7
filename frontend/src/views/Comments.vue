@@ -12,6 +12,7 @@
     <div>
       <comment-form
         :respond-to="respondTo"
+        :post-id="postId"
         @newComment="newComment"
         @cancel-respond-to="respondTo = null"
       ></comment-form>
@@ -24,28 +25,38 @@
 <script>
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
-import axios from "axios";
 
 export default {
   name: "comments",
   components: { CommentForm, Comment },
   data() {
     return {
-      comments: //[],
-      [
-                {title: 'Titre 1', description:'1er commentaire'},
-                {title: 'Titre 2', description:'2e commentaire'},
-            ],
+      comments: [],
+      postId:'',
       respondTo: null,
     };
   },
-  mounted() {
-    axios.get("/posts/comments").then(({ data }) => {
-      console.log(data);
-      this.comments = data;
-    });
+mounted() {
+      this.getComments();
+      this.postId = this.$route.params.postId
   },
   methods: {
+   getComments() {
+     // const postId = this.$route.params.postId
+      fetch("http://localhost:3000/api/comments/read/" + this.postId)
+        .then(response => {
+          response.json()
+          .then(comments => {
+            this.comments = comments
+            console.log(comments)
+          })
+           console.log(response + "Un message s'affiche");
+        })
+        .catch((error) => {
+          console.log(error + "Le message ne s'affiche pas");
+        });
+    },
+  
     newComment(comment) {
       if (!this.respondTo) {
         this.comments.push(comment);

@@ -38,7 +38,6 @@
                         class="btn text-white btn-md"
                         aria-label="Bouton de modification du message"
                         value="MODIFIER"
-                        
                       >
                         MODIFIER
                       </button>
@@ -55,6 +54,9 @@
                       SUPPRIMER
                     </button>
                   </div>
+                  <br>
+                 <router-link :to="{ name: 'comments', params: {postId: post.id } }">commentaires</router-link>
+
                 </div>
               </div>
             </div>
@@ -90,7 +92,7 @@ export default {
  
   mounted(){
         this.getOnePost();
-        this.getComments();
+      
     },  
   methods: {
     getOnePost() {
@@ -109,21 +111,6 @@ export default {
         });
     },
 
-    getComments() {
-      const postId = this.$route.params.id
-      fetch("http://localhost:3000/api/comments/read/" + postId)
-        .then(response => {
-          response.json()
-          .then(comments => {
-            this.comments = comments
-            console.log(comments)
-          })
-           console.log(response + "Un message s'affiche");
-        })
-        .catch((error) => {
-          console.log(error + "Le message ne s'affiche pas");
-        });
-    },
     
 
     //suppression du post

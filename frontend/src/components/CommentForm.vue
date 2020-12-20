@@ -3,15 +3,13 @@
     <div class="mb-2">
       <h3 class="text-left text-sm ml-3 text-color">Nouveau commentaire</h3>
       <p v-if="respondTo" class="text-xs ml-3 text-color">
-        En réponse à <span class="font-semibold">Machin {{respondTo.username}}</span> : «{{respondTo.title}}».  
+        En réponse à <span class="font-semibold">Machin {{respondTo.userId}}</span>  
         <button type="button" @click="$emit('cancel-respond-to')" class="text-white bg-color font-semibold"> ❌ Annuler</button>
       </p>
     </div>
-    <div class="mb-2">
-      <input type="text" class="w-full border rounded p-3 ml-3 text-color" v-model="title" placeholder="Titre" />
-    </div>
+    
     <div>
-      <textarea class="w-full border rounded p-3 ml-3 text-color" v-model="comment" placeholder="Commentaire"></textarea>
+      <textarea class="w-full border rounded p-3 ml-3 text-color" v-model="newComment.content" placeholder="Commentaire"></textarea>
     </div>
     <button type="submit" class="border rounded border-color py-2 text-white bg-color ml-3 mt-2 mb-2 font-semibold" >Commenter</button>
   </form>
@@ -19,15 +17,16 @@
 
 
 <script>
-import axios from "axios";
+
 export default {
   name: "commentForm",
-  props: ["respondTo"],
+  props: ["respondTo", "postId"],
   data() {
     return {
-      form: {
-        title: "",
-        description: "",
+      newComment: {
+       userId:'',
+       postId:'',
+        content: "",
       },
     };
   },
@@ -36,25 +35,47 @@ export default {
     fullForm() {
       if (this.respondTo) {
         return {
-          ...this.form,
+          ...this.newComment,
           respond_to_id: this.respondTo.id,
         };
       }
-      return this.form;
+      return this.newComment;
     },
   },
 
   methods: {
     submitComment() {
-      axios
-        .post("/posts/comments", this.fullForm)
+      const storage = JSON.parse(localStorage.getItem("storage_user"));
+      this.newComment.userId = storage.userId;
+      this.newComment.postId = this.postId;
+      const headers = new Headers();
+      headers.append("content-type", "application/json");
+
+      const myInit = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(this.newComment),
+      };
+      console.log(this.newComment);
+      fetch("http://localhost:3000/api/posts/create", myInit)
         .then((result) => {
-          console.log(result);
-          this.$emit("newComment", this.data);
-          this.form.description = ""
+          result.json()
+            .then((data) => {
+              if (data.error) {
+                console.log(data);
+                return;
+              }
+              console.log(result + "Un message a été créé");
+
+
+              //this.$router.push({ path: "/posts/news" });
+            })
+            .catch((error) => {
+              console.log(error + "Le message n'a pas été créé");
+            });
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error + "La création de message ne fonctionne pas");
         });
     },
   },

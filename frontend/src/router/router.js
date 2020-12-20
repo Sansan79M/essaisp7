@@ -38,7 +38,7 @@ const router = new VueRouter({
       {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message Groupomania"}},
       {path: "/posts/update", component: UpdatePost, name: 'update', meta: {title:"Modification du message Groupomania"}},
      
-      {path: "/posts/comments", component: Comments, name: 'comments',meta: {title:"Commentaires"}},
+      {path: "/posts/comments/:postId", component: Comments, name: 'comments',meta: {title:"Commentaires"}},
   
       {path: "/trafic", component: Trafic, name: 'trafic',meta: {title:"Trafic GSN"}},
     ]
