@@ -41,12 +41,6 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
-  background-color: #0b505b;
-}
-header img {
-  width: 200px;
-}
 h1 {
   font-size: 30px;
 }

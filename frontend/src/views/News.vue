@@ -49,40 +49,14 @@
                       <div class="card effect-bg text-color">
                         🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
                         <br />
-                        📝 {{ post.title }}
+                        📧 {{ post.title }}
                         <br />
-                        ⌨️ {{ post.description }}
+                        📝 {{ post.description }}
                       </div>
                     </router-link>
                   </li>
                 </ul>
               </div>
-              <br />
-              <!--
-              <div class="text-center">
-                <ul
-                  class="pagination pagination-md justify-content-center"
-                  aria-label="Page de navigation"
-                >
-                  <li class="page-item disabled">
-                    <a class="page-link text-color" href="#" tabindex="-1"
-                      >Précédente</a
-                    >
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link text-color" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link text-color" href="#">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link text-color" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link text-color" href="#">Suivante</a>
-                  </li>
-                </ul>
-              </div>-->
             </div>
           </div>
         </div>

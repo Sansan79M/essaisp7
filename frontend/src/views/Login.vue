@@ -55,12 +55,14 @@
                       name="submit"
                       class="btn text-white btn-md"
                       value="Se connecter"
+                      aria-label="bouton pour confirmer la connexion"
                     >
                       Se connecter
                     </button>
                   </div>
                   <div id="register-link" class="text-right">
                     <router-link class="text-color" :to="'/user/signup'"
+                    aria-label="Lien vers la page d'inscription"
                       >S'enregistrer</router-link
                     >
                   </div>
@@ -76,7 +78,6 @@
 
 <script>
 import HeaderNotConnected from "../components/HeaderNotConnected.vue";
-import User from '../models/userModel';
 
 export default {
   name: "login",
@@ -84,11 +85,10 @@ export default {
   
   data() {
     return {
-      user: new User ('', '', '','', '', ''),
-      /*user:{
+      user:{
         email: "",
         password: "",
-      },*/
+      },
       loading: false,
       show: false
     };

@@ -1,5 +1,6 @@
 //Importation des librairies
 import Vue from 'vue'
+
 import App from './App.vue'
 
 //Importation des routes et du stockage de données

@@ -49,7 +49,7 @@
             <li class="nav-item">
               <router-link
                 class="nav-link"
-                :to="{ name: 'user', params: { id: user.id } }"
+                :to="{ name: 'profile', params: { id: user.id } }"
                 aria-label="Lien vers la page du profil utilisateur"
               >
                 PROFIL</router-link
@@ -89,13 +89,13 @@ export default {
   methods: {
     userProfile() { 
       const storage = JSON.parse(localStorage.getItem("storage_user"));
-      console.log(storage);
+      //console.log(storage);
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
           response.json()
           .then(user => {
             this.user = user;
-            console.log(user)
+            //console.log(user)
           })
           console.log(response + "Le lien vers le profil utilisateur s'affiche");
         })

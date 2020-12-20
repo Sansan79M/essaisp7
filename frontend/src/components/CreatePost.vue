@@ -14,7 +14,7 @@
                   <h1 class="text-center text-color">CREATION D'UN MESSAGE</h1>
                   <br />
                   <div class="form-group text-left">
-                    <label for="title" class="text-color">📝 Titre :</label>
+                    <label for="title" class="text-color">📧 Titre :</label>
                     <br />
                     <input
                       type="text"
@@ -27,7 +27,7 @@
                   </div>
                   <div class="form-group text-left">
                     <label for="description" class="text-color"
-                      >⌨️ Description :</label
+                      >📝 Description :</label
                     ><br />
                     <textarea
                       type="text"
@@ -38,24 +38,6 @@
                       v-model="post.description"
                     ></textarea>
                   </div>
-                  <div class="form-group text-left">
-                    <label for="media" class="btn text-white btn-md button">
-                      Ajouter une image ou un gif
-                    </label>
-                    <br />
-                    <input
-                      type="file"
-                      name="media"
-                      id="media"
-                      class="btn text-white btn-md button"
-                      value="Ajouter une photo"
-                      accept=".png, .jpg, .jpeg, .gif"
-                      aria-label="Bouton pour télécharger un média"
-                      @change="fileDownload"
-                    />
-                    <!--v-model="post.media" @change="fileDownload"-->
-                  </div>
-
                   <div class="form-group text-right">
                     <br />
                     <button
@@ -80,7 +62,6 @@
 
 <script>
 import HeaderConnected from "./HeaderConnected.vue";
-import Post from "../models/postModel";
 
 export default {
   name: "create",
@@ -88,31 +69,16 @@ export default {
 
   data() {
     return {
-      post: new Post ('', '', '','', '', '', ''),
-      /*post: {
+      post: {
         userId: "",
         title: "",
         description: "",
         media: "",
-      },*/
+      },
     };
   },
 
   methods: {
-    //Téléchargement du média
-    fileDownload(e) {
-      this.post.media = e.target.files[0] || e.dataTransfer.files;
-      console.log(this.post.media);
-      let input = event.target;
-      if (input.files && input.files[0]) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          this.post.media = e.target.result;
-        };
-      }
-    },
-
-    //Création du message
     createPost(e) {
       e.preventDefault();
       const storage = JSON.parse(localStorage.getItem("storage_user"));

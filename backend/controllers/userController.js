@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-//const { user } = require('../config/dbConfig');
+
 //const xss = require('xss');
 
 const db = require('../config/dbConfig');
@@ -17,8 +17,8 @@ exports.signup = (req, res, next) => {
         username: req.body.username,
         email: req.body.email,
         password: hash,
+        isAdmin: false
       })
-      user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch(error => res.status(400).json({ error }));
     })
@@ -42,6 +42,7 @@ exports.login = (req, res, next) => {
            res.status(200).json({
             userId: user.id,
             email: user.email,
+            isAdmin: user.isAdmin,
             token: jwt.sign(
               { userId: user.id },
               TOKEN,
@@ -59,7 +60,7 @@ exports.login = (req, res, next) => {
 exports.userProfile = (req, res, next) => {
   User.findOne({
     where: { id: req.params.id },
-    attributes: ['id','username', 'email', 'service', 'bio', 'face']
+    attributes: ['id', 'username', 'email', 'bio','isAdmin']
   })
   .then(user => res.status(200).json(user))
   .catch(error => res.status(400).json({ error : "Une erreur d'affichage du profil est survenue" }));  
@@ -70,19 +71,10 @@ exports.userProfile = (req, res, next) => {
 exports.modifyProfile = (req, res, next) => {
     User.findOne({ id: req.params.id })
       .then(() => {
-        //Ajout d'un avatar
-        const img = new img({
-          ...imgObject,
-          face: `${req.protocol}://${req.get('host')}/faces/${req.file.filename}`
-      });
-      img.save()
-          .then(() => res.status(200).json({ message: "L'avatar' a été enregistrée !" }))
-          .catch(error => res.status(400).json({ error }));
-        //Mise à jour du profil
         User.update({ userId: user.id })
           .then(() => res.status(200).json({ message: "Le profil a été modifié !" }))
-          .catch(error => res.status(400).json({ error: "Erreur dans la modification du profil" }));
-      });
+      })
+      .catch(error => res.status(400).json({ error: "Erreur dans la modification du profil" }));
 }
 
 //Suppression du profil utilisateur
@@ -91,6 +83,6 @@ exports.deleteProfile = (req, res, next) => {
     .then(() => {
       User.destroy({ id: req.params.id })
         .then(() => res.status(200).json({ message: "Le profil a bien été supprimé !" }))
-        .catch(error => res.status(400).json({ error : "Erreur dans la suppression du profil" }));
-    });
+    })
+    .catch(error => res.status(400).json({ error : "Erreur dans la suppression du profil" }));
 };

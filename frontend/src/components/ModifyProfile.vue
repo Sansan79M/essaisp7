@@ -14,21 +14,9 @@
                   <h1 class="text-center text-color">MODIFICATION DU PROFIL</h1>
                   <br />
                   <div class="form-group text-center">
-                    <label for="avatar" class="text-color">
-                      <img
-                        class="avatar img-fluid rounded-circle"
-                        src="../../../backend/faces/NY.jpeg"
-                        alt="Avatar de l'utilisateur"
-                      />
-                    </label>
-                    <input
-                      type="file"
-                      class="btn text-white btn-md button"
-                      name="avatar"
-                      id="avatar"
-                      accept=".png, .jpg, .jpeg"
-                      @change="downloadFile"
-                    />
+                    <input class="avatar text-white rounded-circle text-center"
+                    v-model="user.username"
+                    /> <!--<%= user.username[0..1].upcase %>-->                     
                   </div>
                   <br />
                   <div class="form-group text-left">
@@ -43,19 +31,6 @@
                       class="form-control"
                       v-model="user.username"
                       required="required"
-                    />
-                  </div>
-                  <div class="form-group text-left">
-                    <label for="service" class="text-color"
-                      >👔 Service de l'utilisateur :</label
-                    >
-                    <br />
-                    <input
-                      type="text"
-                      name="service"
-                      id="service"
-                      class="form-control"
-                      v-model="user.service"
                     />
                   </div>
                   <div class="form-group text-left">
@@ -103,16 +78,21 @@
                       type="submit"
                       name="submit"
                       class="btn text-white btn-md button"
-                      value="Mettre à jour"
+                      value="METTRE A JOUR"
+                      aria-label="lien pour modifier le profil"
                       @submit="modifyProfile"
                     />
-                    <input
-                      type="submit"
-                      name="delete"
-                      class="btn text-white btn-md button"
-                      value="Supprimer votre profil"
-                      @click="deleteProfile"
-                    />
+                  <router-link :to="'/posts/news'">
+                      <button
+                        type="submit"
+                        name="back"
+                        id="back"
+                        class="btn text-white btn-md button"
+                        aria-label="annulation retour aux news"
+                      >
+                        ANNULER
+                      </button>
+                    </router-link>
                   </div>
                 </form>
               </div>
@@ -137,17 +117,31 @@ export default {
         userId: "",
         face: "",
         username: "",
-        service: "",
         bio: "",
         email: "",
         password: "",
       },
     };
   },
-
+  mounted() {
+    this.userProfile();
+  },
   methods: {
-    downloadFile() {
-      
+     userProfile() { 
+      const storage = JSON.parse(localStorage.getItem("storage_user"));
+      //console.log(storage);
+      fetch("http://localhost:3000/api/user/profile/" + storage.userId)
+      .then((response) => {
+          response.json()
+          .then(user => {
+            this.user = user;
+            //console.log(user)
+          })
+          console.log(response + "Le lien vers le profil utilisateur s'affiche");
+        })
+        .catch((error) => {
+          console.log(error + "Le lien vers le profil utilisateur ne s'affiche pas");
+        });
     },
 
     modifyProfile(e) {
@@ -165,7 +159,7 @@ export default {
       fetch("http://localhost:3000/api/user/modify", myInit)
         .then((response) => {
           this.user = response.data.results;
-          this.$router.push({ path: "/user/profile/:userId" });
+          this.$router.push({ path: "/user/profile/" + storage.userId });
           console.log(response + "Le profil utilisateur a été modifié");
         })
         .catch((error) => {
@@ -173,29 +167,7 @@ export default {
         });
     },
 
-    deleteProfile(e) {
-      e.preventDefault();
-      if (
-        confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")
-      ) {
-        const headers = new Headers();
-        headers.append("content-type", "application/json");
-        const myInit = {
-          method: "DELETE",
-          headers: headers,
-          body: JSON.stringify(this.user),
-        };
-        console.log(JSON.parse(myInit.body));
-        fetch("http://localhost:3000/api/user/delete", myInit)
-          .then((success) => {
-            this.$router.push({ path: "/" });
-            console.log(success + "Le profil utilisateur a été supprimé");
-          })
-          .catch((error) => {
-            console.log(error + "Le profil utilisateur n'a pas a été supprimé");
-          });
-      }
-    },
+    
   },
 };
 </script>
@@ -211,9 +183,10 @@ h1 {
   font-size: 30px;
 }
 .avatar {
-  width: 100px;
-  height: 100px;
-  cursor: pointer;
+  width: 80px;
+  height: 80px;
+  background-color: #0b505b !important;
+  border: #0b505b !important;
 }
 #modify-profile
   .container
@@ -222,7 +195,7 @@ h1 {
   #modify-profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 800px;
+  height: 700px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -246,13 +219,10 @@ h1 {
 .text-color {
   color: #0b505b !important;
 }
-.button,
-#avatar {
+button, .button {
   background-color: #0b505b !important;
 }
-#avatar {
-  margin-left: 30px;
-}
+
 #modify-profile-box {
   box-shadow: 10px 10px 10px #b32204;
 }

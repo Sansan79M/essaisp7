@@ -65,11 +65,13 @@
                     >
                       <img
                         src="../assets/view-show.svg"
+                        alt="mot de passe visible"
                         class="eyes text-color"
                         v-show="show1"
                       />
                       <img
                         src="../assets/view-hide.svg"
+                        alt="mot de passe invisible"
                         class="eyes text-color"
                         v-show="!show1"
                       />
@@ -118,12 +120,14 @@
                       name="submit"
                       class="btn text-white btn-md"
                       value="S'enregistrer"
+                      aria-label="bouton pour confirmer l'inscription'"
                     >
                       S'enregistrer
                     </button>
                   </div>
                   <div id="register-link" class="text-right">
                     <router-link class="text-color" :to="'/user/login'"
+                    aria-label="Lien vers la page de connection"
                       >Se connecter</router-link
                     >
                   </div>
@@ -139,7 +143,6 @@
 
 <script>
 import HeaderNotConnected from "../components/HeaderNotConnected.vue";
-import User from '../models/userModel';
 
 export default {
   name: "signup",
@@ -147,12 +150,11 @@ export default {
 
   data() {
     return {
-       user: new User ('', '', '','', '', ''),
-      /*user: {
+      user: {
         username: "",
         email: "",
         password: "",
-      },*/
+      },
       passwordConfirm: "",
       show1: false,
       show2: false,

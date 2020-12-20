@@ -16,17 +16,9 @@
                   </h1>
                   <br />
                   <div class="text-center">
-                    <!--<a class="avatar avatar-xl rounded-circle bg-primary" size="5rem"-->
-                    <img
-                      class="avatar img-fluid rounded-circle"
-                      src="../../../backend/faces/NY.jpeg"
-                      alt="Avatar de l'utilisateur"
-                    />
-                    <!--{{user.face}}</a>-->
-                  </div>
-                  <br />
-                  <div class="text-left">
-                    <p class="text-color">👔 {{ user.service }}</p>
+                <input class="avatar text-white rounded-circle text-center"
+                    v-model="user.username"
+                    /> <!--<%= user.username[0..1].upcase %>-->  
                   </div>
                   <br />
                   <div class="text-left">
@@ -45,21 +37,19 @@
                         id="update"
                         class="btn text-white btn-md"
                         value="submit"
+                        aria-label="lien vers la modification de profil"
                       >
                         MODIFIER
                       </button>
                     </router-link>
-                    <router-link :to="'/posts/news'">
-                      <button
-                        type="submit"
-                        name="back-news"
-                        id="back-news"
-                        class="btn text-white btn-md"
-                        value="FIL D'ACTUALITE"
-                      >
-                        FIL D'ACTUALITE
-                      </button></router-link
-                    >
+                      <input
+                      type="submit"
+                      name="delete"
+                      class="btn text-white btn-md button"
+                      value="SUPPRIMER"
+                      aria-label="bouton de suppression de profil"
+                      @click="deleteProfile"
+                    />
                   </div>
                 </div>
               </div>
@@ -84,10 +74,8 @@ export default {
       user: {
         /*userId:"",
         username: "",
-        face:"",
-        service: "",
-        bio: "",
-        email: "",*/
+        email: "",
+        bio: ""*/
       },
     };
   },
@@ -113,6 +101,29 @@ export default {
           console.log(error + "Le profil utilisateur ne s'affiche pas");
         });
     },
+    deleteProfile(e) {
+      e.preventDefault();
+      if (
+        confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")
+      ) {
+        const headers = new Headers();
+        headers.append("content-type", "application/json");
+        const myInit = {
+          method: "DELETE",
+          headers: headers,
+          body: JSON.stringify(this.user),
+        };
+        console.log(JSON.parse(myInit.body));
+        fetch("http://localhost:3000/api/user/delete", myInit)
+          .then((success) => {
+            this.$router.push({ path: "/" });
+            console.log(success + "Le profil utilisateur a été supprimé");
+          })
+          .catch((error) => {
+            console.log(error + "Le profil utilisateur n'a pas a été supprimé");
+          });
+      }
+    },
   },
  
 }
@@ -129,13 +140,15 @@ h1 {
   font-size: 30px;
 }
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
+  background-color: #0b505b !important;
+  border: #0b505b !important;
 }
 #profile .container #profile-row #profile-column #profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 500px;
+  height: 400px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -159,7 +172,7 @@ h1 {
 .text-color {
   color: #0b505b !important;
 }
-button {
+button, .button {
   background-color: #0b505b !important;
 }
 #profile-box {

@@ -16,24 +16,21 @@
                   <div class="text-left">
                     <p class="text-color">
                       🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
-                    </p>
+                    </p> 
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">📝 {{ post.title }}</p>
+                    <p class="text-color">📧 {{ post.title }}</p>
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">⌨️ {{ post.description }}</p>
+                    <p class="text-color">📝 {{ post.description }}</p>
                   </div>
                   <br />
-                  <!-- <div class="justify-content-center">
-                    <img src="../../../backend/medias/NY.jpeg" width="400px" alt="Image déposée par le créateur du post" />
-                  </div>
-                  <br />-->
+
                   <br />
                   <div id="buttons">
-                    <router-link :to="'update'">
+                    <router-link :to="'/posts/update'">
                       <button
                         type="submit"
                         name="update"
@@ -41,6 +38,7 @@
                         class="btn text-white btn-md"
                         aria-label="Bouton de modification du message"
                         value="MODIFIER"
+                        
                       >
                         MODIFIER
                       </button>
@@ -56,41 +54,6 @@
                     >
                       SUPPRIMER
                     </button>
-                    <button
-                      type="button"
-                      class="btn btn-md"
-                      value="like"
-                      @click="show = !show"
-                      aria-label="Coeur pour liker"
-                    >
-                      <img
-                        src="../assets/heart-red.png"
-                        class="heart"
-                        v-show="show"
-                        alt="coeur rouge"
-                      />
-                      <img
-                        src="../assets/heart-white.png"
-                        class="heart"
-                        v-show="!show"
-                        alt="coeur blanc"
-                      />
-                    </button>
-                  </div>
-                  <br />
-                  <br />
-                  <div>
-                    <router-link :to="'/posts/news'">
-                      <button
-                        type="submit"
-                        name="back-news"
-                        class="btn text-white btn-md"
-                        value="back-back-news"
-                        aria-label="Lien vers le fil d'actualité"
-                      >
-                        FIL D'ACTUALITE
-                      </button></router-link
-                    >
                   </div>
                 </div>
               </div>
@@ -119,15 +82,15 @@ export default {
         createdAt: "",
         updatedAt: "",
         title: "",
-        description: "",
-        //media:"",
-        //likes:"",*/
+        description: ""*/
       },
-      show: false,
+      comments: [],
     };
   },
+ 
   mounted(){
         this.getOnePost();
+        this.getComments();
     },  
   methods: {
     getOnePost() {
@@ -145,6 +108,23 @@ export default {
           console.log(error + "Le message ne s'affiche pas");
         });
     },
+
+    getComments() {
+      const postId = this.$route.params.id
+      fetch("http://localhost:3000/api/comments/read/" + postId)
+        .then(response => {
+          response.json()
+          .then(comments => {
+            this.comments = comments
+            console.log(comments)
+          })
+           console.log(response + "Un message s'affiche");
+        })
+        .catch((error) => {
+          console.log(error + "Le message ne s'affiche pas");
+        });
+    },
+    
 
     //suppression du post
     deletePost(e) {
@@ -184,7 +164,7 @@ h1 {
 #post .container #post-row #post-column #post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 640px;
+  height: 440px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
