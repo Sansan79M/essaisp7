@@ -39,7 +39,7 @@
         <button
           type="button"
           class="mx-2 flex-items-center text-xs text-white bg-color border rounded border-color"
-          @click="deleteComment"
+          @click.prevent="deleteComment"
         >
           Supprimer
         </button>
@@ -79,8 +79,7 @@ export default {
       console.log("Updating");
       (this.comment.content = this.newContent), (this.edit = false);
     },
-    deleteComment(e) {
-      e.preventDefault();
+    deleteComment() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -89,13 +88,15 @@ export default {
         body: JSON.stringify(this.comment),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/comments/delete/:id", myInit)
+      const commentId = this.comment.id;
+      console.log(this.comment.id)
+      fetch("http://localhost:3000/api/comments/delete/" + commentId, myInit)
         .then((success) => {
-          //this.$router.push({ path: "/posts/post/" });
-          console.log(success + "Le message est supprimé");
+           window.location.reload(); 
+          console.log(success + "Le commentaire est supprimé");
         })
         .catch((error) => {
-          console.log(error + "Le message n'a pas été supprimé");
+          console.log(error + "Le commentaire n'a pas été supprimé");
         });
     },
   },

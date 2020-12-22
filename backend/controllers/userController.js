@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { user } = require('../config/dbConfig');
 
 //const xss = require('xss');
 
@@ -69,9 +70,9 @@ exports.userProfile = (req, res, next) => {
 
 //Modification du profil par l'utilisateur
 exports.modifyProfile = (req, res, next) => {
-    User.findOne({ id: req.params.id })
+    User.findOne({ where: {id: req.body.id} })
       .then(() => {
-        User.update({ userId: user.id })
+        User.update({ where: { id: req.body.id} })
           .then(() => res.status(200).json({ message: "Le profil a été modifié !" }))
       })
       .catch(error => res.status(400).json({ error: "Erreur dans la modification du profil" }));
@@ -79,9 +80,9 @@ exports.modifyProfile = (req, res, next) => {
 
 //Suppression du profil utilisateur
 exports.deleteProfile = (req, res, next) => {
-  User.findOne({ where: { id: userId } })
+  User.findOne({ where: {id: req.body.id} })
     .then(() => {
-      User.destroy({ where: { id: user.id } })
+      User.destroy({ where: { id: req.body.id} })
         .then(() => res.status(200).json({ message: "Le profil a bien été supprimé !" }))
     })
     .catch(error => res.status(400).json({ error : "Erreur dans la suppression du profil" }));

@@ -44,7 +44,7 @@
                       class="btn text-white btn-md"
                       value="SUPPRIMER"
                       aria-label="Bouton de suppression du message"
-                      @click="deletePost"
+                      @click.prevent="deletePost"
                     >SUPPRIMER
                     </button>                  
                   </div>
@@ -126,8 +126,7 @@ export default {
     },
 
     //Suppression du post----------------------------------------------
-    deletePost(e) {
-      e.preventDefault();
+    deletePost() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {

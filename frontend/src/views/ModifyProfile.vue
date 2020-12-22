@@ -90,7 +90,7 @@
                       class="btn text-white btn-md button"
                       value="ACTUALISER"
                       aria-label="lien pour modifier le profil"
-                      @submit="modifyProfile"
+                      @submit.prevent="modifyProfile"
                     />
                     <router-link :to="'/posts/news'">
                       <button
@@ -160,8 +160,7 @@ export default {
     },
 
     //Modification des données du profil
-    modifyProfile(e) {
-      e.preventDefault(e);
+    modifyProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       this.user.id = storage.userId;
       const headers = new Headers();
@@ -209,7 +208,7 @@ h1 {
   #modify-profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 720px;
+  height: 730px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

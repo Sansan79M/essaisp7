@@ -48,7 +48,7 @@
                       name="submit"
                       class="btn text-white btn-md button"
                       value="METTRE A JOUR"
-                      @submit="updatePost"
+                      @submit.prevent="updatePost"
                     />
                     <router-link :to="'/posts/news'">
                       <button
@@ -118,8 +118,7 @@ export default {
         });
     },
 
-      updatePost(e) {
-      e.preventDefault();
+      updatePost() {
       const storage = JSON.parse(localStorage.getItem("storage_post"));
       this.post.id = storage.postId;
       const headers = new Headers();

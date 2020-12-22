@@ -1,5 +1,6 @@
 const db = require('../config/dbConfig');
 const Post = db.post;
+const Comment = db.comment;
 
 //Créer un nouveau message 
 exports.createPost = (req, res, next) => {
@@ -38,23 +39,19 @@ exports.listPosts = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
     Post.findOne({ id: req.params.id })
         .then((post) => {
-                post.updateOne({ id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Le message a été modifiée !' }))
-                    .catch(error => res.status(400).json({ error }));
+            post.updateOne({ id: req.params.id })
+                .then(() => res.status(200).json({ message: 'Le message a été modifiée !' }))
+                .catch(error => res.status(400).json({ error }));
         });
 }
 
 //Supprimer un message
 exports.deletePost = (req, res, next) => {
-    Post.findOne({
-        where: { id: req.params.id }
-    })
-    console.log(req.params.id, '§§§§§§§§§§§§§§§§§§')
+    Post.findOne({ where: { id: req.body.id } })
         .then((post) => {
-                    post.destroy({ where: {id: req.params.id}})
-                        .then(() => res.status(200).json({ message: 'Le message a été supprimée !' }))
-                        .catch(error => res.status(400).json({ error }));
+            post.destroy({ where: { id: req.body.id } })
+                .then(() => res.status(200).json({ message: 'Le message a été supprimée !' }))
+                .catch(error => res.status(400).json({ error: "Une erreur est survenue das la suppression de message" }));
         });
 };
-
 

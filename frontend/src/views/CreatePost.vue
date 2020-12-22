@@ -10,7 +10,7 @@
           <div id="create-post-row" class="row justify-content-center">
             <div id="create-post-column" class="col-md-6">
               <div id="create-post-box" class="col-md-12">
-                <form id="create-post-form" class="form" @submit="createPost">
+                <form id="create-post-form" class="form" @submit.prevent="createPost">
                   <h1 class="text-center text-color">CREATION D'UN MESSAGE</h1>
                   <br />
                   <div class="form-group text-left">
@@ -79,8 +79,7 @@ export default {
   },
 
   methods: {
-    createPost(e) {
-      e.preventDefault();
+    createPost() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       this.post.userId = storage.userId;
       const headers = new Headers();

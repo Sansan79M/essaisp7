@@ -10,7 +10,7 @@
           <div id="login-row" class="row justify-content-center">
             <div id="login-column" class="col-md-6">
               <div id="login-box" class="col-md-12">
-                <form id="login-form" class="form" @submit="login">
+                <form id="login-form" class="form" @submit.prevent="login">
                   <h1 class="text-center text-color">CONNEXION</h1>
                   <br />
                   <div class="form-group text-left">
@@ -94,8 +94,7 @@ export default {
   },
  
   methods: {
-    login(e) {
-        e.preventDefault();
+    login() {
         const headers = new Headers();
         headers.append("content-type", "application/json");
         const myInit = {

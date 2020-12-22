@@ -10,7 +10,7 @@
           <div id="signup-row" class="row justify-content-center">
             <div id="signup-column" class="col-md-6">
               <div id="signup-box" class="col-md-12">
-                <form id="signup-form" class="form" @submit="signup">
+                <form id="signup-form" class="form" @submit.prevent="signup">
                   <h1 class="text-center text-color">INSCRIPTION</h1>
                   <br />
                   <div class="form-group text-left">
@@ -160,9 +160,8 @@ export default {
   },
 
   methods: {
-    signup(e) {
+    signup() {
       if (this.user.password === this.passwordConfirm) {
-        e.preventDefault();
         const headers = new Headers();
         headers.append("content-type", "application/json");
         const myInit = {

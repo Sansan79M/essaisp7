@@ -24,7 +24,7 @@ exports.readOneComment = (req, res, next) => {
 
 //Affiche la liste des commentaires
 exports.readAllComment = (req, res, next) => {
-    const User = db.User;
+    //const User = db.User;
     Comment.findAll({
         where: { postId: req.params.postId },
         //include: [User],
@@ -47,12 +47,12 @@ exports.updateComment = (req, res, next) => {
 
 //Supprimer un commentaire
 exports.deleteComment = (req, res, next) => {
-    Comment.find({where: {id: req.params.id}})
-        .then(async (comment) => {
-            const destroyed = await comment.destroy()
-            return res.status(200).json({ message: "Le commentaire est supprimé" })
-        })
-        .catch(error => res.status(400).json({ error }));
+    Comment.findOne({where: { id: req.params.id }})
+        .then((comment) => {
+                    comment.destroy({ where: {id: req.params.id }})
+                        .then(() => res.status(200).json({ message: 'La suppression du commentaire fonctionne' }))
+                        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la suppression du commentaire" }));
+        });
 };
 
 

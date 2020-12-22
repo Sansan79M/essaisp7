@@ -53,7 +53,7 @@
                       class="btn text-white btn-md button"
                       value="SUPPRIMER"
                       aria-label="bouton de suppression de profil"
-                      @click="deleteProfile"
+                      @click.prevent="deleteProfile"
                     />
                   </div>
                 </div>
@@ -104,8 +104,7 @@ export default {
           console.log(error + "Le profil utilisateur ne s'affiche pas");
         });
     },
-    deleteProfile(e) {
-      e.preventDefault();
+    deleteProfile() {
       if (
         confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")
       ) {
