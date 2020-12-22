@@ -1,5 +1,5 @@
 /*module.exports = (sequelize, Sequelize) => {
-  const Role = sequelize.define("roles", {
+  const Admin = sequelize.define("roles", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true

@@ -1,6 +1,5 @@
 const db = require('../config/dbConfig');
 const Post = db.post;
-const Comment = db.comment;
 
 //Créer un nouveau message 
 exports.createPost = (req, res, next) => {

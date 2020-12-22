@@ -10,7 +10,11 @@
           <div id="update-post-row" class="row justify-content-center">
             <div id="update-post-column" class="col-md-6">
               <div id="update-post-box" class="col-md-12">
-                <form id="update-post-form" class="form" @submit="updatePost">
+                <form
+                  id="update-post-form"
+                  class="form"
+                  @submit.prevent="updatePost"
+                >
                   <h1 class="text-center text-color">
                     MODIFICATION DU MESSAGE
                   </h1>
@@ -40,7 +44,7 @@
                       v-model="newDescription"
                     ></textarea>
                   </div>
-                 
+
                   <br />
                   <div id="buttons" class="form-group text-right">
                     <input
@@ -48,7 +52,6 @@
                       name="submit"
                       class="btn text-white btn-md button"
                       value="METTRE A JOUR"
-                      @submit.prevent="updatePost"
                     />
                     <router-link :to="'/posts/news'">
                       <button
@@ -73,7 +76,7 @@
 </template>
 
 <script>
-import HeaderConnected from "../components/HeaderConnected"
+import HeaderConnected from "../components/HeaderConnected";
 
 export default {
   name: "update",
@@ -82,43 +85,38 @@ export default {
   data() {
     return {
       post: {
-        id: '',
-        userId: '',
-        username: '',
-        updatedAt: '',
-        title: '',
-        description: '',
+        id: "",
+        userId: "",
+        username: "",
+        updatedAt: "",
+        title: "",
+        description: "",
       },
-      
-      edit: false,
       newTitle: this.post.title,
       newDescription: this.post.description,
-
-  
     };
   },
-  mounted(){
-        this.getOnePost();
-    }, 
+  mounted() {
+    this.getOnePost();
+  },
   methods: {
-       
-       getOnePost() {
-      const postId = this.$route.params.id
+    //Affiche un message--------------------------------------------
+    getOnePost() {
+      const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/post/" + postId)
-        .then(response => {
-          response.json()
-          .then(post => {
-            this.post = post
-            console.log(post)
-          })
-           console.log(response + "Un message s'affiche");
+        .then((response) => {
+          response.json().then((post) => {
+            this.post = post;
+            console.log(post);
+          });
+          console.log(response + "Un message s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le message ne s'affiche pas");
         });
     },
-
-      updatePost() {
+    //Modifier un message--------------------------------------------
+    updatePost() {
       const storage = JSON.parse(localStorage.getItem("storage_post"));
       this.post.id = storage.postId;
       const headers = new Headers();
@@ -130,21 +128,17 @@ export default {
       };
       console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/posts/update", myInit)
-        .then(response => {
+        .then((response) => {
           this.post = response.data.results;
-          this.post.title = this.newtitle
-          this.post.description = this.newDescription, 
-          this.edit = false;
-
-          this.$router.push({ path: "/posts/post/:id" + storage.postId});
+          this.post.title = this.newtitle;
+          this.post.description = this.newDescription;
+          this.$router.push({ path: "/posts/post/:id" + storage.postId });
           console.log(response + "Le message a été modifié");
         })
         .catch((error) => {
           console.log(error + "Le message n'a pas été modifié");
         });
     },
-
-    
   },
 };
 </script>

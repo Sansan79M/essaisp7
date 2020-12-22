@@ -87,7 +87,7 @@ export default {
     return {
       user: {
       },
-      isAdmin: false,
+      isAdmin: true,
     };
   },
     mounted() {
