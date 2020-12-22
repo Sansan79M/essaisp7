@@ -79,9 +79,9 @@ exports.modifyProfile = (req, res, next) => {
 
 //Suppression du profil utilisateur
 exports.deleteProfile = (req, res, next) => {
-  User.findOne({ id: req.params.id })
+  User.findOne({ where: { id: userId } })
     .then(() => {
-      User.destroy({ id: req.params.id })
+      User.destroy({ where: { id: user.id } })
         .then(() => res.status(200).json({ message: "Le profil a bien été supprimé !" }))
     })
     .catch(error => res.status(400).json({ error : "Erreur dans la suppression du profil" }));
