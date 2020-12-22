@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import HeaderConnected from "./HeaderConnected.vue";
+import HeaderConnected from "../components/HeaderConnected"
 
 export default {
   name: "create",

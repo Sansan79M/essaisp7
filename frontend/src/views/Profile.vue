@@ -16,13 +16,18 @@
                   </h1>
                   <br />
                   <div class="text-center">
-                <input class="avatar text-white rounded-circle text-center"
-                    v-model="user.username"
-                    /> <!--<%= user.username[0..1].upcase %>-->  
+                    <label id="label-avatar" for="avatar">Avatar</label>
+                    <input
+                      id="avatar"
+                      name="avatar"
+                      class="avatar text-white rounded-circle text-center"
+                      v-model="user.username"
+                    />
+                    <!--<%= user.username[0..1].upcase %>-->
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">⌨️ {{ user.bio }}</p>
+                    <p class="text-color">✏️ {{ user.bio }}</p>
                   </div>
                   <br />
                   <div class="text-left">
@@ -42,7 +47,7 @@
                         MODIFIER
                       </button>
                     </router-link>
-                      <input
+                    <input
                       type="submit"
                       name="delete"
                       class="btn text-white btn-md button"
@@ -64,7 +69,6 @@
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
 
-
 export default {
   name: "profile",
   components: { HeaderConnected },
@@ -85,16 +89,15 @@ export default {
   },
 
   methods: {
-    userProfile() { 
+    userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       console.log(storage);
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
-          response.json()
-          .then(user => {
+          response.json().then((user) => {
             this.user = user;
-            console.log(user)
-          })
+            console.log(user);
+          });
           console.log(response + "Le profil utilisateur s'affiche");
         })
         .catch((error) => {
@@ -125,8 +128,7 @@ export default {
       }
     },
   },
- 
-}
+};
 </script>
 
 <style scoped>
@@ -148,7 +150,7 @@ h1 {
 #profile .container #profile-row #profile-column #profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 400px;
+  height: 410px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -172,7 +174,8 @@ h1 {
 .text-color {
   color: #0b505b !important;
 }
-button, .button {
+button,
+.button {
   background-color: #0b505b !important;
 }
 #profile-box {
@@ -188,5 +191,8 @@ button, .button {
 #buttons {
   display: flex;
   justify-content: space-between;
+}
+#label-avatar {
+  display: none;
 }
 </style>

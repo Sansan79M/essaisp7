@@ -26,7 +26,7 @@
                 <router-link
                   :to="'create'"
                   aria-label="Lien vers la page de création de message"
-                  class="effect-blue"
+                  class="link effect-blue"
                 >
                   <h2 class="text-color text-center effect-blue">
                     💬 CREER UN MESSAGE
@@ -38,15 +38,16 @@
               <div>
                 <ul id="news-list">
                   <li
-                    class="card effect-shadow"
+                    class="card effect-shadow mb-2"
                     v-for="post in posts"
                     :key="post.id"
                   >
                     <router-link
+                    class="link"
                       :to="{ name: 'post', params: { id: post.id } }"
                       aria-label="Lien vers le message"
                     >
-                      <div class="card effect-bg text-color">
+                      <div  class="card effect-bg text-color">
                         🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
                         <br />
                         📧 {{ post.title }}
@@ -54,6 +55,9 @@
                         📝 {{ post.description }}
                       </div>
                     </router-link>
+                    <div>
+                    
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -125,7 +129,6 @@ h2:hover {
   background-color: rgb(252, 252, 111);
 }
 .effect-blue:hover {
-  text-decoration: none;
   background-color: #0b505b !important;
   color: white;
 }
@@ -165,8 +168,12 @@ button {
 li {
   list-style-type: none;
 }
+.link{
+  text-decoration: none;
+}
 #news-list {
   padding-left: 0;
   margin-left: 0;
+
 }
 </style>

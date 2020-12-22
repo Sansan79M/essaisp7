@@ -1,61 +1,47 @@
 <template>
   <div>
-    <div class="border rounded border-color px-3 pt-3 pb-2" max-width="600">
-      <div class="mb-2">
-        <p class="text-sm text-grey-dark mb-2 text-color">
-          🧍 Nom du user{{ comment.userId }} - ⌚ le (date de publication){{
-            comment.createdAt
-          }}
+    <div id="comment-box" class="col-md-12">
+      <div id="comment-displayed">
+        <p class="mb-2 text-color">
+          🧍 Nom du user :{{ comment.username }} - ⌚ {{ comment.createdAt }}
         </p>
         <p v-if="edit" class="flex">
           <textarea
-            class="w-full border rounded border-color p-3 text-color"
-            v-model="comment.content"
+            class="border rounded border-color p-3 text-color"
+            v-model="newContent"
           ></textarea>
         </p>
-        <p v-else class="text-color">
-   
-          ⌨️ {{ comment.content}}
-        </p>
-      </div>
-
-      <p v-if="edit" class="flex">
+        <p v-else class="text-color">📝 {{ comment.content }}</p>
+       <p v-if="edit" class="flex">
         <button
           type="button"
-          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color border rounded border-color"
-          @click="cancel()"
+          class="flex-items-center text-xs text-white bg-color border rounded border-color"
+          @click="cancelComment()"
         >
-          ❌ Annuler
+          Annuler
         </button>
         <button
           type="button"
-          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color border rounded border-color"
-          @click="update()"
+          class="mx-2 flex-items-center text-xs text-white bg-color border rounded border-color"
+          @click="updateComment()"
         >
-          💾 Sauvegarder
+          Sauvegarder
         </button>
       </p>
-      <p v-else class="flex -mx-2">
+      <p v-else-if="author" class="flex -mx-2">
         <button
           type="button"
-          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color border rounded border-color"
-          @click="$emit('respond-to', comment)"
-        >
-          ↩️ Répondre
-        </button>
-        <button
-          type="button"
-          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color border rounded border-color"
+          class="flex-items-center text-xs text-white bg-color border rounded border-color"
           @click="edit = true"
         >
-          ✏️ Modifier
+          Modifier
         </button>
         <button
           type="button"
-          class="mx-2 flex-items-center text-xs text-white font-semibold bg-color border rounded border-color"
-          @click="deletePost"
+          class="mx-2 flex-items-center text-xs text-white bg-color border rounded border-color"
+          @click="deleteComment"
         >
-          ❌ Supprimer
+          Supprimer
         </button>
       </p>
     </div>
@@ -68,6 +54,7 @@
         @respond-to="$emit('respondTo', $event)"
       ></comment>
     </div>
+    </div>
   </div>
 </template>
 
@@ -78,32 +65,85 @@ export default {
   data() {
     return {
       //comments:[],
-     edit: false,
-      //newDescription: this.comment.description,
+      edit: false,
+      newContent: this.comment.content,
+      author: true,
     };
   },
-  
-  methods: {  
-    cancel() {
-      (this.edit = false), (this.newDescription = this.comment.description);
+
+  methods: {
+    cancelComment() {
+      (this.edit = false), (this.newContent = this.comment.content);
     },
-    update() {
+    updateComment() {
       console.log("Updating");
-      (this.comment.description = this.newDescription), (this.edit = false);
+      (this.comment.content = this.newContent), (this.edit = false);
     },
-    deletePost() {},
+    deleteComment(e) {
+      e.preventDefault();
+      const headers = new Headers();
+      headers.append("content-type", "application/json");
+      const myInit = {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(this.comment),
+      };
+      console.log(JSON.parse(myInit.body));
+      fetch("http://localhost:3000/api/comments/delete/:id", myInit)
+        .then((success) => {
+          //this.$router.push({ path: "/posts/post/" });
+          console.log(success + "Le message est supprimé");
+        })
+        .catch((error) => {
+          console.log(error + "Le message n'a pas été supprimé");
+        });
+    },
   },
 };
 </script>
 
 <style scoped>
+#comment-box {
+  margin-top: 30px;
+  max-width: 600px;
+  height: 220px;
+  border: 1px solid #0b505b;
+  background-color: rgb(252, 252, 111);
+}
+#comment-box #comment-displayed {
+  padding: 20px;
+}
+
+#comment-box #comment-displayed #register-link {
+  margin-top: -85px;
+}
+.text-color {
+  color: #0b505b !important;
+}
+button {
+  background-color: #0b505b !important;
+}
+#comment-box {
+  box-shadow: 10px 10px 10px #b32204;
+}
+#comment-box:hover {
+  box-shadow: 5px 5px 5px #b32204;
+  transition: transform 5s;
+}
+#buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .bg-color {
   background-color: #0b505b;
 }
-.text-color {
-  color: #0b505b;
-}
 .border-color {
   border: 1px solid #0b505b;
+}
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 </style>

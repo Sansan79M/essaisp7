@@ -8,49 +8,47 @@
       <div id="trafic" class="container">
         <div class="row-column justify-content-center text-center text-color">
           <h1 class="font-weight-bold">TRAFIC GSN - GROUPOMANIA</h1>
-
           <div id="dashboards">
             <div>
-                <h2>
-                  MESSAGES
-                </h2>
+              <h2>MESSAGES</h2>
               <table class="table">
-                
-                <thead>
                 <tr>
-                  <th>Utilisateur</th>
-                  <th>Titre</th>
-                  <th>Création</th>
-                  <th>Modification</th>
+                  <th>Utilisateurs</th>
+                  <th>Titres</th>
+                  <th>Créations</th>
+                  <th>Modifications</th>
+                  <th>Alertes</th>
+                  <th>Suppressions</th>
                 </tr>
-                 </thead>
-                <tbody>
                 <tr>
                   <td>Machin</td>
                   <td>Hello</td>
                   <td>19/12/2020 18:00</td>
                   <td>19/12/2020 18:20</td>
+                  <td><input type="checkbox" /></td>
+                  <td><button>🗑️</button></td>
                 </tr>
-                </tbody>
               </table>
             </div>
+            <br />
             <div>
-                 <h2>
-                  COMMENTAIRES
-                </h2>
+              <h2>COMMENTAIRES</h2>
               <table class="table">
-               
                 <tr>
-                  <th>Utilisateur</th>
-                  <th>Titre</th>
-                  <th>Création</th>
-                  <th>Modification</th>
+                  <th>Utilisateurs</th>
+                  <th>Titres</th>
+                  <th>Créations</th>
+                  <th>Modifications</th>
+                  <th>Alertes</th>
+                  <th>Suppressions</th>
                 </tr>
                 <tr>
                   <td>Truc</td>
                   <td>Salut</td>
                   <td>19/12/2020 18:00</td>
                   <td></td>
+                  <td><input type="checkbox" /></td>
+                  <td><button>🗑️</button></td>
                 </tr>
               </table>
             </div>
@@ -71,12 +69,12 @@ export default {
 </script>
 
 <style scoped>
-h1{
+h1 {
   font-size: 30px;
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
-h2{
-   font-size: 25px;
+h2 {
+  font-size: 25px;
 }
 main {
   margin: 0;
@@ -86,7 +84,6 @@ main {
 }
 #trafic {
   padding-top: 30px;
-
 }
 .text-color {
   color: #0b505b !important;
@@ -94,13 +91,11 @@ main {
 .font-weight-bold {
   font-size: 25px;
 }
-table, tr, th, td  {
+table,
+tr,
+th,
+td, button {
   border: 1px solid #0b505b;
   background-color: white;
-}
-#dashboards {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 </style>

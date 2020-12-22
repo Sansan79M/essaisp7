@@ -8,7 +8,7 @@ exports.createPost = (req, res, next) => {
         title: req.body.title,
         description: req.body.description,
     })
-        .then(() => {res.status(200).json({ success: "Le message a été enregistré" })})
+        .then(success => res.status(200).json({ success: "Le message a été enregistré" }))
         .catch(error => res.status(401).json({ error: "Le message n'a pas été enregistré" }));
 };
 
@@ -26,6 +26,7 @@ exports.getOnePost = (req, res, next) => {
 //Affiche le fil d'actualité
 exports.listPosts = (req, res, next) => {
     Post.findAll({
+        order: [['createdAt', 'DESC']],
         attributes: ['id', 'userId', 'title', 'description', 'createdAt', 'updatedAt']
     })
         .then(posts => res.status(200).json(posts))
@@ -45,9 +46,12 @@ exports.updatePost = (req, res, next) => {
 
 //Supprimer un message
 exports.deletePost = (req, res, next) => {
-    Post.findOne({ id: req.params.id })
+    Post.findOne({
+        where: { id: req.params.id }
+    })
+    console.log(req.params.id, '§§§§§§§§§§§§§§§§§§')
         .then((post) => {
-                    post.deleteOne({ id: req.params.id })
+                    post.destroy({ where: {id: req.params.id}})
                         .then(() => res.status(200).json({ message: 'Le message a été supprimée !' }))
                         .catch(error => res.status(400).json({ error }));
         });

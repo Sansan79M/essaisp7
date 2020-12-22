@@ -60,7 +60,7 @@
                     />
                     <button
                       type="button"
-                      class="text-color"
+                      class="bg-transparent rounded"
                       @click="show1 = !show1"
                     >
                       <img
@@ -75,7 +75,6 @@
                         class="eyes text-color"
                         v-show="!show1"
                       />
-                      Affichage du mot de passe
                     </button>
                   </div>
                   <div class="form-group text-left">
@@ -95,7 +94,7 @@
                     />
                     <button
                       type="button"
-                      class="text-color"
+                      class="bg-transparent rounded"
                       @click="show2 = !show2"
                     >
                       <img
@@ -110,7 +109,6 @@
                         class="eyes text-color"
                         v-show="!show2"
                       />
-                      Affichage du mot de passe
                     </button>
                   </div>
                   <div class="form-group text-left">
@@ -202,7 +200,7 @@ main {
 #signup .container #signup-row #signup-column #signup-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 590px;
+  height: 600px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

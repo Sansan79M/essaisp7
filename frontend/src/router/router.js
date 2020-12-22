@@ -8,15 +8,13 @@ import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
-import ModifyProfile from '../components/ModifyProfile.vue'
+import ModifyProfile from '../views/ModifyProfile.vue'
 
 //Importation des différentes pages concernant les posts
 import News from '../views/News.vue'
-import CreatePost from '../components/CreatePost.vue'
+import CreatePost from '../views/CreatePost.vue'
 import Post from '../views/Post.vue'
-import UpdatePost from '../components/UpdatePost.vue'
-
-import Comments from '../views/Comments.vue'
+import UpdatePost from '../views/UpdatePost.vue'
 
 //Importation du trafic
 import Trafic from '../views/Trafic.vue'
@@ -38,8 +36,7 @@ const router = new VueRouter({
       {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message Groupomania"}},
       {path: "/posts/update", component: UpdatePost, name: 'update', meta: {title:"Modification du message Groupomania"}},
      
-      {path: "/posts/comments/:postId", component: Comments, name: 'comments',meta: {title:"Commentaires"}},
-  
+      //Chemin et titre du tableau de bord de l'administrateur
       {path: "/trafic", component: Trafic, name: 'trafic',meta: {title:"Trafic GSN"}},
     ]
     

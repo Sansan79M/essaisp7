@@ -42,10 +42,9 @@
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
-                    <button type="button" class="text-color" @click="show = !show">
+                    <button type="button" class="bg-transparent rounded" @click="show = !show">
                     <img src="../assets/view-show.svg" alt="mot de passe visible" class="eyes text-color" v-show="show">
                     <img src="../assets/view-hide.svg" alt="mot de passe invisible" class="eyes text-color" v-show="!show">
-                    Affichage du mot de passe
                     </button>
                   </div>
                   <div class="form-group text-left">

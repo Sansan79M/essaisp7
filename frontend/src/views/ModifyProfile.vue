@@ -14,9 +14,14 @@
                   <h1 class="text-center text-color">MODIFICATION DU PROFIL</h1>
                   <br />
                   <div class="form-group text-center">
-                    <input class="avatar text-white rounded-circle text-center"
-                    v-model="user.username"
-                    /> <!--<%= user.username[0..1].upcase %>-->                     
+                    <label id="label-avatar" for="avatar">Avatar</label>
+                    <input
+                      id="avatar"
+                      name="avatar"
+                      class="avatar text-white rounded-circle text-center"
+                      v-model="user.username"
+                    />
+                    <!--<%= user.username[0..1].upcase %>-->
                   </div>
                   <br />
                   <div class="form-group text-left">
@@ -34,7 +39,7 @@
                     />
                   </div>
                   <div class="form-group text-left">
-                    <label for="bio" class="text-color">⌨️ Biographie :</label
+                    <label for="bio" class="text-color">✏️ Biographie :</label
                     ><br />
                     <textarea
                       type="input"
@@ -48,6 +53,7 @@
                     <label for="email" class="text-color">📧 Email :</label>
                     <br />
                     <input
+                    
                       type="email"
                       name="email"
                       id="email"
@@ -63,7 +69,7 @@
                     >
                     <br />
                     <input
-                      type="password"
+                      :type="show ? 'text': 'password'"
                       name="password"
                       id="password"
                       class="form-control"
@@ -71,6 +77,10 @@
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
+                     <button type="button" class="bg-transparent rounded" @click="show = !show">
+                    <img src="../assets/view-show.svg" alt="mot de passe visible" class="eyes text-color" v-show="show">
+                    <img src="../assets/view-hide.svg" alt="mot de passe invisible" class="eyes text-color" v-show="!show">
+                    </button>
                   </div>
                   <br />
                   <div id="buttons">
@@ -78,11 +88,11 @@
                       type="submit"
                       name="submit"
                       class="btn text-white btn-md button"
-                      value="METTRE A JOUR"
+                      value="ACTUALISER"
                       aria-label="lien pour modifier le profil"
                       @submit="modifyProfile"
                     />
-                  <router-link :to="'/posts/news'">
+                    <router-link :to="'/posts/news'">
                       <button
                         type="submit"
                         name="back"
@@ -105,7 +115,7 @@
 </template>
 
 <script>
-import HeaderConnected from "./HeaderConnected.vue";
+import HeaderConnected from "../components/HeaderConnected";
 
 export default {
   name: "modify",
@@ -121,29 +131,35 @@ export default {
         email: "",
         password: "",
       },
+      show: false
     };
   },
   mounted() {
     this.userProfile();
   },
   methods: {
-     userProfile() { 
+    //Affichage des données du profil
+    userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       //console.log(storage);
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
-      .then((response) => {
-          response.json()
-          .then(user => {
+        .then((response) => {
+          response.json().then((user) => {
             this.user = user;
             //console.log(user)
-          })
-          console.log(response + "Le lien vers le profil utilisateur s'affiche");
+          });
+          console.log(
+            response + "Le lien vers le profil utilisateur s'affiche"
+          );
         })
         .catch((error) => {
-          console.log(error + "Le lien vers le profil utilisateur ne s'affiche pas");
+          console.log(
+            error + "Le lien vers le profil utilisateur ne s'affiche pas"
+          );
         });
     },
 
+    //Modification des données du profil
     modifyProfile(e) {
       e.preventDefault(e);
       const storage = JSON.parse(localStorage.getItem("storage_user"));
@@ -166,8 +182,6 @@ export default {
           console.log(error + "Le profil utilisateur n'a pas a été modifié");
         });
     },
-
-    
   },
 };
 </script>
@@ -195,7 +209,7 @@ h1 {
   #modify-profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 700px;
+  height: 720px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -219,7 +233,8 @@ h1 {
 .text-color {
   color: #0b505b !important;
 }
-button, .button {
+
+.button {
   background-color: #0b505b !important;
 }
 
@@ -236,5 +251,11 @@ input[type="file"] {
 #buttons {
   display: flex;
   justify-content: space-between;
+}
+#label-avatar {
+  display: none;
+}
+.eyes{
+  width : 20px;
 }
 </style>

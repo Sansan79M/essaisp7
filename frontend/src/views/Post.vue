@@ -8,7 +8,7 @@
       <div id="post">
         <div class="container">
           <div id="post-row" class="row justify-content-center">
-            <div id="post-column" class="col-md-6">
+            <div id="post-column" class="col-md-8">
               <div id="post-box" class="col-md-12">
                 <div id="post-displayed">
                   <h1 class="text-center text-color">MESSAGE</h1>
@@ -16,20 +16,15 @@
                   <div class="text-left">
                     <p class="text-color">
                       🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
-                    </p> 
+                    </p>
                   </div>
-                  <br />
                   <div class="text-left">
                     <p class="text-color">📧 {{ post.title }}</p>
                   </div>
-                  <br />
                   <div class="text-left">
                     <p class="text-color">📝 {{ post.description }}</p>
                   </div>
-                  <br />
-
-                  <br />
-                  <div id="buttons">
+                  <div v-if="author" class="buttons">
                     <router-link :to="'/posts/update'">
                       <button
                         type="submit"
@@ -50,13 +45,27 @@
                       value="SUPPRIMER"
                       aria-label="Bouton de suppression du message"
                       @click="deletePost"
-                    >
-                      SUPPRIMER
-                    </button>
+                    >SUPPRIMER
+                    </button>                  
                   </div>
-                  <br>
-                 <router-link :to="{ name: 'comments', params: {postId: post.id } }">commentaires</router-link>
-
+                </div>
+              </div>
+              <div>
+                <div>
+                  <comment-form
+                    :respond-to="respondTo"
+                    :post-id="post.id"
+                    @newComment="newComment"
+                    @cancel-respond-to="respondTo = null"
+                  ></comment-form>
+                </div>
+                <div>
+                  <comment
+                    v-for="comment in comments"
+                    :key="comment.id"
+                    :comment="comment"
+                    @respond-to="respondTo = $event"
+                  ></comment>
                 </div>
               </div>
             </div>
@@ -69,10 +78,12 @@
 
 
 <script>
-import HeaderConnected from '../components/HeaderConnected.vue';
+import HeaderConnected from "../components/HeaderConnected.vue";
+import CommentForm from "../components/CommentForm";
+import Comment from "../components/Comment";
 
 export default {
-  components: { HeaderConnected },
+  components: { HeaderConnected, CommentForm, Comment },
   name: "post",
 
   data() {
@@ -87,33 +98,34 @@ export default {
         description: ""*/
       },
       comments: [],
+      author: true,
+      reader: true,
+      respondTo: null,
     };
   },
- 
-  mounted(){
-        this.getOnePost();
-      
-    },  
+
+  mounted() {
+    this.getOnePost();
+    this.getComments();
+  },
   methods: {
+    //Affichage du post---------------------------------------------
     getOnePost() {
-      const postId = this.$route.params.id
+      const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/post/" + postId)
-        .then(response => {
-          response.json()
-          .then(post => {
-            this.post = post
-            console.log(post)
-          })
-           console.log(response + "Un message s'affiche");
+        .then((response) => {
+          response.json().then((post) => {
+            this.post = post;
+            console.log(post);
+          });
+          console.log(response + "Un message s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le message ne s'affiche pas");
         });
     },
 
-    
-
-    //suppression du post
+    //Suppression du post----------------------------------------------
     deletePost(e) {
       e.preventDefault();
       const headers = new Headers();
@@ -124,8 +136,9 @@ export default {
         body: JSON.stringify(this.post),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/delete", myInit)
-        .then(success => {
+      const postId = this.$route.params.id;
+      fetch("http://localhost:3000/api/posts/delete/"+ postId, myInit)
+        .then((success) => {
           this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
         })
@@ -134,6 +147,33 @@ export default {
         });
     },
 
+    //Affichage des commentaires---------------------------------------
+    getComments() {
+      const postId = this.$route.params.id
+      fetch("http://localhost:3000/api/comments/read/" + postId)
+        .then(response => {
+          response.json()
+          .then(comments => {
+            this.comments = comments
+            console.log(comments)
+          })
+           console.log(response + "Un message s'affiche");
+        })
+        .catch((error) => {
+          console.log(error + "Le message ne s'affiche pas");
+        });
+    },
+
+    //Nouveau commentaire----------------------------------------------
+    newComment(comment) {
+      if (!this.respondTo) {
+        this.comments.push(comment);
+        return;
+      }
+      this.respondTo.children.push(comment);
+    },
+
+    
   },
 };
 </script>
@@ -142,8 +182,8 @@ export default {
 main {
   margin: 0;
   padding: 0;
-  background-color: rgba(252, 94, 59, 0.8) !important; 
-  height: 130vh;
+  background-color: rgba(252, 94, 59, 0.8) !important;
+  height: 500vh;
 }
 h1 {
   font-size: 30px;
@@ -151,7 +191,7 @@ h1 {
 #post .container #post-row #post-column #post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 440px;
+  height: 310px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -172,6 +212,7 @@ h1 {
 }
 button {
   background-color: #0b505b !important;
+  border: 1px solid #0b505b;
 }
 #post-box {
   box-shadow: 10px 10px 10px #b32204;
@@ -180,21 +221,8 @@ button {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
 }
-#delete,
-#like {
-  margin-left: 20px;
-}
-.icon {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  font-size: 1.6rem;
-  color: #626262;
-}
-#buttons {
+.buttons {
   display: flex;
   justify-content: space-between;
-}
-.heart {
-  width: 20px;
 }
 </style>
