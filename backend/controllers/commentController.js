@@ -55,4 +55,24 @@ exports.deleteComment = (req, res, next) => {
         });
 };
 
+//Supprimer tous les commentaires
+/*exports.deleteAllComments = (req, res, next) => {
+    console.log("log 2222222 : ", req.body);//id28 - id27
+    Comment.findAll({where: { postId: req.params.postId }})
+        .then((comment) => {
+                    comment.destroy({ truncate: true })
+                        .then(() => res.status(200).json({ message: 'La suppression des commentaire avec le post fonctionne' }))
+                        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la suppression des commentaires avec le post" }));
+        });
+};*/
+
+exports.deleteAllComments = (req, res, next) => {
+    Comment.findAll({where: { postId: req.params.postId }})
+        .then((comment) => {
+                    comment.destroy({where :{ id: postId }})
+                        .then(() => res.status(200).json({ message: 'La suppression des commentaire avec le post fonctionne' }))
+                        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la suppression des commentaires avec le post" }));
+        });
+};
+
 

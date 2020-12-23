@@ -70,8 +70,15 @@ exports.userProfile = (req, res, next) => {
 //Modification du profil par l'utilisateur
 exports.modifyProfile = (req, res, next) => {
     User.findOne({ where: {id: req.body.id} })
-      .then(() => {
-        User.update({ where: { id: req.body.id} })
+    bcrypt.hash((req.body.password), 10)
+    .then(hash => {
+        user.update({ 
+          userId:userId,
+          username: req.body.username,
+          email: req.body.email,
+          bio:req.body.bio,
+          password: hash,
+         })
           .then(() => res.status(200).json({ message: "Le profil a été modifié !" }))
       })
       .catch(error => res.status(400).json({ error: "Erreur dans la modification du profil" }));

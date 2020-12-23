@@ -48,7 +48,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 120vh;
+  height: 130vh;
 }
 main img {
   height: 20em;

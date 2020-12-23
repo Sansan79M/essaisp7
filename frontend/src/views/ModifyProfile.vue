@@ -125,20 +125,23 @@ export default {
     return {
       user: {
         userId: "",
-        face: "",
         username: "",
         bio: "",
         email: "",
         password: "",
       },
-      show: false
+      show: false,
+      /*newUsername: this.user.username,
+      newBio: this.user.bio,
+      newEmail: this.user.email,
+      newPassword: this.user.password,*/
     };
   },
   mounted() {
     this.userProfile();
   },
   methods: {
-    //Affichage des données du profil
+    //Affichage des données du compte utilisateur dans les inputs--------------------------
     userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       //console.log(storage);
@@ -146,20 +149,18 @@ export default {
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
-            //console.log(user)
+            console.log(user)
           });
-          console.log(
-            response + "Le lien vers le profil utilisateur s'affiche"
-          );
+          console.log(response + "Les données du profil utilisateur s'affichent");
         })
         .catch((error) => {
           console.log(
-            error + "Le lien vers le profil utilisateur ne s'affiche pas"
+            error + "Les données du profil utilisateur ne s'affichent pas"
           );
         });
     },
 
-    //Modification des données du profil
+    //Modification du compte utilisateur-----------------------------------------
     modifyProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       this.user.id = storage.userId;
@@ -171,11 +172,14 @@ export default {
         body: JSON.stringify(this.user),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/user/modify", myInit)
-        .then((response) => {
-          this.user = response.data.results;
+      fetch("http://localhost:3000/api/user/modify/" + storage.userId, myInit)
+        .then((success) => {
+          //this.user = response.data.results;
+          this.user.bio = this.newBio
+          this.user.email = this.newEmail
+          this.user.password = this.newPassword
           this.$router.push({ path: "/user/profile/" + storage.userId });
-          console.log(response + "Le profil utilisateur a été modifié");
+          console.log(success + "Le profil utilisateur a été modifié");
         })
         .catch((error) => {
           console.log(error + "Le profil utilisateur n'a pas a été modifié");
@@ -208,7 +212,7 @@ h1 {
   #modify-profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 730px;
+  height: 740px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

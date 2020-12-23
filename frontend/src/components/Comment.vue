@@ -72,13 +72,20 @@ export default {
   },
 
   methods: {
+    //Fermeture du textarea de modification------------------------------
     cancelComment() {
-      (this.edit = false), (this.newContent = this.comment.content);
+      this.edit = false
+      this.newContent = this.comment.content
     },
+
+    //Mise à jour du commentaire------------------------------------------
     updateComment() {
       console.log("Updating");
-      (this.comment.content = this.newContent), (this.edit = false);
+      this.comment.content = this.newContent
+      this.edit = false
     },
+    
+    //Supprime un commentaire----------------------------------------------
     deleteComment() {
       const headers = new Headers();
       headers.append("content-type", "application/json");

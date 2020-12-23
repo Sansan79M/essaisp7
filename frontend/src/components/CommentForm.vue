@@ -72,16 +72,17 @@ export default {
               console.log(result + "Un commentaire a été créé");
             })
             .catch((error) => {
-              console.log(error + "Aucun commentaire n'a pas été créé");
+              console.log(error + "Aucun commentaire n'a été créé");
             });
         })
         .catch((error) => {
           console.log(error + "La création de commentaire ne fonctionne pas");
         });
     },
-    cancel() {
-      (this.edit = false), (this.newContent = this.newComment.content);
-    },
+    /*cancel() {
+      this.edit = false
+      this.newContent = this.newComment.content
+    },*/
   },
 };
 </script>

@@ -44,7 +44,7 @@
                   >
                     <router-link
                     class="link"
-                      :to="{ name: 'post', params: { id: post.id } }"
+                      :to="{ name: 'post', params: { id: post.id }}"
                       aria-label="Lien vers le message"
                     >
                       <div  class="card effect-bg text-color">

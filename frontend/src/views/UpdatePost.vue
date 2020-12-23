@@ -19,8 +19,13 @@
                     MODIFICATION DU MESSAGE
                   </h1>
                   <br />
+                   <div class="text-left">
+                    <p class="text-color">
+                      🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                    </p>
+                  </div>
                   <div class="form-group text-left">
-                    <label for="topic" class="text-color">📝 Titre :</label>
+                    <label for="topic" class="text-color">📧 Titre :</label>
                     <br />
                     <input
                       type="text"
@@ -28,12 +33,12 @@
                       id="topic"
                       class="form-control"
                       required="required"
-                      v-model="newTitle"
+                      v-model="post.title"
                     />
                   </div>
                   <div class="form-group text-left">
                     <label for="description" class="text-color"
-                      >⌨️ Description :</label
+                      >📝 Description :</label
                     ><br />
                     <textarea
                       type="text"
@@ -41,7 +46,7 @@
                       id="description"
                       class="form-control"
                       required="required"
-                      v-model="newDescription"
+                      v-model="post.description"
                     ></textarea>
                   </div>
 
@@ -51,7 +56,7 @@
                       type="submit"
                       name="submit"
                       class="btn text-white btn-md button"
-                      value="METTRE A JOUR"
+                      value="MODIFIER"
                     />
                     <router-link :to="'/posts/news'">
                       <button
@@ -85,40 +90,41 @@ export default {
   data() {
     return {
       post: {
-        id: "",
+        id:"",
+        //postId: "",
         userId: "",
         username: "",
         updatedAt: "",
+        createdAt: "",
         title: "",
         description: "",
       },
-      newTitle: this.post.title,
+      /*newTitle: this.post.title,
       newDescription: this.post.description,
+      newDate: this.post.updatedAt*/
     };
   },
   mounted() {
     this.getOnePost();
   },
   methods: {
-    //Affiche un message--------------------------------------------
+    //Affiche les données du message--------------------------------------------
     getOnePost() {
       const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/posts/post/" + postId)
+      fetch("http://localhost:3000/api/posts/update/" + postId)
         .then((response) => {
           response.json().then((post) => {
             this.post = post;
             console.log(post);
           });
-          console.log(response + "Un message s'affiche");
+          console.log(response + "Le message d'origine s'affiche");
         })
         .catch((error) => {
-          console.log(error + "Le message ne s'affiche pas");
+          console.log(error + "Le message d'origine ne s'affiche pas");
         });
     },
     //Modifier un message--------------------------------------------
     updatePost() {
-      const storage = JSON.parse(localStorage.getItem("storage_post"));
-      this.post.id = storage.postId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -127,13 +133,15 @@ export default {
         body: JSON.stringify(this.post),
       };
       console.log(JSON.parse(myInit.body));
-      fetch("http://localhost:3000/api/posts/update", myInit)
-        .then((response) => {
-          this.post = response.data.results;
+      const postId = this.$route.params.id;
+      fetch("http://localhost:3000/api/posts/update/" + postId, myInit)
+        .then((success) => {
+          //this.post = response.data.results;
           this.post.title = this.newtitle;
           this.post.description = this.newDescription;
-          this.$router.push({ path: "/posts/post/:id" + storage.postId });
-          console.log(response + "Le message a été modifié");
+          this.post.updatedAt = this.newDate;
+          this.$router.push({ path: "/posts/post/" + postId });
+          console.log(success + "Le message a été modifié");
         })
         .catch((error) => {
           console.log(error + "Le message n'a pas été modifié");
@@ -156,7 +164,7 @@ main {
 #update-post .container #update-post-row #update-post-column #update-post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 450px;
+  height: 470px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

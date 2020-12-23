@@ -38,7 +38,12 @@ exports.listPosts = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
     Post.findOne({ id: req.params.id })
         .then((post) => {
-            post.updateOne({ id: req.params.id })
+            post.updateOne({ 
+                userId: req.body.userId,
+                postId: req.body.postId,
+                title: req.body.title,
+                description: req.body.description,
+            })
                 .then(() => res.status(200).json({ message: 'Le message a été modifiée !' }))
                 .catch(error => res.status(400).json({ error }));
         });

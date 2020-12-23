@@ -89,6 +89,7 @@ export default {
   },
 
   methods: {
+    //Affichage du compte utilisateur-----------------------------------------
     userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user"));
       console.log(storage);
@@ -104,6 +105,8 @@ export default {
           console.log(error + "Le profil utilisateur ne s'affiche pas");
         });
     },
+
+    //Suppression du compte utilisateur--------------------------------------------
     deleteProfile() {
       if (
         confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")

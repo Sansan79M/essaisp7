@@ -34,7 +34,7 @@ const router = new VueRouter({
       {path: "/posts/news", component: News, name: 'news', meta: {title:"News de Groupomania"}},
       {path: "/posts/create", component: CreatePost, name: 'create', meta: {title:"Création d'un message Groupomania"}},
       {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message Groupomania"}},
-      {path: "/posts/update", component: UpdatePost, name: 'update', meta: {title:"Modification du message Groupomania"}},
+      {path: "/post/update/:id", component: UpdatePost, name: 'update', meta: {title:"Modification du message Groupomania"}},
      
       //Chemin et titre du tableau de bord de l'administrateur
       {path: "/trafic", component: Trafic, name: 'trafic',meta: {title:"Trafic GSN"}},

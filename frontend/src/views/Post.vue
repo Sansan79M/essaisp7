@@ -25,7 +25,7 @@
                     <p class="text-color">📝 {{ post.description }}</p>
                   </div>
                   <div v-if="author" class="buttons">
-                    <router-link :to="'/posts/update'">
+                    <router-link :to="{ name: 'update', params: { id: post.id }}">
                       <button
                         type="submit"
                         name="update"
@@ -44,9 +44,9 @@
                       class="btn text-white btn-md"
                       value="SUPPRIMER"
                       aria-label="Bouton de suppression du message"
-                      @click.prevent="deletePost"
+                      @click.prevent="deleteAllComments(); deletePost();"
                     >SUPPRIMER
-                    </button>                  
+                    </button>      <!--deletePost();-->            
                   </div>
                 </div>
               </div>
@@ -85,7 +85,6 @@ import Comment from "../components/Comment";
 export default {
   components: { HeaderConnected, CommentForm, Comment },
   name: "post",
-
   data() {
     return {
       post: {
@@ -97,6 +96,7 @@ export default {
         title: "",
         description: ""*/
       },
+      comment:'',
       comments: [],
       author: true,
       reader: true,
@@ -109,7 +109,7 @@ export default {
     this.getComments();
   },
   methods: {
-    //Affichage du post---------------------------------------------
+    //Affichage du message---------------------------------------------
     getOnePost() {
       const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/post/" + postId)
@@ -118,14 +118,14 @@ export default {
             this.post = post;
             console.log(post);
           });
-          console.log(response + "Un message s'affiche");
+          console.log(response + "Le message s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le message ne s'affiche pas");
         });
     },
 
-    //Suppression du post----------------------------------------------
+    //Suppression du message----------------------------------------------
     deletePost() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -156,10 +156,10 @@ export default {
             this.comments = comments
             console.log(comments)
           })
-           console.log(response + "Un message s'affiche");
+           console.log(response + "Les commentaires s'affichent");
         })
         .catch((error) => {
-          console.log(error + "Le message ne s'affiche pas");
+          console.log(error + "Les commentaires ne s'affichent pas");
         });
     },
 
@@ -170,6 +170,27 @@ export default {
         return;
       }
       this.respondTo.children.push(comment);
+    },
+
+    //Suppression des commentaires liés au message----------------------------------------------
+    deleteAllComments() {
+      const headers = new Headers();
+      headers.append("content-type", "application/json");
+      const myInit = {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(this.comment),
+      };
+      console.log(JSON.parse(myInit.body));
+      const postId = this.$route.params.id
+      fetch("http://localhost:3000/api/comments/delete/" + postId, myInit)
+        .then((success) => {
+           //window.location.reload(); 
+          console.log(success + "Les commentaires sont supprimés");
+        })
+        .catch((error) => {
+          console.log(error + "Les commentaires n'ont pas été supprimés");
+        });
     },
 
     
