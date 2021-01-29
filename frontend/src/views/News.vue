@@ -2,7 +2,6 @@
   <body>
     <!--<header>-->
     <header-connected></header-connected>
-
     <!-- Page Content -->
     <main>
       <div class="container">
@@ -24,7 +23,7 @@
                 class="card effect-shadow effect-blue"
               >
                 <router-link
-                  :to="'create'"
+                  :to="'/post/create'"
                   aria-label="Lien vers la page de création de message"
                   class="link effect-blue"
                 >
@@ -43,21 +42,19 @@
                     :key="post.id"
                   >
                     <router-link
-                    class="link"
-                      :to="{ name: 'post', params: { id: post.id }}"
+                      class="link"
+                      :to="'/post/' + post.id"
                       aria-label="Lien vers le message"
-                    >
-                      <div  class="card effect-bg text-color">
-                        🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                      ><!--:to="{ name: 'post', params: { id: post.id }}"-->
+                      <div class="card effect-bg text-color">
+                        🧍 User {{ post.userId }} - ⌚ {{ format(post.createdAt) }}
                         <br />
                         📧 {{ post.title }}
                         <br />
                         📝 {{ post.description }}
                       </div>
                     </router-link>
-                    <div>
-                    
-                    </div>
+                    <div></div>
                   </li>
                 </ul>
               </div>
@@ -71,6 +68,8 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
+import {formatRelative} from 'date-fns';
+import {fr} from 'date-fns/locale';
 
 export default {
   name: "news",
@@ -84,18 +83,24 @@ export default {
     this.listPosts();
   },
   methods: {
+    //Affichage de la liste des messages-------------------------------
     listPosts() {
       fetch("http://localhost:3000/api/posts/news")
         .then((success) => {
           success.json().then((posts) => {
             this.posts = posts;
-            console.log(posts);
+            //console.log(posts);
           });
           console.log(success + "Le fil d'actualité s'affiche");
         })
         .catch((error) => {
           console.log(error + "Le fil d'actualité ne s'affiche pas");
         });
+    },
+
+    //Affichage de la date des messages au format français-------------------------------
+    format(date) {
+      return formatRelative(new Date(date), new Date(), { locale: fr })
     },
   },
 };
@@ -168,12 +173,11 @@ button {
 li {
   list-style-type: none;
 }
-.link{
+.link {
   text-decoration: none;
 }
 #news-list {
   padding-left: 0;
   margin-left: 0;
-
 }
 </style>

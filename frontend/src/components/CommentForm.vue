@@ -1,17 +1,18 @@
 <template>
   <div id="comment-box" class="col-md-12">
     <div id="comment-displayed">
-      <form  @submit.prevent="submitComment(postId)">    
-          <textarea
-            class="border rounded p-2 mb-2 text-color"
-            v-model="newComment.content"
-            placeholder="Commentaire"
-          ></textarea>
-        <button
-          type="submit"
-          class="btn text-white btn-md"
-        >COMMENTER
-        </button>
+      <form @submit.prevent="createComment(postId)">
+        <label for="comment">Laisser un commentaire</label>
+        <textarea
+          class="border rounded p-2 mb-2 text-color bg-white"
+          type="text"
+          name="comment"
+          id="comment"
+          required="required"
+          v-model="newComment.content"
+          placeholder="Commentaire"
+        ></textarea>
+        <button type="submit" class="btn text-white btn-md">COMMENTER</button>
       </form>
     </div>
   </div>
@@ -25,10 +26,10 @@ export default {
   data() {
     return {
       newComment: {
+        id:"",
         userId: "",
         postId: "",
         content: "",
-        //edit: false,
       },
     };
   },
@@ -46,11 +47,11 @@ export default {
   },*/
 
   methods: {
-    submitComment(postId) {
-      const storage = JSON.parse(localStorage.getItem("storage_user"));
+    createComment(postId) {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.newComment.userId = storage.userId;
       this.newComment.postId = postId;
-      console.log(this.newComment)
+      console.log(this.newComment);
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -61,7 +62,7 @@ export default {
       console.log(this.newComment);
       fetch("http://localhost:3000/api/comments/create", myInit)
         .then((result) => {
-          window.location.reload(); 
+          window.location.reload();
           result
             .json()
             .then((data) => {
@@ -79,10 +80,6 @@ export default {
           console.log(error + "La création de commentaire ne fonctionne pas");
         });
     },
-    /*cancel() {
-      this.edit = false
-      this.newContent = this.newComment.content
-    },*/
   },
 };
 </script>
@@ -102,7 +99,7 @@ export default {
 #comment-box #comment-displayed #register-link {
   margin-top: -85px;
 }
-.text-color {
+.text-color{
   color: #0b505b !important;
 }
 button {
@@ -115,11 +112,12 @@ button {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
 }
-
 form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+}
+label {
+  display: none;
 }
 </style>

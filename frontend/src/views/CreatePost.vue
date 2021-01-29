@@ -73,24 +73,22 @@ export default {
         userId: "",
         title: "",
         description: "",
-        media: "",
       },
     };
   },
 
   methods: {
     createPost() {
-      const storage = JSON.parse(localStorage.getItem("storage_user"));
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      //headers.append("media", this.post.media);
       const myInit = {
         method: "POST",
         headers: headers,
         body: JSON.stringify(this.post),
       };
-      console.log(this.post);
+      //console.log(this.post);
       fetch("http://localhost:3000/api/posts/create", myInit)
         .then((result) => {
           result.json()
@@ -100,10 +98,6 @@ export default {
                 return;
               }
               console.log(result + "Un message a été créé");
-              //Sauvegarder l'id du post
-              const storage = { id: data.id, token: data.token };
-              localStorage.setItem("storage_post", JSON.stringify(storage));
-
               this.$router.push({ path: "/posts/news" });
             })
             .catch((error) => {

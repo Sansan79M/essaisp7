@@ -10,7 +10,11 @@
           <div id="modify-profile-row" class="row justify-content-center">
             <div id="modify-profile-column" class="col-md-6">
               <div id="modify-profile-box" class="col-md-12">
-                <form id="modify-profile-form">
+                <form
+                  id="modify-profile-form"
+                  class="form"
+                  @submit.prevent="modifyProfile"
+                >
                   <h1 class="text-center text-color">MODIFICATION DU PROFIL</h1>
                   <br />
                   <div class="form-group text-center">
@@ -19,9 +23,8 @@
                       id="avatar"
                       name="avatar"
                       class="avatar text-white rounded-circle text-center"
-                      v-model="user.username"
+                      v-model="initial"
                     />
-                    <!--<%= user.username[0..1].upcase %>-->
                   </div>
                   <br />
                   <div class="form-group text-left">
@@ -39,21 +42,20 @@
                     />
                   </div>
                   <div class="form-group text-left">
-                    <label for="bio" class="text-color">✏️ Biographie :</label
+                    <label for="service" class="text-color">✏️ Service :</label
                     ><br />
                     <textarea
                       type="input"
-                      name="bio"
-                      id="bio"
+                      name="service"
+                      id="service"
                       class="form-control"
-                      v-model="user.bio"
+                      v-model="user.service"
                     ></textarea>
                   </div>
                   <div class="form-group text-left">
                     <label for="email" class="text-color">📧 Email :</label>
                     <br />
                     <input
-                    
                       type="email"
                       name="email"
                       id="email"
@@ -69,7 +71,7 @@
                     >
                     <br />
                     <input
-                      :type="show ? 'text': 'password'"
+                      :type="show ? 'text' : 'password'"
                       name="password"
                       id="password"
                       class="form-control"
@@ -77,9 +79,23 @@
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
-                     <button type="button" class="bg-transparent rounded" @click="show = !show">
-                    <img src="../assets/view-show.svg" alt="mot de passe visible" class="eyes text-color" v-show="show">
-                    <img src="../assets/view-hide.svg" alt="mot de passe invisible" class="eyes text-color" v-show="!show">
+                    <button
+                      type="button"
+                      class="bg-transparent rounded"
+                      @click="show = !show"
+                    >
+                      <img
+                        src="../assets/view-show.svg"
+                        alt="mot de passe visible"
+                        class="eyes text-color"
+                        v-show="show"
+                      />
+                      <img
+                        src="../assets/view-hide.svg"
+                        alt="mot de passe invisible"
+                        class="eyes text-color"
+                        v-show="!show"
+                      />
                     </button>
                   </div>
                   <br />
@@ -89,8 +105,7 @@
                       name="submit"
                       class="btn text-white btn-md button"
                       value="ACTUALISER"
-                      aria-label="lien pour modifier le profil"
-                      @submit.prevent="modifyProfile"
+                      aria-label="Actualise le profil"
                     />
                     <router-link :to="'/posts/news'">
                       <button
@@ -124,17 +139,18 @@ export default {
   data() {
     return {
       user: {
-        userId: "",
+        /*userId: "",
         username: "",
-        bio: "",
+        service: "",
         email: "",
-        password: "",
+        password: "",*/
       },
       show: false,
-      /*newUsername: this.user.username,
-      newBio: this.user.bio,
-      newEmail: this.user.email,
-      newPassword: this.user.password,*/
+      initial: "",
+      newUsername: "",
+      newService: "",
+      newEmail: "",
+      newPassword: "",
     };
   },
   mounted() {
@@ -143,26 +159,22 @@ export default {
   methods: {
     //Affichage des données du compte utilisateur dans les inputs--------------------------
     userProfile() {
-      const storage = JSON.parse(localStorage.getItem("storage_user"));
-      //console.log(storage);
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
-            console.log(user)
+            //Initiales de l' utilisateur affichées en majuscule dans l'avatar
+            this.initial = user.username.toUpperCase().split(" ").map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null)).join("");
           });
           console.log(response + "Les données du profil utilisateur s'affichent");
         })
-        .catch((error) => {
-          console.log(
-            error + "Les données du profil utilisateur ne s'affichent pas"
-          );
-        });
+        .catch((error) => {console.log(error + "Les données du profil utilisateur ne s'affichent pas");});
     },
 
     //Modification du compte utilisateur-----------------------------------------
     modifyProfile() {
-      const storage = JSON.parse(localStorage.getItem("storage_user"));
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.user.id = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -171,13 +183,14 @@ export default {
         headers: headers,
         body: JSON.stringify(this.user),
       };
-      console.log(JSON.parse(myInit.body));
+      //console.log(JSON.parse(myInit.body));
       fetch("http://localhost:3000/api/user/modify/" + storage.userId, myInit)
         .then((success) => {
-          //this.user = response.data.results;
-          this.user.bio = this.newBio
-          this.user.email = this.newEmail
-          this.user.password = this.newPassword
+          this.user.username = this.newUsername;
+          this.user.service = this.newService;
+          this.user.email = this.newEmail;
+          this.user.password = this.newPassword;
+
           this.$router.push({ path: "/user/profile/" + storage.userId });
           console.log(success + "Le profil utilisateur a été modifié");
         })
@@ -204,6 +217,7 @@ h1 {
   height: 80px;
   background-color: #0b505b !important;
   border: #0b505b !important;
+  font-size: 30px;
 }
 #modify-profile
   .container
@@ -258,7 +272,7 @@ input[type="file"] {
 #label-avatar {
   display: none;
 }
-.eyes{
-  width : 20px;
+.eyes {
+  width: 20px;
 }
 </style>

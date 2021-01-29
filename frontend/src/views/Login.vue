@@ -88,7 +88,7 @@ export default {
         email: "",
         password: "",
       },
-      loading: false,
+      //loading: false,
       show: false
     };
   },
@@ -102,19 +102,19 @@ export default {
           headers: headers,
           body: JSON.stringify(this.user),
         };
-        console.log(JSON.parse(myInit.body));
+        //console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/login", myInit)
           .then((result) => {
             result.json().then((data) => {
               if (data.error) {
-                console.log(data);
+                console.log(data, 'Il y a une erreur de connexion');
                 return;
               }
-              console.log(data);
+              //console.log(data, "Il n'y a pas d'erreur de connexion");
 
-             //Sauvegarde du userId pour l'affichage du profil et la création de post
-              const storage = {userId:data.userId, token:data.token}
-              localStorage.setItem("storage_user", JSON.stringify(storage));
+             //Sauvegarde du userId pour l'affichage du profil et la création de posts et de commentaires
+              const storage = {userId:data.userId, token:data.token, isAdmin: data.isAdmin};
+              localStorage.setItem("storage_user_groupomania", JSON.stringify(storage));
  
               this.$router.push({ path: "/posts/news" });
               console.log("L'utilisateur s'est bien connectée");

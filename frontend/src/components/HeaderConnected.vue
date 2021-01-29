@@ -3,15 +3,17 @@
   <header>
     <nav
       class="navbar navbar-expand-lg navbar-dark fixed-top"
-      role="navigation"
-    >
+      role="navigation">
       <div class="container">
-        <img
+        <router-link
+          :to="'/posts/news'"
+          aria-label="Lien vers le fil d'actualité"
           class="navbar-brand"
-          aria-label="Lien vers la page d'accueil"
+          >
+        <img
           src="../assets/icon-white.png"
           alt="Logo Groupomania"
-        />
+        /></router-link>
         <!--Responsive burger menu-->
         <button
           class="navbar-toggler"
@@ -40,7 +42,7 @@
             <li class="nav-item">
               <router-link
                 class="nav-link"
-                :to="'/posts/create'"
+                :to="'/post/create'"
                 aria-label="Lien vers la page de création de message"
               >
                 CREER UN MESSAGE</router-link
@@ -49,13 +51,13 @@
             <li class="nav-item">
               <router-link
                 class="nav-link"
-                :to="{ name: 'profile', params: { id: user.id } }"
+                :to="'/user/profile/' + user.id"
                 aria-label="Lien vers la page du profil utilisateur"
-              >
+              ><!--:to="{ name: 'profile', params: {id: user.id} }"-->
                 PROFIL</router-link
               >
             </li>
-            <li class="nav-item" v-if="isAdmin">
+            <li class="nav-item" v-if="user.isAdmin">
               <router-link
                 class="nav-link"
                 :to="'/trafic'"
@@ -86,29 +88,33 @@ export default {
   data() {
     return {
       user: {
-      },
-      isAdmin: true,
+        userId:"",
+        id: this.$route.params.id,
+      //isAdmin: false,
+      }
     };
   },
     mounted() {
-    this.userProfile();
+      this.userProfile();
   },
 
   methods: {
-    userProfile() { 
-      const storage = JSON.parse(localStorage.getItem("storage_user"));
+  userProfile() { 
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
           response.json()
           .then(user => {
             this.user = user;
           })
-          console.log(response + "Le lien vers le profil utilisateur s'affiche");
+          //console.log(response + "L'URL vers le profil utilisateur s'affiche");
         })
-        .catch((error) => {
-          console.log(error + "Le lien vers le profil utilisateur ne s'affiche pas");
-        });
+        /*.catch((error) => {
+          console.log(error + "L'URL vers le profil utilisateur ne s'affiche pas");
+        });*/
     },
+
+
  
     //Déconnection
     disconnect() {

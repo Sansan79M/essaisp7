@@ -20,7 +20,7 @@ exports.signup = (req, res, next) => {
         isAdmin: false
       })
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la création d'un nouveau compte utilisateur" }));
     })
     .catch(error => res.status(500).json({ error }));
 };
@@ -39,12 +39,12 @@ exports.login = (req, res, next) => {
           if (!valid) {
             return res.status(401).json({ error: 'Le mot de passe est incorrect !' });
           }
-           res.status(200).json({
+          res.status(200).json({
             userId: user.id,
             email: user.email,
             isAdmin: user.isAdmin,
             token: jwt.sign(
-              { userId: user.id },
+              { userId: user.id, email: user.email, isAdmin: user.isAdmin },
               TOKEN,
               { expiresIn: '12h' }
             )
@@ -60,36 +60,41 @@ exports.login = (req, res, next) => {
 exports.userProfile = (req, res, next) => {
   User.findOne({
     where: { id: req.params.id },
-    attributes: ['id', 'username', 'email', 'bio','isAdmin']
+    attributes: ['id', 'username', 'email', 'service', 'isAdmin']
   })
-  .then(user => res.status(200).json(user))
-  .catch(error => res.status(400).json({ error : "Une erreur d'affichage du profil est survenue" }));  
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(400).json({ error: "Une erreur d'affichage du profil est survenue" }));
 };
 
 
 //Modification du profil par l'utilisateur
 exports.modifyProfile = (req, res, next) => {
-    User.findOne({ where: {id: req.body.id} })
-    bcrypt.hash((req.body.password), 10)
-    .then(hash => {
-        user.update({ 
-          userId:userId,
-          username: req.body.username,
-          email: req.body.email,
-          bio:req.body.bio,
-          password: hash,
-         })
-          .then(() => res.status(200).json({ message: "Le profil a été modifié !" }))
-      })
-      .catch(error => res.status(400).json({ error: "Erreur dans la modification du profil" }));
+  User.findOne({ where: { id: req.params.id } })
+    .then((user) => {
+      bcrypt.hash((req.body.password), 10)
+        .then((hash) => {
+          user.update({
+            where: {
+              userId: req.params.userId,
+            },
+            username: req.body.username,
+            email: req.body.email,
+            service: req.body.service,
+            password: hash
+          })
+        })
+        .then(() => res.status(200).json({ message: 'Le profil a bien été modifiée !' }))
+        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la modification du profil" }));
+    });
 }
+
 
 //Suppression du profil utilisateur
 exports.deleteProfile = (req, res, next) => {
-  User.findOne({ where: {id: req.body.id} })
+  User.findOne({ where: { id: req.body.id } })
     .then(() => {
-      User.destroy({ where: { id: req.body.id} })
+      User.destroy({ where: { id: req.body.id } })
         .then(() => res.status(200).json({ message: "Le profil a bien été supprimé !" }))
     })
-    .catch(error => res.status(400).json({ error : "Erreur dans la suppression du profil" }));
+    .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la suppression du profil" }));
 };

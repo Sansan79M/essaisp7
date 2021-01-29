@@ -11,11 +11,11 @@ module.exports = (req, res, next) => {
     const decodedToken = jwt.verify(headersAuthToken, TOKEN);
     const userId = decodedToken.userId;
     if (req.body.userId && req.body.userId !== userId) {
-      throw 'Le User ID n\'est pas valable';
+      throw "Le User ID n'est pas valable";
     } else {
       next();
     }
   } catch (error) {
-    res.status(401).json({error: error || 'La requête n\'a pas été authentifiée !'});
+    res.status(401).json({error: error || "La requête n'a pas été authentifiée !"});
   }
 };

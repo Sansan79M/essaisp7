@@ -19,9 +19,9 @@
                     MODIFICATION DU MESSAGE
                   </h1>
                   <br />
-                   <div class="text-left">
+                  <div class="text-left">
                     <p class="text-color">
-                      🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                      🧍 User {{ post.userId }} - ⌚ {{ post.createdAt }}
                     </p>
                   </div>
                   <div class="form-group text-left">
@@ -31,7 +31,7 @@
                       type="text"
                       name="topic"
                       id="topic"
-                      class="form-control"
+                      class="form-control text-color"
                       required="required"
                       v-model="post.title"
                     />
@@ -44,7 +44,7 @@
                       type="text"
                       name="description"
                       id="description"
-                      class="form-control"
+                      class="form-control text-color"
                       required="required"
                       v-model="post.description"
                     ></textarea>
@@ -57,6 +57,7 @@
                       name="submit"
                       class="btn text-white btn-md button"
                       value="MODIFIER"
+                      aria-label="Modifie le message"
                     />
                     <router-link :to="'/posts/news'">
                       <button
@@ -86,22 +87,19 @@ import HeaderConnected from "../components/HeaderConnected";
 export default {
   name: "update",
   components: { HeaderConnected },
-  //props: ["post"],
   data() {
     return {
       post: {
         id:"",
-        //postId: "",
+        postId: "",
         userId: "",
         username: "",
-        updatedAt: "",
         createdAt: "",
         title: "",
         description: "",
       },
-      /*newTitle: this.post.title,
-      newDescription: this.post.description,
-      newDate: this.post.updatedAt*/
+      newTitle: "",
+      newDescription: ""
     };
   },
   mounted() {
@@ -111,11 +109,11 @@ export default {
     //Affiche les données du message--------------------------------------------
     getOnePost() {
       const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/posts/update/" + postId)
+      fetch("http://localhost:3000/api/posts/post/" + postId)
         .then((response) => {
           response.json().then((post) => {
             this.post = post;
-            console.log(post);
+            //console.log(post);
           });
           console.log(response + "Le message d'origine s'affiche");
         })
@@ -123,6 +121,7 @@ export default {
           console.log(error + "Le message d'origine ne s'affiche pas");
         });
     },
+
     //Modifier un message--------------------------------------------
     updatePost() {
       const headers = new Headers();
@@ -132,15 +131,14 @@ export default {
         headers: headers,
         body: JSON.stringify(this.post),
       };
-      console.log(JSON.parse(myInit.body));
+      //console.log(JSON.parse(myInit.body));
       const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/update/" + postId, myInit)
         .then((success) => {
-          //this.post = response.data.results;
-          this.post.title = this.newtitle;
+          this.post.title = this.newTitle;
           this.post.description = this.newDescription;
-          this.post.updatedAt = this.newDate;
-          this.$router.push({ path: "/posts/post/" + postId });
+          
+          this.$router.push({ path: "/post/" + postId });
           console.log(success + "Le message a été modifié");
         })
         .catch((error) => {

@@ -1,3 +1,4 @@
+const { user } = require('../config/dbConfig');
 const db = require('../config/dbConfig');
 const Post = db.post;
 
@@ -7,55 +8,80 @@ exports.createPost = (req, res, next) => {
         userId: req.body.userId,
         title: req.body.title,
         description: req.body.description,
+        //include: ['username']
+       /* include: {
+            model:user,
+            attributes: ['username']
+        },*/
     })
         .then(success => res.status(200).json({ success: "Le message a été enregistré" }))
-        .catch(error => res.status(401).json({ error: "Le message n'a pas été enregistré" }));
+        .catch(error => res.status(401).json({ error: "Une erreur est survenue dans la création d'un message" }));
 };
 
 //Affiche un message
 exports.getOnePost = (req, res, next) => {
     Post.findOne({
-        where: { id: req.params.id },
-        attributes: ['id', 'userId', 'title', 'description', 'createdAt', 'updatedAt']
+        where: { id: req.params.id, },
+        /*include: [{
+            model:user,
+            attributes: ['username']
+        }],*/
+        //include: ['username'],
+        attributes: ['id', 'userId', 'title', 'description', 'isSignaled', 'createdAt', 'updatedAt']
     })
         .then(post => res.status(200).json(post))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage d'un message'" }));
 }
 
 
 //Affiche le fil d'actualité
 exports.listPosts = (req, res, next) => {
     Post.findAll({
-        order: [['createdAt', 'DESC']],
-        attributes: ['id', 'userId', 'title', 'description', 'createdAt', 'updatedAt']
+        order: [['createdAt', 'DESC']], //affichage des messages par ordre décroissant
+        attributes: ['id', 'userId', 'title', 'description', 'isSignaled', 'createdAt', 'updatedAt'],
+        //include: ['username'],
     })
         .then(posts => res.status(200).json(posts))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error: "Une erreur est survenue de l'affichage du fil d'actualité" }));
 }
 
 
 //Modifier un message
 exports.updatePost = (req, res, next) => {
-    Post.findOne({ id: req.params.id })
+    Post.findOne({ where: { id: req.params.id } })
         .then((post) => {
-            post.updateOne({ 
-                userId: req.body.userId,
-                postId: req.body.postId,
+            post.update({
+                where: {
+                    userId: req.params.userId,
+                    postId: req.params.postId,
+                },
                 title: req.body.title,
                 description: req.body.description,
             })
-                .then(() => res.status(200).json({ message: 'Le message a été modifiée !' }))
-                .catch(error => res.status(400).json({ error }));
+                .then(() => res.status(200).json({ message: 'Le message a bien été modifiée !' }))
+                .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la modification du message" }));
         });
 }
 
 //Supprimer un message
 exports.deletePost = (req, res, next) => {
-    Post.findOne({ where: { id: req.body.id } })
+    Post.findOne({ where: { id: req.params.id } })
         .then((post) => {
-            post.destroy({ where: { id: req.body.id } })
-                .then(() => res.status(200).json({ message: 'Le message a été supprimée !' }))
-                .catch(error => res.status(400).json({ error: "Une erreur est survenue das la suppression de message" }));
+            post.destroy({ where: { id: req.params.id } }) 
+                .then(() => res.status(200).json({ message: 'Le message a bien été supprimée !' }))
+                .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la suppression du message" }));
         });
 };
 
+//Signaler un message
+exports.signalPost = (req, res, next) => {
+    Post.findOne({ where: { id: req.params.id } })
+        .then((post) => {
+            post.update({
+                where: { id: req.params.id },
+                isSignaled : true
+            })
+                .then(() => res.status(200).json({ message: 'Le message a bien été signalé !' }))
+                .catch(error => res.status(400).json({ error: "Une erreur est survenue dans le signalement du message" }));
+        });
+}

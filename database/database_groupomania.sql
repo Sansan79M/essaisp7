@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `bio` varchar(255) DEFAULT NULL,
+  `service` varchar(255) DEFAULT NULL,
   `isAdmin` tinyint(1) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `bio`, `isAdmin`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `service`, `isAdmin`, `createdAt`, `updatedAt`) VALUES
 (1, 'Machin truc', 'test1@test1.com', '$2b$10$XONSpDcwXRSdYih.QiBbt.EfeXIuBADxqDuyI5rAGE4tEkhlTUL..', NULL, 0, '2020-12-19 18:28:09', '2020-12-19 18:28:09'),
 (2, 'hello world', 'test2@test2.com', '$2b$10$sA.Nr64q0FHIQjRuh6EWvu8hI3KeFyh0l2jRMe3LcMtcC8KZ61wBC', NULL, 0, '2020-12-22 10:36:10', '2020-12-22 10:36:10');
 COMMIT;

@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 //Importation des différentes pages concernant l'utilisateur
 import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
+import ConfirmSignup from '../views/ConfirmSignup.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import ModifyProfile from '../views/ModifyProfile.vue'
@@ -27,17 +28,19 @@ const router = new VueRouter({
       //Chemins et titres des pages concernant l'utilisateur
       {path: "/", component: Home, name: 'home', meta: {title:"Accueil Groupomania"}},
       {path: "/user/signup", component: Signup, name: 'signup', meta: {title:"Inscription à Groupomania"}},
+      {path: "/user/confirmSignup", component: ConfirmSignup, name: 'confirmSignup', meta: {title:"Confirmation d'inscription à Groupomania"}},
       {path: "/user/login", component: Login, name: 'login', meta: {title:"Connexion à Groupomania"}},
-      {path: "/profile/:id", component: Profile, name: 'profile', meta: {title:"Profil utilisateur, Groupomania"}},
-      {path: "/user/modify", component: ModifyProfile, name: 'modify', meta: {title:"Modification du profil utilisateur, Groupomania"}},
-      //Chemins et titres des pages concernant les posts
+      {path: "/user/profile/:id", component: Profile, name: 'profile', meta: {title:"Profil utilisateur, Groupomania"}},
+      {path: "/user/modify/:id", component: ModifyProfile, name: 'modify', meta: {title:"Modification du profil utilisateur, Groupomania"}},
+      
+      //Chemins et titres des pages concernant les posts et commentaires
       {path: "/posts/news", component: News, name: 'news', meta: {title:"News de Groupomania"}},
-      {path: "/posts/create", component: CreatePost, name: 'create', meta: {title:"Création d'un message Groupomania"}},
-      {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message Groupomania"}},
+      {path: "/post/create", component: CreatePost, name: 'create', meta: {title:"Création d'un message Groupomania"}},
+      {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message et commentaires Groupomania"}},
       {path: "/post/update/:id", component: UpdatePost, name: 'update', meta: {title:"Modification du message Groupomania"}},
      
       //Chemin et titre du tableau de bord de l'administrateur
-      {path: "/trafic", component: Trafic, name: 'trafic',meta: {title:"Trafic GSN"}},
+      {path: "/trafic", component: Trafic, name: 'trafic', meta: {title:"Trafic GSN"}},
     ]
     
   });

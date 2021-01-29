@@ -15,7 +15,7 @@
                   <br />
                   <div class="text-left">
                     <p class="text-color">
-                      🧍 {{ post.username }} - ⌚ {{ post.createdAt }}
+                      🧍 User {{post.userId}} - ⌚ {{ format(post.createdAt) }}
                     </p>
                   </div>
                   <div class="text-left">
@@ -24,30 +24,38 @@
                   <div class="text-left">
                     <p class="text-color">📝 {{ post.description }}</p>
                   </div>
-                  <div v-if="author" class="buttons">
-                    <router-link :to="{ name: 'update', params: { id: post.id }}">
+                    <div class="buttons" v-if="user.id == post.userId || user.isAdmin">
+                      <!--:to="{ name: 'update', params: { id: post.id } }"-->
+                      <router-link :to="'/post/update/' + post.id"
+                      aria-label="Lien vers la page de modification du message">
+                        <button
+                          type="submit"
+                          name="update"
+                          id="update"
+                          class="btn text-white btn-md"
+                          aria-label="Bouton de modification du message"
+                          value="MODIFIER"
+                        >MODIFIER</button>
+                      </router-link>
                       <button
                         type="submit"
-                        name="update"
-                        id="update"
+                        name="delete"
+                        id="delete"
                         class="btn text-white btn-md"
-                        aria-label="Bouton de modification du message"
-                        value="MODIFIER"
-                      >
-                        MODIFIER
-                      </button>
-                    </router-link>
-                    <button
-                      type="submit"
-                      name="delete"
-                      id="delete"
-                      class="btn text-white btn-md"
-                      value="SUPPRIMER"
-                      aria-label="Bouton de suppression du message"
-                      @click.prevent="deleteAllComments(); deletePost();"
-                    >SUPPRIMER
-                    </button>      <!--deletePost();-->            
-                  </div>
+                        value="SUPPRIMER"
+                        aria-label="Bouton de suppression du message"
+                        @click.prevent="deletePost"
+                      >SUPPRIMER</button>
+                    </div>
+                    <div v-if="user.id != post.userId">
+                      <button
+                        name="signal"
+                        id="signal"
+                        class="flex-items-center rounded text-white"
+                        aria-label="Bouton de signalement du message"
+                        @click.prevent="signalPost"
+                      >⚠️</button>
+                    </div>
                 </div>
               </div>
               <div>
@@ -64,6 +72,7 @@
                     v-for="comment in comments"
                     :key="comment.id"
                     :comment="comment"
+                    :user="user"
                     @respond-to="respondTo = $event"
                   ></comment>
                 </div>
@@ -81,33 +90,37 @@
 import HeaderConnected from "../components/HeaderConnected.vue";
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
+import {formatRelative} from 'date-fns';
+import {fr} from 'date-fns/locale';
 
 export default {
   components: { HeaderConnected, CommentForm, Comment },
   name: "post",
   data() {
     return {
-      post: {
-        /*id: "",
-        userId: "",
-        username: "",
-        createdAt: "",
-        updatedAt: "",
-        title: "",
-        description: ""*/
-      },
-      comment:'',
+      post: {},
+      comment: "",
       comments: [],
-      author: true,
-      reader: true,
       respondTo: null,
+      user: {
+        id: null,
+        isAdmin: false,
+        //username: ""
+      },
     };
   },
 
   mounted() {
+    //Affichage des posts et des commentaires
     this.getOnePost();
     this.getComments();
+
+    //Affichage des boutons (modifier et supprimer) si auteur ou administrateur identifié
+    const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+    this.user.id = storage.userId;
+    this.user.isAdmin = storage.isAdmin;
   },
+  
   methods: {
     //Affichage du message---------------------------------------------
     getOnePost() {
@@ -116,7 +129,7 @@ export default {
         .then((response) => {
           response.json().then((post) => {
             this.post = post;
-            console.log(post);
+            //console.log(post);
           });
           console.log(response + "Le message s'affiche");
         })
@@ -127,16 +140,8 @@ export default {
 
     //Suppression du message----------------------------------------------
     deletePost() {
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "DELETE",
-        headers: headers,
-        body: JSON.stringify(this.post),
-      };
-      console.log(JSON.parse(myInit.body));
       const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/posts/delete/"+ postId, myInit)
+      fetch("http://localhost:3000/api/posts/delete/" + postId, {method: "DELETE"})
         .then((success) => {
           this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
@@ -148,15 +153,14 @@ export default {
 
     //Affichage des commentaires---------------------------------------
     getComments() {
-      const postId = this.$route.params.id
+      const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/comments/read/" + postId)
-        .then(response => {
-          response.json()
-          .then(comments => {
-            this.comments = comments
-            console.log(comments)
-          })
-           console.log(response + "Les commentaires s'affichent");
+        .then((response) => {
+          response.json().then((comments) => {
+            this.comments = comments;
+            //console.log(comments);
+          });
+          console.log(response + "Les commentaires s'affichent");
         })
         .catch((error) => {
           console.log(error + "Les commentaires ne s'affichent pas");
@@ -172,28 +176,32 @@ export default {
       this.respondTo.children.push(comment);
     },
 
-    //Suppression des commentaires liés au message----------------------------------------------
-    deleteAllComments() {
-      const headers = new Headers();
-      headers.append("content-type", "application/json");
-      const myInit = {
-        method: "DELETE",
+    //Signalement du message----------------------------------------------
+    signalPost() {
+       const headers = new Headers();
+        headers.append("content-type", "application/json");
+        const myInit = {
+        method: "PUT",
         headers: headers,
-        body: JSON.stringify(this.comment),
+        body: JSON.stringify(this.post),
       };
-      console.log(JSON.parse(myInit.body));
+      //console.log(JSON.parse(myInit.body));
       const postId = this.$route.params.id
-      fetch("http://localhost:3000/api/comments/delete/" + postId, myInit)
+        fetch("http://localhost:3000/api/posts/signal/" + postId, myInit)
         .then((success) => {
-           //window.location.reload(); 
-          console.log(success + "Les commentaires sont supprimés");
+          this.post.isSignaled = true;
+          alert("Le message a été signalé auprès de l'administrateur !")
+          console.log(success + "Le signalement du message a été effectué");
         })
         .catch((error) => {
-          console.log(error + "Les commentaires n'ont pas été supprimés");
+          console.log(error + "Le signalement du message n'a pas été effectué");
         });
     },
 
-    
+    //Affichage de la date des messages au format français-------------------------------
+     format(date) {
+      return formatRelative(new Date(date), new Date(), { locale: fr })
+    },
   },
 };
 </script>
@@ -211,7 +219,7 @@ h1 {
 #post .container #post-row #post-column #post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 310px;
+  height: 330px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
@@ -244,5 +252,9 @@ button {
 .buttons {
   display: flex;
   justify-content: space-between;
+}
+#signal {
+  background-color:rgba(252, 94, 59, 0.8) !important;
+  border: 1px solid rgba(252, 94, 59, 0.8) !important;
 }
 </style>

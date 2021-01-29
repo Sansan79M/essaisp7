@@ -124,8 +124,10 @@
                     </button>
                   </div>
                   <div id="register-link" class="text-right">
-                    <router-link class="text-color" :to="'/user/login'"
-                    aria-label="Lien vers la page de connection"
+                    <router-link
+                      class="text-color"
+                      :to="'/user/login'"
+                      aria-label="Lien vers la page de connection"
                       >Se connecter</router-link
                     >
                   </div>
@@ -158,7 +160,7 @@ export default {
       show2: false,
     };
   },
-
+  
   methods: {
     signup() {
       if (this.user.password === this.passwordConfirm) {
@@ -169,10 +171,10 @@ export default {
           headers: headers,
           body: JSON.stringify(this.user),
         };
-        console.log(JSON.parse(myInit.body));
+        //console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/signup", myInit)
           .then((success) => {
-            this.$router.push({ path: "/posts/news" });
+            this.$router.push({ path: "/user/confirmSignup" });
             console.log(success + "Le compte a bien été créé");
           })
           .catch((error) => {
@@ -182,6 +184,7 @@ export default {
         alert("Les mots de passe ne sont pas identiques");
       }
     },
+ 
   },
 };
 </script>

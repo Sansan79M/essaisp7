@@ -21,21 +21,20 @@
                       id="avatar"
                       name="avatar"
                       class="avatar text-white rounded-circle text-center"
-                      v-model="user.username"
+                      v-model="initial"
                     />
-                    <!--<%= user.username[0..1].upcase %>-->
                   </div>
                   <br />
                   <div class="text-left">
-                    <p class="text-color">✏️ {{ user.bio }}</p>
+                    <p class="text-color">✏️ {{ user.service }}</p>
                   </div>
                   <br />
                   <div class="text-left">
                     <p class="text-color">📧 {{ user.email }}</p>
                   </div>
                   <br />
-                  <div id="buttons">
-                    <router-link :to="'/user/modify'">
+                  <div id="buttons"><!--:to="{ name: 'modify', params: { id: user.id } }"-->
+                    <router-link :to="'/user/modify/'+ user.id">
                       <button
                         type="submit"
                         name="update"
@@ -79,8 +78,9 @@ export default {
         /*userId:"",
         username: "",
         email: "",
-        bio: ""*/
+        service: ""*/
       },
+      initial:""
     };
   },
 
@@ -91,19 +91,18 @@ export default {
   methods: {
     //Affichage du compte utilisateur-----------------------------------------
     userProfile() {
-      const storage = JSON.parse(localStorage.getItem("storage_user"));
-      console.log(storage);
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      //console.log(storage);
       fetch("http://localhost:3000/api/user/profile/" + storage.userId)
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
-            console.log(user);
+            //Initiales de l' utilisateur affichées en majuscule dans l'avatar
+            this.initial = user.username.toUpperCase().split(" ").map((n,i,a)=> i === 0 || i+1 === a.length ? n[0] : null).join("");
           });
           console.log(response + "Le profil utilisateur s'affiche");
         })
-        .catch((error) => {
-          console.log(error + "Le profil utilisateur ne s'affiche pas");
-        });
+        .catch((error) => {console.log(error + "Le profil utilisateur ne s'affiche pas");});
     },
 
     //Suppression du compte utilisateur--------------------------------------------
@@ -148,11 +147,12 @@ h1 {
   height: 80px;
   background-color: #0b505b !important;
   border: #0b505b !important;
+  font-size: 30px;
 }
 #profile .container #profile-row #profile-column #profile-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 410px;
+  height: 450px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
