@@ -1,8 +1,6 @@
-//const { user } = require('../config/dbConfig');
 const db = require('../config/dbConfig');
 const Comment = db.comment;
 const User = db.user;
-//const Post = db.post;
 
 
 //Créer un nouveau commentaire
@@ -11,11 +9,6 @@ exports.createComment = (req, res, next) => {
         userId: req.body.userId,
         postId: req.body.postId,
         content: req.body.content,
-        /*include: [{
-            model: User,
-            as: 'userComments',
-            attributes: ['username']
-        }]  */
     })
         .then(success => res.status(200).json({ success: "Le commentaire a été enregistré" }))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'enregistrement d'un commentaire" }));
@@ -26,11 +19,11 @@ exports.readOneComment = (req, res, next) => {
     Comment.findOne({
         where: { id: req.params.id },
         attributes: ['id', 'userId', 'postId', 'content', 'isSignaled','createdAt', 'updatedAt'],
-       /* include: [{
+        include: [{
             model: User,
-            as: 'userComments',
-            attributes: ['username']
-        }]  */
+            attributes: ['username'],
+            required: true
+        }] 
     })
         .then((comment) => { res.status(200).json(comment) })
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage d'un commentaire" }));
@@ -42,11 +35,11 @@ exports.readAllComments = (req, res, next) => {
         where: { postId: req.params.postId },
         order: [['createdAt', 'DESC']], //affichage des commentaires par ordre décroissant
         attributes: ['id', 'userId', 'postId', 'content', 'isSignaled', 'createdAt', 'updatedAt'],
-       /* include: [{
+        include: [{
             model: User,
-            as: 'userComments',
-            attributes: ['username']
-        }]  */
+            attributes: ['username'],
+            required: true
+        }] 
     })
         .then(comments => res.status(200).json(comments))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage des commentaires" }));
@@ -94,13 +87,12 @@ exports.signalComment = (req, res, next) => {
 //Affiche la liste des commentaires signalés
 exports.readComments = (req, res, next) => {
     Comment.findAll({
-        //where: { postId: req.params.postId },
         attributes: ['id', 'userId', 'postId', 'content', 'isSignaled', 'createdAt', 'updatedAt'],
-       /* include: [{
+        include: [{
             model: User,
-            as: 'userComments',
-            attributes: ['username']
-        }]  */
+            attributes: ['username'],
+            required: true
+        }] 
     })
         .then(comments => res.status(200).json(comments))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage des commentaires signalés" }));

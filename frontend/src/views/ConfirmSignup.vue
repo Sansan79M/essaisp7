@@ -17,7 +17,7 @@
           </h1>
           <br />
           <p>
-            Vous allez être redirigé automatiquement vers la page de connexion, d'ici 8 secondes<span id="loading"></span>
+            Vous allez être redirigé automatiquement vers la page de connexion, d'ici 5 secondes<span id="loading"></span>
             </p>
           <p>
             Si le transfert ne se fait pas automatiquement, vous pouvez cliquer sur
@@ -51,7 +51,7 @@ export default {
       setTimeout(() => {
         this.$router.push({ path: "/user/login" });
         console.log("Redirection vers la page de connexion")
-      }, 8000);
+      }, 5000);
     },
   }
   

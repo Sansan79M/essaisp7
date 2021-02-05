@@ -33,7 +33,7 @@
                     <p class="text-color">📧 {{ user.email }}</p>
                   </div>
                   <br />
-                  <div id="buttons"><!--:to="{ name: 'modify', params: { id: user.id } }"-->
+                  <div id="buttons">
                     <router-link :to="'/user/modify/'+ user.id">
                       <button
                         type="submit"
@@ -91,9 +91,15 @@ export default {
   methods: {
     //Affichage du compte utilisateur-----------------------------------------
     userProfile() {
+      const headers = new Headers();
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+        const myInit = {
+          method: "GET",
+          headers: headers,
+        };
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       //console.log(storage);
-      fetch("http://localhost:3000/api/user/profile/" + storage.userId)
+      fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
@@ -112,14 +118,15 @@ export default {
       ) {
         const headers = new Headers();
         headers.append("content-type", "application/json");
+        headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
         const myInit = {
           method: "DELETE",
           headers: headers,
           body: JSON.stringify(this.user),
         };
-        console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/delete", myInit)
           .then((success) => {
+            alert('Le votre profil est supprimé')
             this.$router.push({ path: "/" });
             console.log(success + "Le profil utilisateur a été supprimé");
           })

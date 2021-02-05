@@ -1,7 +1,7 @@
-//const { user } = require('../config/dbConfig');
 const db = require('../config/dbConfig');
 const Post = db.post;
 const User = db.user;
+
 
 //Créer un nouveau message 
 exports.createPost = (req, res, next) => {
@@ -9,11 +9,6 @@ exports.createPost = (req, res, next) => {
         userId: req.body.userId,
         title: req.body.title,
         description: req.body.description,
-        /*include: [{
-            model: User,
-            as: 'userPosts',
-            attributes: ['username']
-        }],*/
     })
         .then(success => res.status(200).json({ success: "Le message a été enregistré" }))
         .catch(error => res.status(401).json({ error: "Une erreur est survenue dans la création d'un message" }));
@@ -27,8 +22,8 @@ exports.getOnePost = (req, res, next) => {
         attributes: ['id', 'userId', 'title', 'description', 'isSignaled', 'createdAt', 'updatedAt'],
         include: [{
             model: User,
-            //as: 'userPosts',
-            attributes: ['username']
+            attributes: ['username', 'service'],
+            required: true
         }]      
     })
         .then(post => res.status(200).json(post))
@@ -41,11 +36,11 @@ exports.listPosts = (req, res, next) => {
     Post.findAll({
         order: [['createdAt', 'DESC']], //affichage des messages par ordre décroissant
         attributes: ['id', 'userId', 'title', 'description', 'isSignaled', 'createdAt', 'updatedAt'],
-        /*include: [{
+        include: [{
             model: User,
-            as: 'userPosts',
-            attributes: ['username']
-        }]   */
+            attributes: ['username', 'service'],
+            required: true
+        }]  
     })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue de l'affichage du fil d'actualité" }));

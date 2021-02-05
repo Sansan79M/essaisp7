@@ -13,24 +13,7 @@
                 class="card text-center effect-shadow"
                 id="card-h1"
               >
-                <h1 class="text-center text-color font-weight-bold">FIL D'ACTUALITE</h1>
-              </div>
-              <br />
-
-              <div
-                id="card-h2"
-                max-width="600"
-                class="card effect-shadow effect-blue"
-              >
-                <router-link
-                  :to="'/post/create'"
-                  aria-label="Lien vers la page de création de message"
-                  class="link effect-blue"
-                >
-                  <h2 class="text-color text-center effect-blue">
-                    💬 CREER UN MESSAGE
-                  </h2>
-                </router-link>
+                <h1 class="text-center text-white font-weight-bold">MES COLLEGUES</h1>
               </div>
               <br />
 
@@ -38,25 +21,23 @@
                 <ul id="news-list">
                   <li
                     class="card effect-shadow mb-2"
-                    v-for="post in posts"
-                    :key="post.id"
+                    v-for="user in users"
+                    :key="user.id"
                   >
-                    <router-link
+                    <!--<router-link
                       class="link"
-                      :to="'/post/' + post.id"
+                      :to="'/coworker/' + user.id"
                       aria-label="Lien vers le message"
-                      >
+                      >-->
                       <div class="card effect-bg text-color">
-                        <span>🧍 {{ post.user.username }} 
-                        <span v-if="post.user.service">✏️ {{ post.user.service }} </span>
+                        <p>🧍 {{ user.username }} 
+                          <br class="d-block d-md-none" />
+                        <span v-if="user.service">✏️ {{ user.service }} </span>
                         <br class="d-block d-md-none" />
-                        ⌚ {{ format(post.createdAt) }}</span>
+                        📧 {{ user.email }}</p>
                         <br />
-                        <span class="font-weight-bold">📧 {{ post.title }}
-                        <br class="d-block d-md-none" />
-                        📝 {{ post.description }}</span>
                       </div>
-                    </router-link>
+                    <!--</router-link>-->
                     <div></div>
                   </li>
                 </ul>
@@ -71,25 +52,22 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import { formatRelative } from "date-fns";
-import { fr } from "date-fns/locale";
 
 export default {
-  name: "news",
+  name: "coworkers",
   components: { HeaderConnected },
   data() {
     return {
-      post: {},
-      posts: [],
       user: {},
+      users:[],
     };
   },
   mounted() {
-    this.listPosts();
+    this.getCoworkers();
   },
   methods: {
     //Affichage de la liste des messages-------------------------------
-    listPosts() {
+    getCoworkers() {
       const headers = new Headers();
       headers.append(
         "Authorization",
@@ -99,23 +77,20 @@ export default {
         method: "GET",
         headers: headers,
       };
-      fetch("http://localhost:3000/api/posts/news", myInit)
+      fetch("http://localhost:3000/api/user/coworkers", myInit)
         .then((success) => {
-          success.json().then((posts) => {
-            this.posts = posts;
-            //console.log(posts);
+          success.json().then((users) => {
+            this.users = users;
+            //console.log(users);
           });
-          console.log(success + "Le fil d'actualité s'affiche");
+          console.log(success + "La liste des utilisateurs s'affiche");
         })
         .catch((error) => {
-          console.log(error + "Le fil d'actualité ne s'affiche pas");
+          console.log(error + "La liste des utilisateurs ne s'affiche pas");
         });
     },
 
-    //Affichage de la date des messages au format français-------------------------------
-    format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr });
-    },
+
   },
 };
 </script>
@@ -134,7 +109,7 @@ h2:hover {
   font-size: 30px;
   margin-top: 30px;
   padding: 10px;
-  background-color: rgb(252, 252, 111);
+  background-color: #0b505b;
 }
 .effect-shadow {
   border: 1px solid #0b505b;
@@ -147,11 +122,6 @@ h2:hover {
 .effect-bg:hover {
   background-color: rgb(252, 252, 111);
 }
-.effect-blue:hover {
-  background-color: #0b505b !important;
-  color: white;
-}
-
 main {
   margin: 0;
   padding: 0;
@@ -163,7 +133,6 @@ main {
   max-width: 600px;
   height: 340px;
   border: 1px solid #0b505b;
-  background-color: rgb(252, 252, 111);
 }
 #news .container #news-row #news-column #news-box #news-displayed {
   padding: 20px;

@@ -7,7 +7,9 @@
         @submit.prevent="updateComment()"
       >
         <p class="mb-2 text-color">
-          🧍 User {{ comment.userId }} - ⌚ {{ format(comment.createdAt) }}
+          🧍 {{ comment.user.username }} 
+          <br class="d-block d-md-none" />
+          ⌚ {{ format(comment.createdAt) }}
         </p>
         <p v-if="edit" class="form-group flex">
           <label for="new-content">Laisser un commentaire</label>
@@ -101,10 +103,9 @@ export default {
 
     //Modification du commentaire------------------------------------------
     updateComment() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      this.comment.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
       const myInit = {
         method: "PUT",
         headers: headers,
@@ -125,12 +126,14 @@ export default {
 
     //Supprime un commentaire----------------------------------------------
     deleteComment() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      this.comment.userId = storage.userId;
-      const commentId = this.comment.id;
-      fetch("http://localhost:3000/api/comments/delete/" + commentId, {
+      const headers = new Headers();
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      const myInit = {
         method: "DELETE",
-      })
+        headers: headers,
+      };
+      const commentId = this.comment.id;
+      fetch("http://localhost:3000/api/comments/delete/" + commentId, myInit)
         .then((success) => {
           window.location.reload();
           console.log(success + "Le commentaire est supprimé");
@@ -164,7 +167,13 @@ export default {
 
      //Affichage de la date des commentaires au format français-------------------------------
     format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr })
+       //const dateTime = date; 
+      let dateParts= date.split(/[- :]/); dateParts[1]--;
+      const dateObject = new Date(...dateParts);
+      //console.log(date+'date')
+      //console.log(dateObject)
+      //console.log(dateParts)
+      return formatRelative(dateObject, new Date(), { locale: fr })
     },
   },
 };
@@ -174,7 +183,7 @@ export default {
 #comment-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 235px;
+  height: 245px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

@@ -28,13 +28,13 @@ db.post = require('../models/postModels')(sequelize, Sequelize);
 db.comment = require('../models/commentModels')(sequelize, Sequelize);
 
 //Paramétrages des clés étrangères
-db.user.hasMany(db.post, {/*foreignKey: 'userId', */onDelete: 'cascade', hooks:true/*, as: 'userPosts'*/}); //L'utilisateur est l'auteur de plusieurs posts
-db.user.hasMany(db.comment, {/*foreignKey: 'userId',*/ onDelete: 'cascade', hooks:true/*, as: 'userComments'*/}); //L'utilisateur est l'auteur de plusieurs commentaires
-db.post.hasMany(db.comment, {/*foreignKey: 'postId',*/ onDelete: 'cascade', hooks:true/*, as: 'postComments'*/}); //Un post peut avoir plusieurs commentaires
+db.user.hasMany(db.post, {onDelete: 'cascade', hooks:true}); //L'utilisateur est l'auteur de plusieurs posts
+db.user.hasMany(db.comment, {onDelete: 'cascade', hooks:true}); //L'utilisateur est l'auteur de plusieurs commentaires
+db.post.hasMany(db.comment, {onDelete: 'cascade', hooks:true}); //Un post peut avoir plusieurs commentaires
 
-db.post.belongsTo(db.user, { foreignKey: 'userId'/*, as: 'userPosts'*/}); //Un post n'a qu'un utilisateur
-//db.comment.belongsTo(db.user, { foreignKey: 'userId', as: 'userComments'}); //Un commentaire n'a qu'un utilisateur
-//db.comment.belongsTo(db.post, { foreignKey: 'postId', as: 'postComments'}); //Un commentaire n'a qu'un post
+db.post.belongsTo(db.user, { foreignKey: 'userId'}); //Un post n'a qu'un utilisateur
+db.comment.belongsTo(db.user, { foreignKey: 'userId'}); //Un commentaire n'a qu'un utilisateur
+db.comment.belongsTo(db.post, { foreignKey: 'postId'}); //Un commentaire n'a qu'un post
 
 sequelize.authenticate()
   .then(() => { console.log('La connexion à la base de donnée a été établie avec succès'); })

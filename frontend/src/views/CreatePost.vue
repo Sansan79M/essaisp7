@@ -10,7 +10,11 @@
           <div id="create-post-row" class="row justify-content-center">
             <div id="create-post-column" class="col-md-6">
               <div id="create-post-box" class="col-md-12">
-                <form id="create-post-form" class="form" @submit.prevent="createPost">
+                <form
+                  id="create-post-form"
+                  class="form"
+                  @submit.prevent="createPost"
+                >
                   <h1 class="text-center text-color">CREATION D'UN MESSAGE</h1>
                   <br />
                   <div class="form-group text-left">
@@ -61,7 +65,7 @@
 </template>
 
 <script>
-import HeaderConnected from "../components/HeaderConnected"
+import HeaderConnected from "../components/HeaderConnected";
 
 export default {
   name: "create",
@@ -79,10 +83,16 @@ export default {
 
   methods: {
     createPost() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      const storage = JSON.parse(
+        localStorage.getItem("storage_user_groupomania")
+      );
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "POST",
         headers: headers,
@@ -91,7 +101,8 @@ export default {
       //console.log(this.post);
       fetch("http://localhost:3000/api/posts/create", myInit)
         .then((result) => {
-          result.json()
+          result
+            .json()
             .then((data) => {
               if (data.error) {
                 console.log(data);

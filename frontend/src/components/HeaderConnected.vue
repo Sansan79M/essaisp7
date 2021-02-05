@@ -51,10 +51,18 @@
             <li class="nav-item">
               <router-link
                 class="nav-link"
+                :to="'/user/coworkers'"
+                aria-label="Lien vers la liste des collègues inscrits"
+              >
+                MES COLLEGUES</router-link
+              >
+            </li>
+            <li class="nav-item">
+              <router-link
+                class="nav-link"
                 :to="'/user/profile/' + user.id"
-                aria-label="Lien vers la page du profil utilisateur"
-              ><!--:to="{ name: 'profile', params: {id: user.id} }"-->
-                PROFIL</router-link
+                aria-label="Lien vers la page du profil utilisateur">
+                MON PROFIL</router-link
               >
             </li>
             <li class="nav-item" v-if="user.isAdmin">
@@ -100,8 +108,14 @@ export default {
 
   methods: {
   userProfile() { 
+      const headers = new Headers();
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+        const myInit = {
+          method: "GET",
+          headers: headers,
+        };
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      fetch("http://localhost:3000/api/user/profile/" + storage.userId)
+      fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json()
           .then(user => {
@@ -109,9 +123,9 @@ export default {
           })
           //console.log(response + "L'URL vers le profil utilisateur s'affiche");
         })
-        /*.catch((error) => {
+        .catch((error) => {
           console.log(error + "L'URL vers le profil utilisateur ne s'affiche pas");
-        });*/
+        });
     },
 
 

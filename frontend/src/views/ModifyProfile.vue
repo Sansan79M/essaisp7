@@ -138,13 +138,7 @@ export default {
 
   data() {
     return {
-      user: {
-        /*userId: "",
-        username: "",
-        service: "",
-        email: "",
-        password: "",*/
-      },
+      user: {},
       show: false,
       initial: "",
       newUsername: "",
@@ -159,8 +153,14 @@ export default {
   methods: {
     //Affichage des données du compte utilisateur dans les inputs--------------------------
     userProfile() {
+      const headers = new Headers();
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+        const myInit = {
+          method: "GET",
+          headers: headers,
+        };
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      fetch("http://localhost:3000/api/user/profile/" + storage.userId)
+      fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
@@ -178,6 +178,7 @@ export default {
       this.user.id = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
       const myInit = {
         method: "PUT",
         headers: headers,

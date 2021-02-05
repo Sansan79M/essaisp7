@@ -34,38 +34,27 @@ export default {
     };
   },
 
-  /*computed: {
-    fullForm() {
-      if (this.respondTo) {
-        return {
-          ...this.newComment,
-          respond_to_id: this.respondTo.id,
-        };
-      }
-      return this.newComment;
-    },
-  },*/
-
   methods: {
     createComment(postId) {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.newComment.userId = storage.userId;
       this.newComment.postId = postId;
-      console.log(this.newComment);
+      //console.log(this.newComment);
       const headers = new Headers();
       headers.append("content-type", "application/json");
+      headers.append("Authorization", storage.token)
       const myInit = {
         method: "POST",
         headers: headers,
         body: JSON.stringify(this.newComment),
       };
-      console.log(this.newComment);
+      //console.log(this.newComment);
       fetch("http://localhost:3000/api/comments/create", myInit)
         .then((result) => {
-          window.location.reload();
           result
             .json()
             .then((data) => {
+              window.location.reload();
               if (data.error) {
                 console.log(data);
                 return;

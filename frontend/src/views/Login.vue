@@ -97,6 +97,8 @@ export default {
     login() {
         const headers = new Headers();
         headers.append("content-type", "application/json");
+        
+
         const myInit = {
           method: "POST",
           headers: headers,

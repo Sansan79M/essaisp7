@@ -15,7 +15,9 @@
                   <br />
                   <div class="text-left">
                     <p class="text-color">
-                      🧍 {{ post.userId }} - {{ user.username }} - {{ post.username }}- ⌚ {{ format(post.createdAt) }}
+                      🧍 {{ post.user.username }}
+                      <br class="d-block d-md-none" />
+                      ⌚ {{ format(post.createdAt) }}
                     </p>
                   </div>
                   <div class="text-left">
@@ -28,11 +30,11 @@
                     class="buttons"
                     v-if="user.id == post.userId || user.isAdmin"
                   >
-                    <!--:to="{ name: 'update', params: { id: post.id } }"-->
                     <router-link
                       :to="'/post/update/' + post.id"
                       aria-label="Lien vers la page de modification du message"
                     >
+                    <!-- Les boutons du message -->
                       <button
                         type="submit"
                         name="update"
@@ -69,6 +71,8 @@
                   </div>
                 </div>
               </div>
+            
+              <!-- Les commentaires -->
               <div>
                 <div>
                   <comment-form
@@ -101,7 +105,7 @@
 import HeaderConnected from "../components/HeaderConnected.vue";
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
-import { formatRelative } from 'date-fns';
+import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 
 export default {
@@ -110,7 +114,7 @@ export default {
   data() {
     return {
       post: {
-        //username:""
+        user: "",
       },
       comment: "",
       comments: [],
@@ -118,10 +122,8 @@ export default {
       user: {
         id: null,
         isAdmin: false,
-        //username:""
       },
-      //username: ""
-
+      date: "",
     };
   },
 
@@ -131,7 +133,9 @@ export default {
     this.getComments();
 
     //Affichage des boutons (modifier et supprimer) si auteur ou administrateur identifié
-    const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+    const storage = JSON.parse(
+      localStorage.getItem("storage_user_groupomania")
+    );
     this.user.id = storage.userId;
     this.user.isAdmin = storage.isAdmin;
   },
@@ -139,17 +143,22 @@ export default {
   methods: {
     //Affichage du message---------------------------------------------
     getOnePost() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      this.post.userId = storage.userId;
+      //console.log(JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      const headers = new Headers();
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
+      const myInit = {
+        method: "GET",
+        headers: headers,
+      };
       const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/posts/post/" + postId)
+      fetch("http://localhost:3000/api/posts/post/" + postId, myInit)
         .then((response) => {
           response.json().then((post) => {
             this.post = post;
             //console.log(post);
-            this.username = post.username;
-            console.log(this.user.username)
-            console.log(this.post.username)
           });
           console.log(response + "Le message s'affiche");
         })
@@ -160,12 +169,17 @@ export default {
 
     //Suppression du message----------------------------------------------
     deletePost() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      this.post.userId = storage.userId;
-      const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/posts/delete/" + postId, {
+      const headers = new Headers();
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
+      const myInit = {
         method: "DELETE",
-      })
+        headers: headers,
+      };
+      const postId = this.$route.params.id;
+      fetch("http://localhost:3000/api/posts/delete/" + postId, myInit)
         .then((success) => {
           this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
@@ -177,8 +191,17 @@ export default {
 
     //Affichage des commentaires---------------------------------------
     getComments() {
+      const headers = new Headers();
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
+      const myInit = {
+        method: "GET",
+        headers: headers,
+      };
       const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/comments/read/" + postId)
+      fetch("http://localhost:3000/api/comments/read/" + postId, myInit)
         .then((response) => {
           response.json().then((comments) => {
             this.comments = comments;
@@ -224,7 +247,14 @@ export default {
 
     //Affichage de la date des messages au format français-------------------------------
     format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr });
+      //console.log(date+'date 2')
+      //const dateTime = date;
+      let dateParts = date.split(/[- :]/); //dateParts[1]--;
+      const dateObject = new Date(...dateParts);
+      //console.log(date+'date')
+      //console.log(dateObject)
+      //console.log(dateParts)
+      return formatRelative(dateObject, new Date(), { locale: fr });
     },
   },
 };

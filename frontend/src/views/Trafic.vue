@@ -29,7 +29,7 @@
                 <tbody v-for="post in posts" :key="post.id">
                   <tr v-if="post.isSignaled !== false">
                     <td>❌</td>
-                    <td>{{ post.userId}} - {{ post.username}}</td>
+                    <td>{{ post.user.username}}</td>
                     <td>{{ post.title }}</td>
                     <td>{{ post.description }}</td>
                     <td>{{ post.createdAt }}</td>
@@ -65,7 +65,7 @@
                 <tbody v-for="comment in comments" :key="comment.id">
                   <tr v-if="comment.isSignaled !== false">
                     <td>❌</td>
-                    <td>{{ comment.userId }}</td>
+                    <td>{{ comment.user.username }}</td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.createdAt }}</td>
                     <td>{{ comment.postId }}</td>
@@ -110,9 +110,13 @@ export default {
   methods: {
     //Affichage des posts---------------------------------------------
     listPosts() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
-      this.post.userId = storage.userId;
-      fetch("http://localhost:3000/api/posts/news")
+      const headers = new Headers();
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      const myInit = {
+          method: "GET",
+          headers: headers,
+        };
+      fetch("http://localhost:3000/api/posts/news", myInit)
         .then((success) => {
           success.json().then((posts) => {
             this.posts = posts;
@@ -126,7 +130,13 @@ export default {
 
     //Affichage des commentaires---------------------------------------
     getComments() {
-      fetch("http://localhost:3000/api/comments/readall")
+      const headers = new Headers();
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      const myInit = {
+          method: "GET",
+          headers: headers,
+        };
+      fetch("http://localhost:3000/api/comments/readall", myInit)
         .then((response) => {
           response.json().then((comments) => {
             this.comments = comments;

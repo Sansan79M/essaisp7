@@ -3,15 +3,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
-//Importation des différentes pages concernant l'utilisateur
+//Importation des différentes pages concernant les utilisateurs
 import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
 import ConfirmSignup from '../views/ConfirmSignup.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import ModifyProfile from '../views/ModifyProfile.vue'
+import Coworkers from '../views/Coworkers.vue'
 
-//Importation des différentes pages concernant les posts
+//Importation des différentes pages concernant les posts et commentaires
 import News from '../views/News.vue'
 import CreatePost from '../views/CreatePost.vue'
 import Post from '../views/Post.vue'
@@ -25,19 +26,20 @@ const router = new VueRouter({
     mode: "history",
     base: __dirname,
     routes: [
-      //Chemins et titres des pages concernant l'utilisateur
+      //Chemins et titres des pages concernant les utilisateurs
       {path: "/", component: Home, name: 'home', meta: {title:"Accueil Groupomania"}},
       {path: "/user/signup", component: Signup, name: 'signup', meta: {title:"Inscription à Groupomania"}},
       {path: "/user/confirmSignup", component: ConfirmSignup, name: 'confirmSignup', meta: {title:"Confirmation d'inscription à Groupomania"}},
       {path: "/user/login", component: Login, name: 'login', meta: {title:"Connexion à Groupomania"}},
       {path: "/user/profile/:id", component: Profile, name: 'profile', meta: {title:"Profil utilisateur, Groupomania"}},
       {path: "/user/modify/:id", component: ModifyProfile, name: 'modify', meta: {title:"Modification du profil utilisateur, Groupomania"}},
-      
+      {path: "/user/coworkers", component: Coworkers, name: 'coworkers', meta: {title:"Tous les collègues Groupomania"}},
+
       //Chemins et titres des pages concernant les posts et commentaires
       {path: "/posts/news", component: News, name: 'news', meta: {title:"News de Groupomania"}},
       {path: "/post/create", component: CreatePost, name: 'create', meta: {title:"Création d'un message Groupomania"}},
-      {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message et commentaires Groupomania"}},
-      {path: "/post/update/:id", component: UpdatePost, name: 'update', meta: {title:"Modification du message Groupomania"}},
+      {path: "/post/:id", component: Post, name: 'post', meta: {title:"Message Groupomania et ses commentaires "}},
+      {path: "/post/update/:id", component: UpdatePost, name: 'update', meta: {title:"Modification d'un message Groupomania"}},
      
       //Chemin et titre du tableau de bord de l'administrateur
       {path: "/trafic", component: Trafic, name: 'trafic', meta: {title:"Trafic GSN"}},

@@ -66,6 +66,16 @@ exports.userProfile = (req, res, next) => {
     .catch(error => res.status(400).json({ error: "Une erreur d'affichage du profil est survenue" }));
 };
 
+//Consultation de tous les profils utilisateurs
+exports.coworkers = (req, res, next) => {
+  User.findAll({
+    order: [['username', 'ASC']], //affichage des salariés par ordre alphabétique
+    attributes: ['id', 'username', 'email', 'service', 'isAdmin']
+  })
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(400).json({ error: "Une erreur d'affichage des profils est survenue" }));
+};
+
 
 //Modification du profil par l'utilisateur
 exports.modifyProfile = (req, res, next) => {
