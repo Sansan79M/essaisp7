@@ -47,7 +47,7 @@
                       aria-label="Lien vers le message"
                       ><!--:to="{ name: 'post', params: { id: post.id }}"-->
                       <div class="card effect-bg text-color">
-                        🧍 User {{ post.userId }} - ⌚ {{ format(post.createdAt) }}
+                        🧍 User {{ post.userId }} - {{ post.username }} - ⌚ {{ format(post.createdAt) }}
                         <br />
                         📧 {{ post.title }}
                         <br />
@@ -76,7 +76,10 @@ export default {
   components: { HeaderConnected },
   data() {
     return {
+      post:{},
       posts: [],
+      user:{},
+      //username:""
     };
   },
   mounted() {
@@ -85,11 +88,14 @@ export default {
   methods: {
     //Affichage de la liste des messages-------------------------------
     listPosts() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
       fetch("http://localhost:3000/api/posts/news")
         .then((success) => {
           success.json().then((posts) => {
             this.posts = posts;
             //console.log(posts);
+            //console.log(this.post.username)
           });
           console.log(success + "Le fil d'actualité s'affiche");
         })

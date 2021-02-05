@@ -29,7 +29,7 @@
                 <tbody v-for="post in posts" :key="post.id">
                   <tr v-if="post.isSignaled !== false">
                     <td>❌</td>
-                    <td>{{ post.userId }}</td>
+                    <td>{{ post.userId}} - {{ post.username}}</td>
                     <td>{{ post.title }}</td>
                     <td>{{ post.description }}</td>
                     <td>{{ post.createdAt }}</td>
@@ -93,12 +93,14 @@ import HeaderConnected from "../components/HeaderConnected.vue";
 export default {
   components: { HeaderConnected },
   name: "trafic",
+
   data() {
     return {
-      post: "",
+      post: {},
       posts: [],
       comment: "",
       comments: [],
+      user:{username:""}
     };
   },
   mounted() {
@@ -108,6 +110,8 @@ export default {
   methods: {
     //Affichage des posts---------------------------------------------
     listPosts() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
       fetch("http://localhost:3000/api/posts/news")
         .then((success) => {
           success.json().then((posts) => {

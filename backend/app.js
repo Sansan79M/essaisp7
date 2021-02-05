@@ -24,6 +24,8 @@ app.use((req, res, next) => {
 
 //Manipulation du JSON
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 //Routes
 app.use('/api/user', userRoutes);

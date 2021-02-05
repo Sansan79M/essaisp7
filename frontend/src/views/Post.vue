@@ -15,7 +15,7 @@
                   <br />
                   <div class="text-left">
                     <p class="text-color">
-                      🧍 User {{post.userId}} - ⌚ {{ format(post.createdAt) }}
+                      🧍 {{ post.userId }} - {{ user.username }} - {{ post.username }}- ⌚ {{ format(post.createdAt) }}
                     </p>
                   </div>
                   <div class="text-left">
@@ -24,38 +24,49 @@
                   <div class="text-left">
                     <p class="text-color">📝 {{ post.description }}</p>
                   </div>
-                    <div class="buttons" v-if="user.id == post.userId || user.isAdmin">
-                      <!--:to="{ name: 'update', params: { id: post.id } }"-->
-                      <router-link :to="'/post/update/' + post.id"
-                      aria-label="Lien vers la page de modification du message">
-                        <button
-                          type="submit"
-                          name="update"
-                          id="update"
-                          class="btn text-white btn-md"
-                          aria-label="Bouton de modification du message"
-                          value="MODIFIER"
-                        >MODIFIER</button>
-                      </router-link>
+                  <div
+                    class="buttons"
+                    v-if="user.id == post.userId || user.isAdmin"
+                  >
+                    <!--:to="{ name: 'update', params: { id: post.id } }"-->
+                    <router-link
+                      :to="'/post/update/' + post.id"
+                      aria-label="Lien vers la page de modification du message"
+                    >
                       <button
                         type="submit"
-                        name="delete"
-                        id="delete"
+                        name="update"
+                        id="update"
                         class="btn text-white btn-md"
-                        value="SUPPRIMER"
-                        aria-label="Bouton de suppression du message"
-                        @click.prevent="deletePost"
-                      >SUPPRIMER</button>
-                    </div>
-                    <div v-if="user.id != post.userId">
-                      <button
-                        name="signal"
-                        id="signal"
-                        class="flex-items-center rounded text-white"
-                        aria-label="Bouton de signalement du message"
-                        @click.prevent="signalPost"
-                      >⚠️</button>
-                    </div>
+                        aria-label="Bouton de modification du message"
+                        value="MODIFIER"
+                      >
+                        MODIFIER
+                      </button>
+                    </router-link>
+                    <button
+                      type="submit"
+                      name="delete"
+                      id="delete"
+                      class="btn text-white btn-md"
+                      value="SUPPRIMER"
+                      aria-label="Bouton de suppression du message"
+                      @click.prevent="deletePost"
+                    >
+                      SUPPRIMER
+                    </button>
+                  </div>
+                  <div v-if="user.id != post.userId">
+                    <button
+                      name="signal"
+                      id="signal"
+                      class="flex-items-center rounded text-white"
+                      aria-label="Bouton de signalement du message"
+                      @click.prevent="signalPost"
+                    >
+                      ⚠️
+                    </button>
+                  </div>
                 </div>
               </div>
               <div>
@@ -90,23 +101,27 @@
 import HeaderConnected from "../components/HeaderConnected.vue";
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
-import {formatRelative} from 'date-fns';
-import {fr} from 'date-fns/locale';
+import { formatRelative } from 'date-fns';
+import { fr } from "date-fns/locale";
 
 export default {
   components: { HeaderConnected, CommentForm, Comment },
   name: "post",
   data() {
     return {
-      post: {},
+      post: {
+        //username:""
+      },
       comment: "",
       comments: [],
       respondTo: null,
       user: {
         id: null,
         isAdmin: false,
-        //username: ""
+        //username:""
       },
+      //username: ""
+
     };
   },
 
@@ -120,16 +135,21 @@ export default {
     this.user.id = storage.userId;
     this.user.isAdmin = storage.isAdmin;
   },
-  
+
   methods: {
     //Affichage du message---------------------------------------------
     getOnePost() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
       const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/post/" + postId)
         .then((response) => {
           response.json().then((post) => {
             this.post = post;
             //console.log(post);
+            this.username = post.username;
+            console.log(this.user.username)
+            console.log(this.post.username)
           });
           console.log(response + "Le message s'affiche");
         })
@@ -140,8 +160,12 @@ export default {
 
     //Suppression du message----------------------------------------------
     deletePost() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
       const postId = this.$route.params.id;
-      fetch("http://localhost:3000/api/posts/delete/" + postId, {method: "DELETE"})
+      fetch("http://localhost:3000/api/posts/delete/" + postId, {
+        method: "DELETE",
+      })
         .then((success) => {
           this.$router.push({ path: "/posts/news" });
           console.log(success + "Le message est supprimé");
@@ -178,19 +202,19 @@ export default {
 
     //Signalement du message----------------------------------------------
     signalPost() {
-       const headers = new Headers();
-        headers.append("content-type", "application/json");
-        const myInit = {
+      const headers = new Headers();
+      headers.append("content-type", "application/json");
+      const myInit = {
         method: "PUT",
         headers: headers,
         body: JSON.stringify(this.post),
       };
       //console.log(JSON.parse(myInit.body));
-      const postId = this.$route.params.id
-        fetch("http://localhost:3000/api/posts/signal/" + postId, myInit)
+      const postId = this.$route.params.id;
+      fetch("http://localhost:3000/api/posts/signal/" + postId, myInit)
         .then((success) => {
           this.post.isSignaled = true;
-          alert("Le message a été signalé auprès de l'administrateur !")
+          alert("Le message a été signalé auprès de l'administrateur !");
           console.log(success + "Le signalement du message a été effectué");
         })
         .catch((error) => {
@@ -199,8 +223,8 @@ export default {
     },
 
     //Affichage de la date des messages au format français-------------------------------
-     format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr })
+    format(date) {
+      return formatRelative(new Date(date), new Date(), { locale: fr });
     },
   },
 };
@@ -254,7 +278,7 @@ button {
   justify-content: space-between;
 }
 #signal {
-  background-color:rgba(252, 94, 59, 0.8) !important;
+  background-color: rgba(252, 94, 59, 0.8) !important;
   border: 1px solid rgba(252, 94, 59, 0.8) !important;
 }
 </style>

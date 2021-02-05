@@ -21,7 +21,7 @@
                   <br />
                   <div class="text-left">
                     <p class="text-color">
-                      🧍 User {{ post.userId }} - ⌚ {{ post.createdAt }}
+                      🧍 User {{ post.userId }} - ⌚ {{ format(post.createdAt) }}
                     </p>
                   </div>
                   <div class="form-group text-left">
@@ -83,6 +83,8 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected";
+import {formatRelative} from 'date-fns';
+import {fr} from 'date-fns/locale';
 
 export default {
   name: "update",
@@ -108,6 +110,8 @@ export default {
   methods: {
     //Affiche les données du message--------------------------------------------
     getOnePost() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
       const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/post/" + postId)
         .then((response) => {
@@ -124,6 +128,8 @@ export default {
 
     //Modifier un message--------------------------------------------
     updatePost() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -144,6 +150,11 @@ export default {
         .catch((error) => {
           console.log(error + "Le message n'a pas été modifié");
         });
+    },
+    
+     //Affichage de la date des commentaires au format français-------------------------------
+    format(date) {
+      return formatRelative(new Date(date), new Date(), { locale: fr })
     },
   },
 };

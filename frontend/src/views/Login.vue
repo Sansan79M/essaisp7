@@ -110,7 +110,6 @@ export default {
                 console.log(data, 'Il y a une erreur de connexion');
                 return;
               }
-              //console.log(data, "Il n'y a pas d'erreur de connexion");
 
              //Sauvegarde du userId pour l'affichage du profil et la création de posts et de commentaires
               const storage = {userId:data.userId, token:data.token, isAdmin: data.isAdmin};

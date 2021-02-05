@@ -101,6 +101,8 @@ export default {
 
     //Modification du commentaire------------------------------------------
     updateComment() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.comment.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
       const myInit = {
@@ -123,6 +125,8 @@ export default {
 
     //Supprime un commentaire----------------------------------------------
     deleteComment() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.comment.userId = storage.userId;
       const commentId = this.comment.id;
       fetch("http://localhost:3000/api/comments/delete/" + commentId, {
         method: "DELETE",

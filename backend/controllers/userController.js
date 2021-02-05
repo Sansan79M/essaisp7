@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-//const xss = require('xss');
+const xss = require('xss');
 
 const db = require('../config/dbConfig');
 const User = db.user;
@@ -28,7 +28,7 @@ exports.signup = (req, res, next) => {
 //Connexion d'un utilisateur
 exports.login = (req, res, next) => {
   User.findOne({
-    where: { email: req.body.email }
+    where: { email: xss(req.body.email) }
   })
     .then(user => {
       if (!user) {
