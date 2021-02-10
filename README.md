@@ -4,6 +4,7 @@ Voici le MVP du projet 7, du parcours Développeur Web d'OCR.
 
 
 ### Prérequis ###
+
 Au préalable, vous devrez avoir installé localement sur votre ordinateur :
 - `Node`, 
 - `npm`, 
@@ -26,18 +27,22 @@ Au préalable, vous devrez avoir installé localement sur votre ordinateur :
 
 
 ### Installation et connexion de la Base De Données MySQL ###
+
 - Importez le fichier `database_groupomania` dans `wamp` ou `mamp` ou autre.
-- Ou vous pouvez initialiser une nouvelle base de données, en décommentant `force:true` en ligne 14 du fichier `app.js` se trouvant dans le backend, puis sauvegarder. Ensuite recommentez et sauvegardez.
+- Ou vous pouvez initialiser une nouvelle base de données, en décommentant `force:true` en ligne 14 du fichier `app.js` se trouvant dans le backend, puis sauvegardez. Ensuite recommentez et sauvegardez.
 
 
 ### Sécurisation des données ###
-- Créez un fichier `.env` dans le backend et notez les infos suivantes avec vos propres données dans les guillemets: 
-TOKEN=
-HOST_DEV=''
-USER_DEV=''
-PASSWORD_DEV=''
-DATABASE_DEV=''
-DIALECT_DEV='mysql'
+
+1) Créez un fichier `.env` dans le backend.
+
+2) Notez les infos suivantes avec vos propres données dans les guillemets: 
+- TOKEN=
+- HOST_DEV=''
+- USER_DEV=''
+- PASSWORD_DEV=''
+- DATABASE_DEV=''
+- DIALECT_DEV='mysql'
 
 
 ### Fonctionnalités des serveurs ###
