@@ -71,7 +71,6 @@
                   </div>
                 </div>
               </div>
-            
               <!-- Les commentaires -->
               <div>
                 <div>
@@ -123,7 +122,6 @@ export default {
         id: null,
         isAdmin: false,
       },
-      date: "",
     };
   },
 
@@ -133,9 +131,7 @@ export default {
     this.getComments();
 
     //Affichage des boutons (modifier et supprimer) si auteur ou administrateur identifié
-    const storage = JSON.parse(
-      localStorage.getItem("storage_user_groupomania")
-    );
+    const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
     this.user.id = storage.userId;
     this.user.isAdmin = storage.isAdmin;
   },
@@ -143,12 +139,8 @@ export default {
   methods: {
     //Affichage du message---------------------------------------------
     getOnePost() {
-      //console.log(JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
       const headers = new Headers();
-      headers.append(
-        "Authorization",
-        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
-      );
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
       const myInit = {
         method: "GET",
         headers: headers,
@@ -247,14 +239,13 @@ export default {
 
     //Affichage de la date des messages au format français-------------------------------
     format(date) {
-      //console.log(date+'date 2')
-      //const dateTime = date;
-      let dateParts = date.split(/[- :]/); //dateParts[1]--;
+      if (date === undefined) {
+          return 'Undefined value!';
+      } else if (date !== undefined) {
+      let dateParts = date.split(/[- :]/); dateParts[1]--;
       const dateObject = new Date(...dateParts);
-      //console.log(date+'date')
-      //console.log(dateObject)
-      //console.log(dateParts)
       return formatRelative(dateObject, new Date(), { locale: fr });
+      }
     },
   },
 };

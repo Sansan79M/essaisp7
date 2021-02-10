@@ -93,7 +93,6 @@ import HeaderConnected from "../components/HeaderConnected.vue";
 export default {
   components: { HeaderConnected },
   name: "trafic",
-
   data() {
     return {
       post: {},

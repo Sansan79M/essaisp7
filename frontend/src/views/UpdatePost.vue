@@ -92,13 +92,7 @@ export default {
   data() {
     return {
       post: {
-        id:"",
-        postId: "",
-        userId: "",
-        username: "",
-        createdAt: "",
-        title: "",
-        description: "",
+        user: ""
       },
       newTitle: "",
       newDescription: ""
@@ -110,7 +104,6 @@ export default {
   methods: {
     //Affiche les données du message--------------------------------------------
     getOnePost() {
-      //console.log(JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
       const headers = new Headers();
       headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
         const myInit = {
@@ -158,7 +151,13 @@ export default {
     
      //Affichage de la date des commentaires au format français-------------------------------
     format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr })
+      if (date === undefined) {
+          return 'Undefined value!';
+      } else if (date !== undefined) {
+      let dateParts = date.split(/[- :]/); dateParts[1]--;
+      const dateObject = new Date(...dateParts);
+      return formatRelative(dateObject, new Date(), { locale: fr });
+      }
     },
   },
 };
@@ -177,7 +176,7 @@ main {
 #update-post .container #update-post-row #update-post-column #update-post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 470px;
+  height: 480px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

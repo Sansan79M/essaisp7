@@ -167,13 +167,7 @@ export default {
 
      //Affichage de la date des commentaires au format français-------------------------------
     format(date) {
-       //const dateTime = date; 
-      let dateParts= date.split(/[- :]/); dateParts[1]--;
-      const dateObject = new Date(...dateParts);
-      //console.log(date+'date')
-      //console.log(dateObject)
-      //console.log(dateParts)
-      return formatRelative(dateObject, new Date(), { locale: fr })
+      return formatRelative(new Date(date), new Date(), { locale: fr });
     },
   },
 };

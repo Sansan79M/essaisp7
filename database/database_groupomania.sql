@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 05 fév. 2021 à 09:27
+-- Généré le : mer. 10 fév. 2021 à 12:55
 -- Version du serveur :  8.0.21
 -- Version de PHP : 7.3.21
 
@@ -39,20 +39,16 @@ CREATE TABLE IF NOT EXISTS `comments` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `postId` (`postId`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `comments`
 --
 
 INSERT INTO `comments` (`id`, `userId`, `postId`, `content`, `isSignaled`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 1, 'Y a-t-il quelqu\'un d\'autres ?', 0, '2021-02-03 12:28:42', '2021-02-03 12:28:42'),
-(2, 2, 1, 'Bonjour the first', 0, '2021-02-03 12:31:00', '2021-02-03 14:27:27'),
-(3, 3, 1, 'Bonjour à toi aussi !', 0, '2021-02-03 12:32:37', '2021-02-03 14:27:50'),
-(4, 3, 2, 'Merci, c\'est cool !', 0, '2021-02-03 12:32:57', '2021-02-03 14:22:07'),
-(5, 1, 3, 'On va y venir je crois.', 0, '2021-02-03 12:34:12', '2021-02-03 12:34:12'),
-(6, 4, 4, 'gsdfdgdfgdf', 1, '2021-02-03 12:35:18', '2021-02-03 14:30:19'),
-(7, 4, 4, 'fdgdfgdfgdfg', 1, '2021-02-03 12:35:23', '2021-02-03 14:30:02');
+(1, 2, 1, 'Bonjour le premier.', 0, '2021-02-09 14:23:17', '2021-02-09 14:23:17'),
+(2, 2, 3, 'Oui !', 0, '2021-02-09 14:28:15', '2021-02-09 14:28:15'),
+(3, 1, 5, 'gfdgdfggdf gfdgdfgdfgdg', 1, '2021-02-10 11:10:12', '2021-02-10 11:11:15');
 
 -- --------------------------------------------------------
 
@@ -71,18 +67,18 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `posts`
 --
 
 INSERT INTO `posts` (`id`, `userId`, `title`, `description`, `isSignaled`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'Bonjour ', 'Je suis le premier inscrit !', 0, '2021-02-03 12:28:13', '2021-02-03 14:15:29'),
-(2, 2, 'Bienvenue chez groupomania !', 'Nous vous souhaitons la bienvenue sur notre réseau social interne.', 0, '2021-02-03 12:30:31', '2021-02-03 12:30:31'),
-(3, 3, 'Confinement ou pas ?', 'Qu\'en pensez-vous ?', 0, '2021-02-03 12:33:41', '2021-02-03 12:33:41'),
-(4, 4, 'gfsdgdfgd', 'gdfgdfgdfg', 1, '2021-02-03 12:35:14', '2021-02-05 10:08:33'),
-(7, 2, 'gdgdfg', 'gfdgdfgfdg', 1, '2021-02-03 14:18:50', '2021-02-03 14:29:52');
+(1, 1, 'Bonjour, je suis le premier ?', 'Y a-t-il d\'autres collègues par ici ?', 0, '2021-02-09 14:21:31', '2021-02-09 14:21:41'),
+(2, 2, 'Bonjour bienvenue !', 'Bienvenue sur notre nouveau réseau social interne GROUPOMANIA.', 0, '2021-02-09 14:23:04', '2021-02-09 14:23:04'),
+(3, 3, 'Bonjour bonjour.', 'C\'est cool ce nouveau réseau social.', 0, '2021-02-09 14:24:31', '2021-02-09 14:24:31'),
+(4, 2, 'Qui fait des crêpes cette semaine ?', 'Qui dans vos services vont faire des crêpes ?', 0, '2021-02-09 14:27:51', '2021-02-09 14:27:51'),
+(5, 1, 'gdfgdfgd gfdgdf', 'gfddfgfd hdghfghfh', 1, '2021-02-10 11:10:04', '2021-02-10 11:11:11');
 
 -- --------------------------------------------------------
 
@@ -103,17 +99,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `service`, `isAdmin`, `createdAt`, `updatedAt`) VALUES
-(1, 'test1', 'test1@test1.com', '$2b$10$6bKwmOI/IcCf319XtxI1K.D9LjTi5IO9NgWEKhn1q/4sV53Byxe5C', NULL, 0, '2021-02-03 12:27:35', '2021-02-03 12:27:35'),
-(2, 'Administrateur', 'test@test.com', '$2b$10$aNRLQosRBUPFX8SSZPWp/OCzLTyf4EZcBzfpoerzSVEgCniS5YLcS', 'Gestionnaire commerciale - Administrateur', 1, '2021-02-03 12:29:21', '2021-02-03 12:37:12'),
-(3, 'Machin truc', 'test2@test2.com', '$2b$10$ZfnkoAMhf6NBE.1EfkK/UO.ZZpAIrBfeb23.iF29yyFqgsPOWXciK', NULL, 0, '2021-02-03 12:31:57', '2021-02-03 12:31:57'),
-(4, 'Bidule chouette', 'test3@test3.com', '$2b$10$uM9BJKDfY2luF8J/AplSaujmZ/V23LrVaIWUTkSMnGtSfTaFcMTUK', NULL, 0, '2021-02-03 12:34:46', '2021-02-03 12:34:46');
+(1, 'test1', 'test1@test1.com', '$2b$10$U1jgAfq5INuNhs5Atxdz.Owre.ug4dZpttii8oeboM9TKWLQ4cnpG', 'test', 0, '2021-02-09 14:20:49', '2021-02-10 11:10:47'),
+(2, 'Administrateur', 'test@test.com', '$2b$10$hA8dFjyl4gLnAo1owEXFDesK4NqQoaVDB36aGOaNIff5/yEgZ/NwW', 'Administrateur', 1, '2021-02-09 14:22:13', '2021-02-10 11:11:37'),
+(3, 'Machin truc', 'test2@test2.com', '$2b$10$JIWKBeptr5kzdLyw5LHi8.f.L321PBWsB0rZUVw3AeRrBn9AWlTCq', 'magasinier', 0, '2021-02-09 14:23:53', '2021-02-09 14:24:51');
 
 --
 -- Contraintes pour les tables déchargées

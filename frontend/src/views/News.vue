@@ -52,7 +52,7 @@
                         <br class="d-block d-md-none" />
                         ⌚ {{ format(post.createdAt) }}</span>
                         <br />
-                        <span class="font-weight-bold">📧 {{ post.title }}
+                        <span id="text-posts" class="font-weight-bold">📧 {{ post.title }}
                         <br class="d-block d-md-none" />
                         📝 {{ post.description }}</span>
                       </div>
@@ -129,6 +129,9 @@ h2 {
 }
 h2:hover {
   color: white !important;
+}
+#text-posts{
+  font-size: 18px;
 }
 #card-h1 {
   font-size: 30px;

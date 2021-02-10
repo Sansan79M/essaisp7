@@ -156,6 +156,9 @@ h1 {
   border: #0b505b !important;
   font-size: 30px;
 }
+#label-avatar {
+  display: none;
+}
 #profile .container #profile-row #profile-column #profile-box {
   margin-top: 30px;
   max-width: 600px;
@@ -201,7 +204,5 @@ button,
   display: flex;
   justify-content: space-between;
 }
-#label-avatar {
-  display: none;
-}
+
 </style>
