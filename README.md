@@ -37,12 +37,12 @@ Au préalable, vous devrez avoir installé localement sur votre ordinateur :
 1) Créez un fichier `.env` dans le backend.
 
 2) Notez les infos suivantes avec vos propres données dans les guillemets: 
-- TOKEN=
+- TOKEN=" "
 - HOST_DEV=" "
 - USER_DEV=" "
 - PASSWORD_DEV=" " 
 - DATABASE_DEV=" " 
-- DIALECT_DEV="mysql"
+- DIALECT_DEV=" "
 
 
 ### Fonctionnalités des serveurs ###
