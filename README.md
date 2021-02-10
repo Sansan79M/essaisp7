@@ -38,11 +38,11 @@ Au préalable, vous devrez avoir installé localement sur votre ordinateur :
 
 2) Notez les infos suivantes avec vos propres données dans les guillemets: 
 - TOKEN=
-- HOST_DEV=''
-- USER_DEV=''
-- PASSWORD_DEV=''
-- DATABASE_DEV=''
-- DIALECT_DEV='mysql'
+- HOST_DEV=" "
+- USER_DEV=" "
+- PASSWORD_DEV=" " 
+- DATABASE_DEV=" " 
+- DIALECT_DEV="mysql"
 
 
 ### Fonctionnalités des serveurs ###
