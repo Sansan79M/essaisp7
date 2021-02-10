@@ -27,7 +27,7 @@ db.user = require('../models/userModels')(sequelize, Sequelize);
 db.post = require('../models/postModels')(sequelize, Sequelize);
 db.comment = require('../models/commentModels')(sequelize, Sequelize);
 
-//Paramétrages des clés étrangères
+//Paramétrages des clés étrangères et jointures entre les tables
 db.user.hasMany(db.post, {onDelete: 'cascade', hooks:true}); //L'utilisateur est l'auteur de plusieurs posts
 db.user.hasMany(db.comment, {onDelete: 'cascade', hooks:true}); //L'utilisateur est l'auteur de plusieurs commentaires
 db.post.hasMany(db.comment, {onDelete: 'cascade', hooks:true}); //Un post peut avoir plusieurs commentaires

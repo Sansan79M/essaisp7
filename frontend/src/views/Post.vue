@@ -240,7 +240,7 @@ export default {
     //Affichage de la date des messages au format français-------------------------------
     format(date) {
       if (date === undefined) {
-          return 'Undefined value!';
+          return this.post.createdAt;
       } else if (date !== undefined) {
       let dateParts = date.split(/[- :]/); dateParts[1]--;
       const dateObject = new Date(...dateParts);
@@ -264,7 +264,7 @@ h1 {
 #post .container #post-row #post-column #post-box {
   margin-top: 30px;
   max-width: 600px;
-  height: 330px;
+  height: 370px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }

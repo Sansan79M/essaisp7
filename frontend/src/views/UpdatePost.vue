@@ -152,7 +152,7 @@ export default {
      //Affichage de la date des commentaires au format français-------------------------------
     format(date) {
       if (date === undefined) {
-          return 'Undefined value!';
+          return this.post.createdAt;
       } else if (date !== undefined) {
       let dateParts = date.split(/[- :]/); dateParts[1]--;
       const dateObject = new Date(...dateParts);
