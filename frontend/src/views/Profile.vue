@@ -144,7 +144,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 110vh;
+  height: 160vh;
 }
 h1 {
   font-size: 30px;

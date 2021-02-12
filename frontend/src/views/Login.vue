@@ -137,7 +137,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 100vh;
+  height: 150vh;
 }
 #login .container #login-row #login-column #login-box {
   margin-top: 30px;

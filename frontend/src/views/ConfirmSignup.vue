@@ -66,7 +66,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 130vh;
+  height: 200vh;
 }
 main img {
   height: 20em;

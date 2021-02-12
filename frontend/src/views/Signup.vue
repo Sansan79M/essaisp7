@@ -197,7 +197,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 120vh;
+  height: 220vh;
 }
 #signup .container #signup-row #signup-column #signup-box {
   margin-top: 30px;

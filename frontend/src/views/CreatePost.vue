@@ -131,7 +131,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 100vh;
+  height: 180vh;
 }
 #create-post .container #create-post-row #create-post-column #create-post-box {
   margin-top: 30px;

@@ -154,7 +154,6 @@ h2:hover {
   background-color: #0b505b !important;
   color: white;
 }
-
 main {
   margin: 0;
   padding: 0;

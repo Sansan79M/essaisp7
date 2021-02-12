@@ -171,7 +171,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 110vh;
+  height: 200vh;
 }
 #update-post .container #update-post-row #update-post-column #update-post-box {
   margin-top: 30px;
