@@ -54,7 +54,7 @@ export default {
           result
             .json()
             .then((data) => {
-              window.location.reload();
+              window.location.reload(true)
               if (data.error) {
                 console.log(data);
                 return;

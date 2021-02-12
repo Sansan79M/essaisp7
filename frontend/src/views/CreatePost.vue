@@ -1,5 +1,8 @@
 <template>
-  <body>
+  <div  v-if="!post">
+  <error-403></error-403>
+</div>
+  <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
 
@@ -66,10 +69,11 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected";
+import Error403 from './Error403.vue';
 
 export default {
   name: "create",
-  components: { HeaderConnected },
+  components: { HeaderConnected, Error403 },
 
   data() {
     return {

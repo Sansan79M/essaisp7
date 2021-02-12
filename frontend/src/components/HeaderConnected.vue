@@ -98,7 +98,6 @@ export default {
       user: {
         userId:"",
         id: this.$route.params.id,
-      //isAdmin: false,
       }
     };
   },

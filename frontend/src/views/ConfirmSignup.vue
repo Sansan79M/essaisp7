@@ -46,7 +46,7 @@ export default {
   },
 
   methods: {
-      //Redirection automatique vers la page de connexion dans 8 secondes
+      //Redirection automatique vers la page de connexion dans 5 secondes
       redirection () {
       setTimeout(() => {
         this.$router.push({ path: "/user/login" });

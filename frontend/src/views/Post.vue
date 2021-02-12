@@ -1,5 +1,8 @@
 <template>
-  <body>
+<div  v-if="!user.id">
+  <error-403></error-403>
+</div>
+  <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
 
@@ -102,13 +105,15 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
+import Error403 from './Error403';
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 
+
 export default {
-  components: { HeaderConnected, CommentForm, Comment },
+  components: { HeaderConnected, CommentForm, Comment, Error403 },
   name: "post",
   data() {
     return {
@@ -245,7 +250,7 @@ export default {
       let dateParts = date.split(/[- :]/); dateParts[1]--;
       const dateObject = new Date(...dateParts);
       return formatRelative(dateObject, new Date(), { locale: fr });
-      }
+      }     
     },
   },
 };

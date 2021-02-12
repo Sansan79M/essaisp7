@@ -3,8 +3,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
-//Importation des différentes pages concernant les utilisateurs
+//Importation de la page d'accueil et d'erreur 403
 import Home from '../views/Home.vue'
+import Error403 from'../views/Error403.vue'
+
+//Importation des différentes pages concernant les utilisateurs
 import Signup from '../views/Signup.vue'
 import ConfirmSignup from '../views/ConfirmSignup.vue'
 import Login from '../views/Login.vue'
@@ -26,8 +29,11 @@ const router = new VueRouter({
     mode: "history",
     base: __dirname,
     routes: [
-      //Chemins et titres des pages concernant les utilisateurs
+      //Chemins et titres des pages accueil et erreur 403
       {path: "/", component: Home, name: 'home', meta: {title:"Accueil Groupomania"}},
+      {path: "/error403", component: Error403, name: 'error403', meta: {title:"Erreur 403"}},
+
+      //Chemins et titres des pages concernant les utilisateurs
       {path: "/user/signup", component: Signup, name: 'signup', meta: {title:"Inscription à Groupomania"}},
       {path: "/user/confirmSignup", component: ConfirmSignup, name: 'confirmSignup', meta: {title:"Confirmation d'inscription à Groupomania"}},
       {path: "/user/login", component: Login, name: 'login', meta: {title:"Connexion à Groupomania"}},

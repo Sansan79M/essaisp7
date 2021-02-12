@@ -98,7 +98,7 @@ export default {
     cancelComment() {
       this.edit = false;
       this.comment.content = this.newContent;
-      window.location.reload();
+      window.location.reload(true);
     },
 
     //Modification du commentaire------------------------------------------
@@ -116,7 +116,7 @@ export default {
       fetch("http://localhost:3000/api/comments/update/" + commentId, myInit)
         .then((success) => {
           this.comment.content = this.newContent;
-          window.location.reload();
+          window.location.reload(true);
           console.log(success + "Un commentaire a été modifié");
         })
         .catch((error) => {
@@ -135,7 +135,7 @@ export default {
       const commentId = this.comment.id;
       fetch("http://localhost:3000/api/comments/delete/" + commentId, myInit)
         .then((success) => {
-          window.location.reload();
+          window.location.reload(true);
           console.log(success + "Le commentaire est supprimé");
         })
         .catch((error) => {
