@@ -1,5 +1,5 @@
 <template>
-<div  v-if="!user.id">
+<div  v-if="!post.id">
   <error-403></error-403>
 </div>
   <body v-else>
@@ -189,10 +189,7 @@ export default {
     //Affichage des commentaires---------------------------------------
     getComments() {
       const headers = new Headers();
-      headers.append(
-        "Authorization",
-        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
-      );
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
       const myInit = {
         method: "GET",
         headers: headers,

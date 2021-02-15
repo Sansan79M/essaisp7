@@ -87,16 +87,11 @@ export default {
 
   methods: {
     createPost() {
-      const storage = JSON.parse(
-        localStorage.getItem("storage_user_groupomania")
-      );
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      headers.append(
-        "Authorization",
-        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
-      );
+      headers.append("Authorization", storage.token);
       const myInit = {
         method: "POST",
         headers: headers,

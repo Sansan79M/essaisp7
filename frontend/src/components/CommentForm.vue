@@ -51,8 +51,7 @@ export default {
       //console.log(this.newComment);
       fetch("http://localhost:3000/api/comments/create", myInit)
         .then((result) => {
-          result
-            .json()
+          result.json()
             .then((data) => {
               window.location.reload(true)
               if (data.error) {

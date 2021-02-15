@@ -107,13 +107,13 @@ export default {
 
   methods: {
   userProfile() { 
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append("Authorization", storage.token)
         const myInit = {
           method: "GET",
           headers: headers,
         };
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json()

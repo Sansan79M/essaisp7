@@ -95,10 +95,7 @@ export default {
     //Affichage de la liste des messages-------------------------------
     listPosts() {
       const headers = new Headers();
-      headers.append(
-        "Authorization",
-        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
-      );
+      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
       const myInit = {
         method: "GET",
         headers: headers,

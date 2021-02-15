@@ -157,13 +157,13 @@ export default {
   methods: {
     //Affichage des données du compte utilisateur dans les inputs--------------------------
     userProfile() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append("Authorization", storage.token)
         const myInit = {
           method: "GET",
           headers: headers,
         };
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json().then((user) => {
@@ -182,7 +182,7 @@ export default {
       this.user.id = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append("Authorization", storage.token)
       const myInit = {
         method: "PUT",
         headers: headers,

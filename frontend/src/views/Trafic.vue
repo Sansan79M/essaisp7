@@ -75,7 +75,7 @@
                     <td>
                       <router-link
                         :to="'/post/' + comment.postId"
-                        aria-label="Lien vers le message"
+                        aria-label="Lien vers le commentaire"
                         ><button class="bg-color rounded text-white">🢂</button>
                       </router-link>
                     </td>
