@@ -1,5 +1,5 @@
 <template>
-<div  v-if="!posts">
+<div  v-if="!connected">
   <error-403></error-403>
 </div>
   <body v-else>
@@ -92,7 +92,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from './Error403.vue';
+import Error403 from '../components/Error403';
 
 export default {
   components: { HeaderConnected, Error403 },
@@ -103,15 +103,24 @@ export default {
       posts: [],
       comment: "",
       comments: [],
-      user:{username:""}
+      user:{username:""},
+      connected:""
     };
   },
   mounted() {
     this.listPosts();
     this.getComments();
+    this.connect();
   },
   methods: {
-    //Affichage des posts---------------------------------------------
+     //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.user.id = storage.userId;
+      this.connected = true;
+    },
+
+    //Affichage des posts----------------------------------------------------------------------
     listPosts() {
       const headers = new Headers();
       headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
@@ -131,7 +140,7 @@ export default {
         });
     },
 
-    //Affichage des commentaires---------------------------------------
+    //Affichage des commentaires------------------------------------------------------------------------
     getComments() {
       const headers = new Headers();
       headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)

@@ -1,11 +1,10 @@
 <template>
-<div  v-if="!post.id">
+<div  v-if="!connected">
   <error-403></error-403>
 </div>
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
-
     <!-- Page Content -->
     <main>
       <div id="post">
@@ -105,7 +104,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from './Error403';
+import Error403 from '../components/Error403';
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
 import { formatRelative } from "date-fns";
@@ -127,6 +126,7 @@ export default {
         id: null,
         isAdmin: false,
       },
+      connected:""
     };
   },
 
@@ -134,6 +134,7 @@ export default {
     //Affichage des posts et des commentaires
     this.getOnePost();
     this.getComments();
+    this.connect();
 
     //Affichage des boutons (modifier et supprimer) si auteur ou administrateur identifié
     const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
@@ -142,6 +143,13 @@ export default {
   },
 
   methods: {
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.user.id = storage.userId;
+      this.connected = true;
+    },
+
     //Affichage du message---------------------------------------------
     getOnePost() {
       const headers = new Headers();

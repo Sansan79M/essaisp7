@@ -1,7 +1,7 @@
 <template>
-  <div  v-if="!posts">
-  <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
@@ -16,7 +16,9 @@
                 class="card text-center effect-shadow"
                 id="card-h1"
               >
-                <h1 class="text-center text-color font-weight-bold">FIL D'ACTUALITE</h1>
+                <h1 class="text-center text-color font-weight-bold">
+                  FIL D'ACTUALITE
+                </h1>
               </div>
               <br />
 
@@ -48,16 +50,22 @@
                       class="link"
                       :to="'/post/' + post.id"
                       aria-label="Lien vers le message"
-                      >
+                    >
                       <div class="card effect-bg text-color">
-                        <span>🧍 {{ post.user.username }} 
-                        <span v-if="post.user.service">✏️ {{ post.user.service }} </span>
-                        <br class="d-block d-md-none" />
-                        ⌚ {{ format(post.createdAt) }}</span>
+                        <span
+                          >🧍 {{ post.user.username }}
+                          <span v-if="post.user.service"
+                            >✏️ {{ post.user.service }}
+                          </span>
+                          <br class="d-block d-md-none" />
+                          ⌚ {{ format(post.createdAt) }}</span
+                        >
                         <br />
-                        <span id="text-posts" class="font-weight-bold">📧 {{ post.title }}
-                        <br class="d-block d-md-none" />
-                        📝 {{ post.description }}</span>
+                        <span id="text-posts" class="font-weight-bold"
+                          >📧 {{ post.title }}
+                          <br class="d-block d-md-none" />
+                          📝 {{ post.description }}</span
+                        >
                       </div>
                     </router-link>
                     <div></div>
@@ -74,7 +82,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from './Error403.vue';
+import Error403 from "../components/Error403";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -86,16 +94,30 @@ export default {
       post: {},
       posts: [],
       user: {},
+      connected: "",
     };
   },
+
   mounted() {
     this.listPosts();
+    this.connect();
   },
+
   methods: {
-    //Affichage de la liste des messages-------------------------------
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.user.id = storage.userId;
+      this.connected = true;
+    },
+
+    //Affichage de la liste des messages---------------------------------------------------
     listPosts() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "GET",
         headers: headers,
@@ -131,7 +153,7 @@ h2 {
 h2:hover {
   color: white !important;
 }
-#text-posts{
+#text-posts {
   font-size: 18px;
 }
 #card-h1 {

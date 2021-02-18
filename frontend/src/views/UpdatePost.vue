@@ -1,11 +1,10 @@
 <template>
-  <div  v-if="!post.id">
+  <div  v-if="!connected">
   <error-403></error-403>
 </div>
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
-
     <!-- Page Content -->
     <main>
       <div id="update-post">
@@ -88,7 +87,7 @@
 import HeaderConnected from "../components/HeaderConnected";
 import {formatRelative} from 'date-fns';
 import {fr} from 'date-fns/locale';
-import Error403 from './Error403.vue';
+import Error403 from '../components/Error403';
 
 export default {
   name: "update",
@@ -99,13 +98,22 @@ export default {
         user: ""
       },
       newTitle: "",
-      newDescription: ""
+      newDescription: "",
+      connected:""
     };
   },
   mounted() {
     this.getOnePost();
+    this.connect();
   },
   methods: {
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.id = storage.userId;
+      this.connected = true;
+    },
+
     //Affiche les données du message--------------------------------------------
     getOnePost() {
       const headers = new Headers();

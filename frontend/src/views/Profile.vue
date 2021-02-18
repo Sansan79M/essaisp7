@@ -1,11 +1,10 @@
 <template>
-<div  v-if="!user.id">
+<div  v-if="!connected">
   <error-403></error-403>
 </div>
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
-
     <!-- Page Content -->
     <main>
       <div id="profile">
@@ -70,7 +69,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from './Error403.vue';
+import Error403 from '../components/Error403';
 
 export default {
   name: "profile",
@@ -79,16 +78,25 @@ export default {
   data() {
     return {
       user: {},
-      initial:""
+      initial:"", 
+      connected:""
     };
   },
 
   mounted() {
     this.userProfile();
+    this.connect();
   },
 
   methods: {
-    //Affichage du compte utilisateur-----------------------------------------
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.user.id = storage.userId;
+      this.connected = true;
+    },
+
+    //Affichage du compte utilisateur------------------------------------------------------
     userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       const headers = new Headers();
@@ -110,7 +118,7 @@ export default {
         .catch((error) => {console.log(error + "Le profil utilisateur ne s'affiche pas");});
     },
 
-    //Suppression du compte utilisateur--------------------------------------------
+    //Suppression du compte utilisateur------------------------------------------------------
     deleteProfile() {
       if (
         confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")

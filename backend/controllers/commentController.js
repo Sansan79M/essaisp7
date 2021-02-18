@@ -88,6 +88,7 @@ exports.signalComment = (req, res, next) => {
 exports.readComments = (req, res, next) => {
     Comment.findAll({
         attributes: ['id', 'userId', 'postId', 'content', 'isSignaled', 'createdAt', 'updatedAt'],
+        order: [['createdAt', 'DESC']],
         include: [{
             model: User,
             attributes: ['username'],

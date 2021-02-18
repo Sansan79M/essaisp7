@@ -1,7 +1,7 @@
 <template>
-  <div  v-if="!users">
-  <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
@@ -35,13 +35,13 @@
                       aria-label="Lien vers le message"
                       >-->
                     <div class="card effect-bg text-color">
-                     <p>
+                      <p>
                         🧍 {{ user.username }}
                         <br class="d-block d-md-none" />
                         <span v-if="user.service">✏️ {{ user.service }}</span>
                         <br class="d-block d-md-none ml-3" />
                         📧 {{ user.email }}
-                      </p>                      
+                      </p>
                       <br />
                     </div>
                     <!--</router-link>-->
@@ -59,22 +59,31 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from './Error403.vue';
+import Error403 from "../components/Error403";
 
 export default {
   name: "coworkers",
   components: { HeaderConnected, Error403 },
   data() {
     return {
-      userId:"",
+      userId: "",
       users: [],
+      connected: "",
     };
   },
   mounted() {
     this.getCoworkers();
+    this.connect();
   },
   methods: {
-    //Affichage de la liste des salariés -------------------------------
+     //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.users.id = storage.userId;
+      this.connected = true;
+    },
+
+    //Affichage de la liste des salariés ---------------------------------------------------
     getCoworkers() {
       const headers = new Headers();
       headers.append(
@@ -98,7 +107,6 @@ export default {
         });
     },
   },
- 
 };
 </script>
 
@@ -141,10 +149,20 @@ main {
   height: 340px;
   border: 1px solid #0b505b;
 }
-#coworkers .container #coworkers-row #coworkers-column #coworkers-box #coworkers-displayed {
+#coworkers
+  .container
+  #coworkers-row
+  #coworkers-column
+  #coworkers-box
+  #coworkers-displayed {
   padding: 20px;
 }
-#coworkers .container #coworkers-row #coworkers-column #coworkers-box #coworkers-displayed {
+#coworkers
+  .container
+  #coworkers-row
+  #coworkers-column
+  #coworkers-box
+  #coworkers-displayed {
   margin-top: -80px;
 }
 .text-color {

@@ -88,7 +88,7 @@ export default {
         email: "",
         password: "",
       },
-      show: false
+      show: false,
     };
   },
  
@@ -113,7 +113,7 @@ export default {
              //Sauvegarde du userId pour l'affichage du profil et la création de posts et de commentaires
               const storage = {userId:data.userId, token:data.token, isAdmin: data.isAdmin};
               localStorage.setItem("storage_user_groupomania", JSON.stringify(storage));
- 
+
               this.$router.push({ path: "/posts/news" });
               console.log("L'utilisateur s'est bien connectée");
             });

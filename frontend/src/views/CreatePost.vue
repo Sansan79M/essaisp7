@@ -1,11 +1,10 @@
 <template>
-  <div  v-if="!post">
-  <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
-
     <!-- Page Content -->
     <main>
       <div id="create-post">
@@ -69,12 +68,11 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected";
-import Error403 from './Error403.vue';
+import Error403 from "../components/Error403";
 
 export default {
   name: "create",
   components: { HeaderConnected, Error403 },
-
   data() {
     return {
       post: {
@@ -82,12 +80,26 @@ export default {
         title: "",
         description: "",
       },
+      connected: "",
     };
+  },
+  mounted() {
+    this.connect();
   },
 
   methods: {
-    createPost() {
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.post.userId = storage.userId;
+      this.connected = true;
+    },
+
+    //Création de messages--------------------------------------------------------------------
+    createPost() {
+      const storage = JSON.parse(
+        localStorage.getItem("storage_user_groupomania")
+      );
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");

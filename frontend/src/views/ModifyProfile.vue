@@ -1,5 +1,5 @@
 <template>
-  <div  v-if="!user.id">
+  <div  v-if="!connected">
    <error-403></error-403>
 </div>
   <body v-else>
@@ -134,7 +134,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected";
-import Error403 from './Error403.vue';
+import Error403 from '../components/Error403';
 
 export default {
   name: "modify",
@@ -149,12 +149,21 @@ export default {
       newService: "",
       newEmail: "",
       newPassword: "",
+      connected:""
     };
   },
   mounted() {
     this.userProfile();
+    this.connect();
   },
   methods: {
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    connect() {
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      this.user.id = storage.userId;
+      this.connected = true;
+    },
+
     //Affichage des données du compte utilisateur dans les inputs--------------------------
     userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));

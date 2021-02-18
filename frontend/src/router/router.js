@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 
 //Importation de la page d'accueil et d'erreur 403
 import Home from '../views/Home.vue'
-import Error403 from'../views/Error403.vue'
+import Error403 from'../components/Error403.vue'
 
 //Importation des différentes pages concernant les utilisateurs
 import Signup from '../views/Signup.vue'
@@ -59,5 +59,4 @@ const router = new VueRouter({
     next();
   })
   
-
   export default router

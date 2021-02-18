@@ -3,16 +3,15 @@
   <header>
     <nav
       class="navbar navbar-expand-lg navbar-dark fixed-top"
-      role="navigation">
+      role="navigation"
+    >
       <div class="container">
         <router-link
           :to="'/posts/news'"
           aria-label="Lien vers le fil d'actualité"
           class="navbar-brand"
-          >
-        <img
-          src="../assets/icon-white.png"
-          alt="Logo Groupomania"
+        >
+          <img src="../assets/icon-white.png" alt="Logo Groupomania"
         /></router-link>
         <!--Responsive burger menu-->
         <button
@@ -61,7 +60,8 @@
               <router-link
                 class="nav-link"
                 :to="'/user/profile/' + user.id"
-                aria-label="Lien vers la page du profil utilisateur">
+                aria-label="Lien vers la page du profil utilisateur"
+              >
                 MON PROFIL</router-link
               >
             </li>
@@ -73,6 +73,8 @@
               >
                 TRAFIC</router-link
               >
+            </li>
+
             <li class="nav-item">
               <div
                 id="disconnect"
@@ -96,45 +98,46 @@ export default {
   data() {
     return {
       user: {
-        userId:"",
+        userId: "",
         id: this.$route.params.id,
-      }
+      },
     };
   },
-    mounted() {
-      this.userProfile();
+  mounted() {
+    this.userProfile();
   },
 
   methods: {
-  userProfile() { 
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+    userProfile() {
+      const storage = JSON.parse(
+        localStorage.getItem("storage_user_groupomania")
+      );
       const headers = new Headers();
-      headers.append("Authorization", storage.token)
-        const myInit = {
-          method: "GET",
-          headers: headers,
-        };
+      headers.append("Authorization", storage.token);
+      const myInit = {
+        method: "GET",
+        headers: headers,
+      };
       fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
-          response.json()
-          .then(user => {
+          response.json().then((user) => {
             this.user = user;
-          })
+          });
           //console.log(response + "L'URL vers le profil utilisateur s'affiche");
         })
         .catch((error) => {
-          console.log(error + "L'URL vers le profil utilisateur ne s'affiche pas");
+          console.log(
+            error + "L'URL vers le profil utilisateur ne s'affiche pas"
+          );
         });
     },
 
-
- 
     //Déconnection
     disconnect() {
       localStorage.clear();
       setTimeout(() => {
         this.$router.push({ path: "/" });
-        console.log("L'utilisateur s'est déconnecté")
+        console.log("L'utilisateur s'est déconnecté");
       }, 600);
     },
   },
