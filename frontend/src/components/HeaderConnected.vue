@@ -13,6 +13,7 @@
         >
           <img src="../assets/icon-white.png" alt="Logo Groupomania"
         /></router-link>
+
         <!--Responsive burger menu-->
         <button
           class="navbar-toggler"
@@ -108,10 +109,9 @@ export default {
   },
 
   methods: {
+    //Affichage de l'id de l'utilisateur dans l'url du profil utilisateur---------------------------------
     userProfile() {
-      const storage = JSON.parse(
-        localStorage.getItem("storage_user_groupomania")
-      );
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       const headers = new Headers();
       headers.append("Authorization", storage.token);
       const myInit = {
@@ -125,14 +125,10 @@ export default {
           });
           //console.log(response + "L'URL vers le profil utilisateur s'affiche");
         })
-        .catch((error) => {
-          console.log(
-            error + "L'URL vers le profil utilisateur ne s'affiche pas"
-          );
-        });
+        .catch((error) => {console.log(error + "L'URL vers le profil utilisateur ne s'affiche pas")});
     },
 
-    //Déconnection
+    //Déconnection de l'utilisateur----------------------------------------------------------------------
     disconnect() {
       localStorage.clear();
       setTimeout(() => {

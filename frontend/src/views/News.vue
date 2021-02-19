@@ -3,8 +3,10 @@
     <error-403></error-403>
   </div>
   <body v-else>
+
     <!--<header>-->
     <header-connected></header-connected>
+
     <!-- Page Content -->
     <main>
       <div class="container">
@@ -16,7 +18,7 @@
                 class="card text-center effect-shadow"
                 id="card-h1"
               >
-                <h1 class="text-center text-color font-weight-bold">
+                <h1 class="text-center text-white font-weight-bold">
                   FIL D'ACTUALITE
                 </h1>
               </div>
@@ -111,7 +113,7 @@ export default {
       this.connected = true;
     },
 
-    //Affichage de la liste des messages---------------------------------------------------
+    //Affichage de la liste des messages----------------------------------------------------
     listPosts() {
       const headers = new Headers();
       headers.append(
@@ -135,9 +137,16 @@ export default {
         });
     },
 
-    //Affichage de la date des messages au format français-------------------------------
+    //Affichage de la date des messages au format français----------------------------------
     format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr });
+      if (date === undefined) {
+        return 'Date non définie';
+      } else if (date !== undefined) {
+        let dateParts = date.split(/[- :]/);
+        dateParts[1]--;
+        const dateObject = new Date(...dateParts);
+        return formatRelative(dateObject, new Date(), { locale: fr });
+      }
     },
   },
 };
@@ -160,7 +169,7 @@ h2:hover {
   font-size: 30px;
   margin-top: 30px;
   padding: 10px;
-  background-color: rgb(252, 252, 111);
+  background-color: #0b505b;
 }
 .effect-shadow {
   border: 1px solid #0b505b;
@@ -198,9 +207,6 @@ main {
 }
 .text-color {
   color: #0b505b !important;
-}
-button {
-  background-color: #0b505b !important;
 }
 #news-box {
   box-shadow: 10px 10px 10px #b32204;

@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       newComment: {
-        id:"",
+        id: "",
         userId: "",
         postId: "",
         content: "",
@@ -35,14 +35,14 @@ export default {
   },
 
   methods: {
+    //Création d'un commentaire-------------------------------------------------------------
     createComment(postId) {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.newComment.userId = storage.userId;
       this.newComment.postId = postId;
-      //console.log(this.newComment);
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      headers.append("Authorization", storage.token)
+      headers.append("Authorization", storage.token);
       const myInit = {
         method: "POST",
         headers: headers,
@@ -51,9 +51,10 @@ export default {
       //console.log(this.newComment);
       fetch("http://localhost:3000/api/comments/create", myInit)
         .then((result) => {
-          result.json()
+          result
+            .json()
             .then((data) => {
-              window.location.reload(true)
+              window.location.reload(true);
               if (data.error) {
                 console.log(data);
                 return;
@@ -83,11 +84,10 @@ export default {
 #comment-box #comment-displayed {
   padding: 20px;
 }
-
-#comment-box #comment-displayed #register-link {
+#comment-box #comment-displayed #commented {
   margin-top: -85px;
 }
-.text-color{
+.text-color {
   color: #0b505b !important;
 }
 button {

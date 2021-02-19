@@ -1,8 +1,9 @@
 <template>
-  <div  v-if="!connected">
-   <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
+
     <!--<header>-->
     <header-connected></header-connected>
 
@@ -134,7 +135,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected";
-import Error403 from '../components/Error403';
+import Error403 from "../components/Error403";
 
 export default {
   name: "modify",
@@ -149,7 +150,7 @@ export default {
       newService: "",
       newEmail: "",
       newPassword: "",
-      connected:""
+      connected: "",
     };
   },
   mounted() {
@@ -164,34 +165,44 @@ export default {
       this.connected = true;
     },
 
-    //Affichage des données du compte utilisateur dans les inputs--------------------------
+    //Affichage des données du compte utilisateur dans les inputs----------------------------
     userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       const headers = new Headers();
-      headers.append("Authorization", storage.token)
-        const myInit = {
-          method: "GET",
-          headers: headers,
-        };
+      headers.append("Authorization", storage.token);
+      const myInit = {
+        method: "GET",
+        headers: headers,
+      };
       fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
             //Initiales de l' utilisateur affichées en majuscule dans l'avatar
-            this.initial = user.username.toUpperCase().split(" ").map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null)).join("");
+            this.initial = user.username
+              .toUpperCase()
+              .split(" ")
+              .map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null))
+              .join("");
           });
-          console.log(response + "Les données du profil utilisateur s'affichent");
+          console.log(
+            response + "Les données du profil utilisateur s'affichent"
+          );
         })
-        .catch((error) => {console.log(error + "Les données du profil utilisateur ne s'affichent pas");});
+        .catch((error) => {
+          console.log(
+            error + "Les données du profil utilisateur ne s'affichent pas"
+          );
+        });
     },
 
-    //Modification du compte utilisateur-----------------------------------------
+    //Modification du compte utilisateur-----------------------------------------------------
     modifyProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.user.id = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      headers.append("Authorization", storage.token)
+      headers.append("Authorization", storage.token);
       const myInit = {
         method: "PUT",
         headers: headers,
@@ -233,42 +244,25 @@ h1 {
   border: #0b505b !important;
   font-size: 30px;
 }
-#modify-profile
-  .container
-  #modify-profile-row
-  #modify-profile-column
-  #modify-profile-box {
+#modify-profile .container #modify-profile-row #modify-profile-column #modify-profile-box {
   margin-top: 30px;
   max-width: 600px;
   height: 740px;
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
-#modify-profile
-  .container
-  #modify-profile-row
-  #modify-profile-column
-  #modify-profile-box
-  #modify-profile-form {
+#modify-profile .container #modify-profile-row #modify-profile-column #modify-profile-box #modify-profile-form {
   padding: 20px;
 }
-#modify-profile
-  .container
-  #modify-profile-row
-  #modify-profile-column
-  #modify-profile-box
-  #modify-profile-form
-  #register-link {
+#modify-profile .container #modify-profile-row #modify-profile-column #modify-profile-box #modify-profile-form #user{
   margin-top: -85px;
 }
 .text-color {
   color: #0b505b !important;
 }
-
 .button {
   background-color: #0b505b !important;
 }
-
 #modify-profile-box {
   box-shadow: 10px 10px 10px #b32204;
 }

@@ -7,7 +7,7 @@
         @submit.prevent="updateComment()"
       >
         <p class="mb-2 text-color">
-          🧍 {{ comment.user.username }} 
+          🧍 {{ comment.user.username }}
           <br class="d-block d-md-none" />
           ⌚ {{ format(comment.createdAt) }}
         </p>
@@ -56,12 +56,16 @@
             type="button"
             class="flex-items-center text-xs text-white bg-color rounded border-color"
             @click="edit = true"
-          >Modifier</button>
+          >
+            Modifier
+          </button>
           <button
             type="button"
             class="mx-2 flex-items-center text-xs text-white bg-color rounded border-color"
             @click.prevent="deleteComment"
-          >Supprimer</button>
+          >
+            Supprimer
+          </button>
         </p>
       </form>
       <div class="mt-4 border-l-4 pl-4">
@@ -78,8 +82,8 @@
 </template>
 
 <script>
-import {formatRelative} from 'date-fns';
-import {fr} from 'date-fns/locale';
+import { formatRelative } from "date-fns";
+import { fr } from "date-fns/locale";
 
 export default {
   name: "comment",
@@ -94,18 +98,21 @@ export default {
   },
 
   methods: {
-    //Fermeture du textarea de modification------------------------------
+    //Fermeture du textarea de modification-----------------------------------------------
     cancelComment() {
       this.edit = false;
       this.comment.content = this.newContent;
       window.location.reload(true);
     },
 
-    //Modification du commentaire------------------------------------------
+    //Modification du commentaire---------------------------------------------------------
     updateComment() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "PUT",
         headers: headers,
@@ -124,10 +131,13 @@ export default {
         });
     },
 
-    //Supprime un commentaire----------------------------------------------
+    //Supprime un commentaire-------------------------------------------------------------
     deleteComment() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "DELETE",
         headers: headers,
@@ -143,7 +153,7 @@ export default {
         });
     },
 
-    //Signalement du commentaire----------------------------------------------
+    //Signalement du commentaire----------------------------------------------------------
     signalComment() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -155,19 +165,28 @@ export default {
       //console.log(JSON.parse(myInit.body));
       const commentId = this.comment.id;
       fetch("http://localhost:3000/api/comments/signal/" + commentId, myInit)
-          .then((success) => {
-              this.comment.isSignaled = true,
-              alert("Le commentaire a été signalé auprès de l'administrateur !")
-              console.log(success + "Le signalement du commentaire a été effectué")
+        .then((success) => {
+          (this.comment.isSignaled = true),
+            alert("Le commentaire a été signalé auprès de l'administrateur !");
+          console.log(success + "Le signalement du commentaire a été effectué");
         })
-         .catch((error) => {
-          console.log(error + "Le signalement du commentaire n'a pas été effectué");
+        .catch((error) => {
+          console.log(
+            error + "Le signalement du commentaire n'a pas été effectué"
+          );
         });
     },
 
-     //Affichage de la date des commentaires au format français-------------------------------
+    //Affichage de la date des commentaires au format français----------------------------
     format(date) {
-      return formatRelative(new Date(date), new Date(), { locale: fr });
+      if (date === undefined) {
+        return 'Date non définie';
+      } else if (date !== undefined) {
+        let dateParts = date.split(/[- :]/);
+        dateParts[1]--;
+        const dateObject = new Date(...dateParts);
+        return formatRelative(dateObject, new Date(), { locale: fr });
+      }
     },
   },
 };

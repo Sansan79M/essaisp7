@@ -17,15 +17,16 @@
           </h1>
           <br />
           <p>
-            Vous allez être redirigé automatiquement vers la page de connexion, d'ici 5 secondes<span id="loading"></span>
-            </p>
+            Vous allez être redirigé automatiquement vers la page de connexion,
+            d'ici 5 secondes<span id="loading"></span>
+          </p>
           <p>
             Si le transfert ne se fait pas automatiquement, vous pouvez cliquer sur
-              <router-link
+            <router-link
               class=""
-                :to="'/user/login'"
-                aria-label="Lien vers la page de connection"
-              >ce lien de connexion. 
+              :to="'/user/login'"
+              aria-label="Lien vers la page de connection"
+              >ce lien de connexion.
             </router-link>
           </p>
         </div>
@@ -35,26 +36,25 @@
 </template>
 
 <script>
-import HeaderNotConnected from '../components/HeaderNotConnected.vue';
+import HeaderNotConnected from "../components/HeaderNotConnected.vue";
 
 export default {
   components: { HeaderNotConnected },
   name: "confirmSignup",
 
   mounted() {
-      this.redirection ();
+    this.redirection();
   },
 
   methods: {
-      //Redirection automatique vers la page de connexion dans 5 secondes
-      redirection () {
+    //Redirection automatique vers la page de connexion dans 5 secondes
+    redirection() {
       setTimeout(() => {
         this.$router.push({ path: "/user/login" });
-        console.log("Redirection vers la page de connexion")
+        console.log("Redirection vers la page de connexion");
       }, 5000);
     },
-  }
-  
+  },
 };
 </script>
 
@@ -85,16 +85,26 @@ main img:hover {
 .font-weight-bold {
   font-size: 25px;
 }
-#loading:after{
+#loading:after {
   display: inline-block;
-  animation: dotty steps(1,end) 1s infinite;
-  content: '';
+  animation: dotty steps(1, end) 1s infinite;
+  content: "";
 }
 @keyframes dotty {
-  0%   { content: ''; }
-  25%  { content: '.'; }
-  50%  { content: '..'; }
-  75%  { content: '...'; }
-  100% { content: ''; }
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "";
+  }
 }
 </style>

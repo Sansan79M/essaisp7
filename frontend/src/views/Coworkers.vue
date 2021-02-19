@@ -2,9 +2,11 @@
   <div v-if="!connected">
     <error-403></error-403>
   </div>
+
   <body v-else>
     <!--<header>-->
     <header-connected></header-connected>
+
     <!-- Page Content -->
     <main>
       <div class="container">
@@ -76,14 +78,14 @@ export default {
     this.connect();
   },
   methods: {
-     //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
     connect() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.users.id = storage.userId;
       this.connected = true;
     },
 
-    //Affichage de la liste des salariés ---------------------------------------------------
+    //Affichage de la liste des utilisateurs enregistrés  -----------------------------------
     getCoworkers() {
       const headers = new Headers();
       headers.append(
@@ -167,9 +169,6 @@ main {
 }
 .text-color {
   color: #0b505b !important;
-}
-button {
-  background-color: #0b505b !important;
 }
 #coworkers-box {
   box-shadow: 10px 10px 10px #b32204;

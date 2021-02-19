@@ -1,10 +1,12 @@
 <template>
-  <div  v-if="!connected">
-  <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
+
     <!--<header>-->
     <header-connected></header-connected>
+
     <!-- Page Content -->
     <main>
       <div id="update-post">
@@ -23,7 +25,8 @@
                   <br />
                   <div class="text-left">
                     <p class="text-color">
-                      🧍 {{ post.user.username }}  ⌚ {{ format(post.createdAt) }}
+                      🧍 {{ post.user.username }} ⌚
+                      {{ format(post.createdAt) }}
                     </p>
                   </div>
                   <div class="form-group text-left">
@@ -85,9 +88,9 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected";
-import {formatRelative} from 'date-fns';
-import {fr} from 'date-fns/locale';
-import Error403 from '../components/Error403';
+import { formatRelative } from "date-fns";
+import { fr } from "date-fns/locale";
+import Error403 from "../components/Error403";
 
 export default {
   name: "update",
@@ -95,11 +98,11 @@ export default {
   data() {
     return {
       post: {
-        user: ""
+        user: "",
       },
       newTitle: "",
       newDescription: "",
-      connected:""
+      connected: "",
     };
   },
   mounted() {
@@ -109,19 +112,24 @@ export default {
   methods: {
     //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
     connect() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      const storage = JSON.parse(
+        localStorage.getItem("storage_user_groupomania")
+      );
       this.post.id = storage.userId;
       this.connected = true;
     },
 
-    //Affiche les données du message--------------------------------------------
+    //Affiche les données du message---------------------------------------------------------
     getOnePost() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
-        const myInit = {
-          method: "GET",
-          headers: headers,
-        };
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
+      const myInit = {
+        method: "GET",
+        headers: headers,
+      };
       const postId = this.$route.params.id;
       fetch("http://localhost:3000/api/posts/post/" + postId, myInit)
         .then((response) => {
@@ -136,11 +144,14 @@ export default {
         });
     },
 
-    //Modifier un message--------------------------------------------
+    //Modifier un message--------------------------------------------------------------------
     updatePost() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "PUT",
         headers: headers,
@@ -152,7 +163,7 @@ export default {
         .then((success) => {
           this.post.title = this.newTitle;
           this.post.description = this.newDescription;
-          
+
           this.$router.push({ path: "/post/" + postId });
           console.log(success + "Le message a été modifié");
         })
@@ -160,15 +171,16 @@ export default {
           console.log(error + "Le message n'a pas été modifié");
         });
     },
-    
-     //Affichage de la date des commentaires au format français-------------------------------
+
+    //Affichage de la date des commentaires au format français-------------------------------
     format(date) {
       if (date === undefined) {
-          return this.post.createdAt;
+        return 'Date non définie';
       } else if (date !== undefined) {
-      let dateParts = date.split(/[- :]/); dateParts[1]--;
-      const dateObject = new Date(...dateParts);
-      return formatRelative(dateObject, new Date(), { locale: fr });
+        let dateParts = date.split(/[- :]/);
+        dateParts[1]--;
+        const dateObject = new Date(...dateParts);
+        return formatRelative(dateObject, new Date(), { locale: fr });
       }
     },
   },
@@ -192,21 +204,10 @@ main {
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
-#update-post
-  .container
-  #update-post-row
-  #update-post-column
-  #update-post-box
-  #update-post-form {
+#update-post .container #update-post-row #update-post-column #update-post-box #update-post-form {
   padding: 20px;
 }
-#update-post
-  .container
-  #update-post-row
-  #update-post-column
-  #update-post-box
-  #update-post-form
-  #register-link {
+#update-post .container #update-post-row #update-post-column #update-post-box #update-post-form #post {
   margin-top: -85px;
 }
 .text-color {

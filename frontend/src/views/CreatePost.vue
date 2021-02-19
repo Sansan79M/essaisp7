@@ -3,8 +3,10 @@
     <error-403></error-403>
   </div>
   <body v-else>
+
     <!--<header>-->
     <header-connected></header-connected>
+
     <!-- Page Content -->
     <main>
       <div id="create-post">
@@ -90,16 +92,16 @@ export default {
   methods: {
     //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
     connect() {
-      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
+      const storage = JSON.parse(
+        localStorage.getItem("storage_user_groupomania")
+      );
       this.post.userId = storage.userId;
       this.connected = true;
     },
 
     //Création de messages--------------------------------------------------------------------
     createPost() {
-      const storage = JSON.parse(
-        localStorage.getItem("storage_user_groupomania")
-      );
+      const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.post.userId = storage.userId;
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -151,28 +153,16 @@ main {
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
-#create-post
-  .container
-  #create-post-row
-  #create-post-column
-  #create-post-box
-  #create-post-form {
+#create-post .container #create-post-row #create-post-column #create-post-box #create-post-form {
   padding: 20px;
 }
-#create-post
-  .container
-  #create-post-row
-  #create-post-column
-  #create-post-box
-  #create-post-form
-  #register-link {
+#create-post .container #create-post-row #create-post-column #create-post-box #create-post-form #create {
   margin-top: -85px;
 }
 .text-color {
   color: #0b505b !important;
 }
-button,
-.button {
+button,.button {
   background-color: #0b505b !important;
 }
 #create-post-box {

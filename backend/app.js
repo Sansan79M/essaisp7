@@ -11,7 +11,7 @@ const userRoutes = require('./routes/userRoutes.js');
 const postRoutes = require('./routes/postRoutes.js');
 const commentRoutes = require('./routes/commentRoutes.js');
 
-db.sequelize.sync({/*force:true*/}); //synchronisation de la BDD et remise à 0
+db.sequelize.sync({/*force:true*/ }); //synchronisation de la BDD et remise à 0
 
 //Middlewares de sécurité des requêtes
 app.use((req, res, next) => {

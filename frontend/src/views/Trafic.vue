@@ -1,10 +1,12 @@
 <template>
-<div  v-if="!connected">
-  <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
+
     <!--<header>-->
     <header-connected></header-connected>
+
     <!-- Page Content -->
     <main>
       <div id="trafic" class="container">
@@ -32,7 +34,7 @@
                 <tbody v-for="post in posts" :key="post.id">
                   <tr v-if="post.isSignaled !== false">
                     <td>❌</td>
-                    <td>{{ post.user.username}}</td>
+                    <td>{{ post.user.username }}</td>
                     <td>{{ post.title }}</td>
                     <td>{{ post.description }}</td>
                     <td>{{ post.createdAt }}</td>
@@ -92,7 +94,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from '../components/Error403';
+import Error403 from "../components/Error403";
 
 export default {
   components: { HeaderConnected, Error403 },
@@ -103,8 +105,8 @@ export default {
       posts: [],
       comment: "",
       comments: [],
-      user:{username:""},
-      connected:""
+      user: { username: "" },
+      connected: "",
     };
   },
   mounted() {
@@ -113,7 +115,7 @@ export default {
     this.connect();
   },
   methods: {
-     //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
+    //Affichage de la page si l'utilisateur est connecté sinon redirection vers la page 403
     connect() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       this.user.id = storage.userId;
@@ -123,11 +125,14 @@ export default {
     //Affichage des posts----------------------------------------------------------------------
     listPosts() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
-          method: "GET",
-          headers: headers,
-        };
+        method: "GET",
+        headers: headers,
+      };
       fetch("http://localhost:3000/api/posts/news", myInit)
         .then((success) => {
           success.json().then((posts) => {
@@ -140,14 +145,17 @@ export default {
         });
     },
 
-    //Affichage des commentaires------------------------------------------------------------------------
+    //Affichage des commentaires---------------------------------------------------------------
     getComments() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token)
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
-          method: "GET",
-          headers: headers,
-        };
+        method: "GET",
+        headers: headers,
+      };
       fetch("http://localhost:3000/api/comments/readall", myInit)
         .then((response) => {
           response.json().then((comments) => {

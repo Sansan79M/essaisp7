@@ -1,10 +1,12 @@
 <template>
-<div  v-if="!connected">
-  <error-403></error-403>
-</div>
-  <body v-else>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
+  <body v-else> 
+
     <!--<header>-->
     <header-connected></header-connected>
+
     <!-- Page Content -->
     <main>
       <div id="post">
@@ -36,7 +38,7 @@
                       :to="'/post/update/' + post.id"
                       aria-label="Lien vers la page de modification du message"
                     >
-                    <!-- Les boutons du message -->
+                      <!-- Les boutons du message -->
                       <button
                         type="submit"
                         name="update"
@@ -104,12 +106,11 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from '../components/Error403';
+import Error403 from "../components/Error403";
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
-
 
 export default {
   components: { HeaderConnected, CommentForm, Comment, Error403 },
@@ -126,7 +127,7 @@ export default {
         id: null,
         isAdmin: false,
       },
-      connected:""
+      connected: "",
     };
   },
 
@@ -150,10 +151,13 @@ export default {
       this.connected = true;
     },
 
-    //Affichage du message---------------------------------------------
+    //Affichage du message-------------------------------------------------------------------
     getOnePost() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "GET",
         headers: headers,
@@ -172,7 +176,7 @@ export default {
         });
     },
 
-    //Suppression du message----------------------------------------------
+    //Suppression du message-----------------------------------------------------------------
     deletePost() {
       const headers = new Headers();
       headers.append(
@@ -194,10 +198,13 @@ export default {
         });
     },
 
-    //Affichage des commentaires---------------------------------------
+    //Affichage des commentaires-------------------------------------------------------------
     getComments() {
       const headers = new Headers();
-      headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
+      headers.append(
+        "Authorization",
+        JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+      );
       const myInit = {
         method: "GET",
         headers: headers,
@@ -216,7 +223,7 @@ export default {
         });
     },
 
-    //Nouveau commentaire----------------------------------------------
+    //Nouveau commentaire en réponse au post-------------------------------------------------
     newComment(comment) {
       if (!this.respondTo) {
         this.comments.push(comment);
@@ -225,7 +232,7 @@ export default {
       this.respondTo.children.push(comment);
     },
 
-    //Signalement du message----------------------------------------------
+    //Signalement du message-----------------------------------------------------------------
     signalPost() {
       const headers = new Headers();
       headers.append("content-type", "application/json");
@@ -250,12 +257,13 @@ export default {
     //Affichage de la date des messages au format français-------------------------------
     format(date) {
       if (date === undefined) {
-          return this.post.createdAt;
+        return 'Date non définie';
       } else if (date !== undefined) {
-      let dateParts = date.split(/[- :]/); dateParts[1]--;
-      const dateObject = new Date(...dateParts);
-      return formatRelative(dateObject, new Date(), { locale: fr });
-      }     
+        let dateParts = date.split(/[- :]/);
+        dateParts[1]--;
+        const dateObject = new Date(...dateParts);
+        return formatRelative(dateObject, new Date(), { locale: fr });
+      }
     },
   },
 };
@@ -281,13 +289,7 @@ h1 {
 #post .container #post-row #post-column #post-box #post-displayed {
   padding: 20px;
 }
-#post
-  .container
-  #post-row
-  #post-column
-  #post-box
-  #post-displayed
-  #register-link {
+#post .container #post-row #post-column #post-box #post-displayed #posted {
   margin-top: -85px;
 }
 .text-color {

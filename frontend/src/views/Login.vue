@@ -33,7 +33,7 @@
                     >
                     <br />
                     <input
-                      :type="show ? 'text': 'password'"
+                      :type="show ? 'text' : 'password'"
                       name="password"
                       id="password"
                       class="form-control"
@@ -42,9 +42,23 @@
                       v-model="user.password"
                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
                     />
-                    <button type="button" class="bg-transparent rounded" @click="show = !show">
-                    <img src="../assets/view-show.svg" alt="mot de passe visible" class="eyes text-color" v-show="show">
-                    <img src="../assets/view-hide.svg" alt="mot de passe invisible" class="eyes text-color" v-show="!show">
+                    <button
+                      type="button"
+                      class="bg-transparent rounded"
+                      @click="show = !show"
+                    >
+                      <img
+                        src="../assets/view-show.svg"
+                        alt="mot de passe visible"
+                        class="eyes text-color"
+                        v-show="show"
+                      />
+                      <img
+                        src="../assets/view-hide.svg"
+                        alt="mot de passe invisible"
+                        class="eyes text-color"
+                        v-show="!show"
+                      />
                     </button>
                   </div>
                   <div class="form-group text-left">
@@ -60,8 +74,10 @@
                     </button>
                   </div>
                   <div id="register-link" class="text-right">
-                    <router-link class="text-color" :to="'/user/signup'"
-                    aria-label="Lien vers la page d'inscription"
+                    <router-link
+                      class="text-color"
+                      :to="'/user/signup'"
+                      aria-label="Lien vers la page d'inscription"
                       >S'enregistrer</router-link
                     >
                   </div>
@@ -81,46 +97,51 @@ import HeaderNotConnected from "../components/HeaderNotConnected.vue";
 export default {
   name: "login",
   components: { HeaderNotConnected },
-  
+
   data() {
     return {
-      user:{
+      user: {
         email: "",
         password: "",
       },
       show: false,
     };
   },
- 
+
   methods: {
+    //Connexion de l'utilisateur à l'application----------------------------------------------------------
     login() {
-        const headers = new Headers();
-        headers.append("content-type", "application/json");
-        const myInit = {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify(this.user),
-        };
-        //console.log(JSON.parse(myInit.body));
-        fetch("http://localhost:3000/api/user/login", myInit)
-          .then((result) => {
-            result.json().then((data) => {
-              if (data.error) {
-                console.log(data, 'Il y a une erreur de connexion');
-                return;
-              }
+      const headers = new Headers();
+      headers.append("content-type", "application/json");
+      const myInit = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(this.user),
+      };
+      //console.log(JSON.parse(myInit.body));
+      fetch("http://localhost:3000/api/user/login", myInit)
+        .then((result) => {
+          result.json().then((data) => {
+            if (data.error) {
+              console.log(data, "Il y a une erreur de connexion");
+              return;
+            }
 
-             //Sauvegarde du userId pour l'affichage du profil et la création de posts et de commentaires
-              const storage = {userId:data.userId, token:data.token, isAdmin: data.isAdmin};
-              localStorage.setItem("storage_user_groupomania", JSON.stringify(storage));
+            //Sauvegarde du userId pour l'affichage du profil et la création de posts et de commentaires
+            const storage = {
+              userId: data.userId,
+              token: data.token,
+              isAdmin: data.isAdmin,
+            };
+            localStorage.setItem("storage_user_groupomania",JSON.stringify(storage));
 
-              this.$router.push({ path: "/posts/news" });
-              console.log("L'utilisateur s'est bien connectée");
-            });
-          })
-          .catch((error) => {
-            console.log(error, "La connexion n'a pas été établie");
+            this.$router.push({ path: "/posts/news" });
+            console.log("L'utilisateur s'est bien connectée");
           });
+        })
+        .catch((error) => {
+          console.log(error, "La connexion n'a pas été établie");
+        });
     },
   },
 };
@@ -146,13 +167,7 @@ main {
 #login .container #login-row #login-column #login-box #login-form {
   padding: 20px;
 }
-#login
-  .container
-  #login-row
-  #login-column
-  #login-box
-  #login-form
-  #register-link {
+#login .container #login-row #login-column #login-box #login-form #register-link {
   margin-top: -85px;
 }
 .text-color {
@@ -168,7 +183,7 @@ main {
   box-shadow: 5px 5px 5px #b32204;
   transition: transform 5s;
 }
-.eyes{
-  width : 20px;
+.eyes {
+  width: 20px;
 }
 </style>

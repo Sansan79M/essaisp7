@@ -1,10 +1,12 @@
 <template>
-<div  v-if="!connected">
-  <error-403></error-403>
-</div>
+  <div v-if="!connected">
+    <error-403></error-403>
+  </div>
   <body v-else>
+
     <!--<header>-->
     <header-connected></header-connected>
+    
     <!-- Page Content -->
     <main>
       <div id="profile">
@@ -36,7 +38,7 @@
                   </div>
                   <br />
                   <div id="buttons">
-                    <router-link :to="'/user/modify/'+ user.id">
+                    <router-link :to="'/user/modify/' + user.id">
                       <button
                         type="submit"
                         name="update"
@@ -69,7 +71,7 @@
 
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
-import Error403 from '../components/Error403';
+import Error403 from "../components/Error403";
 
 export default {
   name: "profile",
@@ -78,8 +80,8 @@ export default {
   data() {
     return {
       user: {},
-      initial:"", 
-      connected:""
+      initial: "",
+      connected: "",
     };
   },
 
@@ -96,36 +98,43 @@ export default {
       this.connected = true;
     },
 
-    //Affichage du compte utilisateur------------------------------------------------------
+    //Affichage du compte utilisateur--------------------------------------------------------
     userProfile() {
       const storage = JSON.parse(localStorage.getItem("storage_user_groupomania"));
       const headers = new Headers();
-      headers.append("Authorization", storage.token)
-        const myInit = {
-          method: "GET",
-          headers: headers,
-        };
+      headers.append("Authorization", storage.token);
+      const myInit = {
+        method: "GET",
+        headers: headers,
+      };
       //console.log(storage);
       fetch("http://localhost:3000/api/user/profile/" + storage.userId, myInit)
         .then((response) => {
           response.json().then((user) => {
             this.user = user;
             //Initiales de l' utilisateur affichées en majuscule dans l'avatar
-            this.initial = user.username.toUpperCase().split(" ").map((n,i,a)=> i === 0 || i+1 === a.length ? n[0] : null).join("");
+            this.initial = user.username
+              .toUpperCase()
+              .split(" ")
+              .map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null))
+              .join("");
           });
           console.log(response + "Le profil utilisateur s'affiche");
         })
-        .catch((error) => {console.log(error + "Le profil utilisateur ne s'affiche pas");});
+        .catch((error) => {
+          console.log(error + "Le profil utilisateur ne s'affiche pas");
+        });
     },
 
     //Suppression du compte utilisateur------------------------------------------------------
     deleteProfile() {
-      if (
-        confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")
-      ) {
+      if (confirm("Souhaitez-vous vraiment supprimer votre compte utilisateur ?")) {
         const headers = new Headers();
         headers.append("content-type", "application/json");
-        headers.append("Authorization", JSON.parse(localStorage.getItem("storage_user_groupomania")).token);
+        headers.append(
+          "Authorization",
+          JSON.parse(localStorage.getItem("storage_user_groupomania")).token
+        );
         const myInit = {
           method: "DELETE",
           headers: headers,
@@ -133,7 +142,7 @@ export default {
         };
         fetch("http://localhost:3000/api/user/delete", myInit)
           .then((success) => {
-            alert('Le votre profil est supprimé')
+            alert("Le votre profil est supprimé");
             this.$router.push({ path: "/" });
             console.log(success + "Le profil utilisateur a été supprimé");
           })
@@ -173,21 +182,10 @@ h1 {
   border: 1px solid #0b505b;
   background-color: rgb(252, 252, 111);
 }
-#profile
-  .container
-  #profile-row
-  #profile-column
-  #profile-box
-  #profile-displayed {
+#profile .container #profile-row #profile-column #profile-box #profile-displayed {
   padding: 20px;
 }
-#profile
-  .container
-  #profile-row
-  #profile-column
-  #profile-box
-  #profile-displayed
-  #register-link {
+#profile .container #profile-row #profile-column #profile-box #profile-displayed #username {
   margin-top: -85px;
 }
 .text-color {
@@ -211,5 +209,4 @@ button,
   display: flex;
   justify-content: space-between;
 }
-
 </style>

@@ -31,12 +31,11 @@
 </template>
 
 <script>
-import HeaderNotConnected from '../components/HeaderNotConnected.vue';
+import HeaderNotConnected from "../components/HeaderNotConnected.vue";
 
 export default {
   components: { HeaderNotConnected },
   name: "home",
-  
 };
 </script>
 

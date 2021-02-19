@@ -12,8 +12,9 @@ exports.createPost = (req, res, next) => {
     })
         .then(success => res.status(200).json({ success: "Le message a été enregistré" }))
         .catch(error => res.status(401).json({ error: "Une erreur est survenue dans la création d'un message" }));
-     
+
 };
+
 
 //Affiche un message
 exports.getOnePost = (req, res, next) => {
@@ -24,7 +25,7 @@ exports.getOnePost = (req, res, next) => {
             model: User,
             attributes: ['username', 'service'],
             required: true
-        }]      
+        }]
     })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage d'un message" }));
@@ -40,7 +41,7 @@ exports.listPosts = (req, res, next) => {
             model: User,
             attributes: ['username', 'service'],
             required: true
-        }]  
+        }]
     })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue de l'affichage du fil d'actualité" }));
@@ -64,6 +65,7 @@ exports.updatePost = (req, res, next) => {
         });
 }
 
+
 //Supprimer un message
 exports.deletePost = (req, res, next) => {
     Post.findOne({ where: { id: req.params.id } })
@@ -73,6 +75,7 @@ exports.deletePost = (req, res, next) => {
                 .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la suppression du message" }));
         });
 };
+
 
 //Signaler un message
 exports.signalPost = (req, res, next) => {

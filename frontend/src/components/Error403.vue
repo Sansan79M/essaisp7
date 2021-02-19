@@ -12,9 +12,7 @@
             src="../assets/stop.jpg"
             alt="Grand logo Groupomania"
           />
-          <h1 class="font-weight-bold">
-           ERREUR 403
-          </h1>
+          <h1 class="font-weight-bold">ERREUR 403</h1>
           <p class="font-weight-bold">
             VOUS N'ETES PAS AUTORISE A CONSULTER CETTE PAGE
           </p>
@@ -30,7 +28,6 @@ import HeaderError from "../components/HeaderError";
 export default {
   components: { HeaderError },
   name: "error403",
-  
 };
 </script>
 

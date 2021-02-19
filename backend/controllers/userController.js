@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const xss = require('xss');
 
 const db = require('../config/dbConfig');
@@ -8,6 +7,7 @@ const User = db.user;
 
 //Cryptage du token
 const TOKEN = process.env.TOKEN;
+
 
 //Création d'un nouveau nouvel utilisateur
 exports.signup = (req, res, next) => {
@@ -24,6 +24,7 @@ exports.signup = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+
 
 //Connexion d'un utilisateur
 exports.login = (req, res, next) => {
@@ -65,6 +66,7 @@ exports.userProfile = (req, res, next) => {
     .then(user => res.status(200).json(user))
     .catch(error => res.status(400).json({ error: "Une erreur d'affichage du profil est survenue" }));
 };
+
 
 //Consultation de tous les profils utilisateurs
 exports.coworkers = (req, res, next) => {

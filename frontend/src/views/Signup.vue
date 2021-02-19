@@ -209,13 +209,7 @@ main {
 #signup .container #signup-row #signup-column #signup-box #signup-form {
   padding: 20px;
 }
-#signup
-  .container
-  #signup-row
-  #signup-column
-  #signup-box
-  #signup-form
-  #register-link {
+#signup .container #signup-row #signup-column #signup-box #signup-form #register-link {
   margin-top: -85px;
 }
 .text-color {

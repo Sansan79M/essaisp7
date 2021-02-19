@@ -1,7 +1,10 @@
 <template>
   <!-- Navigation-->
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" role="navigation">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark fixed-top"
+      role="navigation"
+    >
       <div class="container">
         <router-link
           :to="'/'"
@@ -18,7 +21,7 @@
           data-target="#navbarResponsive"
           aria-controls="navbarResponsive"
           aria-expanded="false"
-          aria-label="Bouton de navigation"          
+          aria-label="Bouton de navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -49,11 +52,9 @@
       </div>
     </nav>
   </header>
-  
 </template>
 
 <script>
-
 export default {
   name: "headerNotConnected",
 };
@@ -64,7 +65,6 @@ export default {
   background-color: #0b505b;
 }
 header img {
-    width: 200px;
+  width: 200px;
 }
-
 </style>

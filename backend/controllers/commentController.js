@@ -14,20 +14,22 @@ exports.createComment = (req, res, next) => {
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'enregistrement d'un commentaire" }));
 };
 
+
 //Affiche un commentaire
 exports.readOneComment = (req, res, next) => {
     Comment.findOne({
         where: { id: req.params.id },
-        attributes: ['id', 'userId', 'postId', 'content', 'isSignaled','createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'postId', 'content', 'isSignaled', 'createdAt', 'updatedAt'],
         include: [{
             model: User,
             attributes: ['username'],
             required: true
-        }] 
+        }]
     })
         .then((comment) => { res.status(200).json(comment) })
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage d'un commentaire" }));
 }
+
 
 //Affiche la liste des commentaires associés au post
 exports.readAllComments = (req, res, next) => {
@@ -39,11 +41,12 @@ exports.readAllComments = (req, res, next) => {
             model: User,
             attributes: ['username'],
             required: true
-        }] 
+        }]
     })
         .then(comments => res.status(200).json(comments))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage des commentaires" }));
 }
+
 
 //Modifier un commentaire
 exports.updateComment = (req, res, next) => {
@@ -51,8 +54,8 @@ exports.updateComment = (req, res, next) => {
         .then((comment) => {
             comment.update({
                 where: {
-                userId: req.params.userId,
-                postId: req.params.postId,
+                    userId: req.params.userId,
+                    postId: req.params.postId,
                 },
                 content: req.body.content,
             })
@@ -60,6 +63,7 @@ exports.updateComment = (req, res, next) => {
                 .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la modification du commentaire" }));
         });
 }
+
 
 //Supprimer un commentaire
 exports.deleteComment = (req, res, next) => {
@@ -71,18 +75,20 @@ exports.deleteComment = (req, res, next) => {
         });
 };
 
+
 //Signaler un commentaire
 exports.signalComment = (req, res, next) => {
     Comment.findOne({ where: { id: req.params.id } })
         .then((comment) => {
             comment.update({
                 where: { id: req.params.id },
-                isSignaled : true
+                isSignaled: true
             })
                 .then(() => res.status(200).json({ message: 'Le commentaire a bien été signalé !' }))
                 .catch(error => res.status(400).json({ error: "Une erreur est survenue dans le signalement du commentaire" }));
         });
 }
+
 
 //Affiche la liste des commentaires signalés
 exports.readComments = (req, res, next) => {
@@ -93,7 +99,7 @@ exports.readComments = (req, res, next) => {
             model: User,
             attributes: ['username'],
             required: true
-        }] 
+        }]
     })
         .then(comments => res.status(200).json(comments))
         .catch(error => res.status(400).json({ error: "Une erreur est survenue dans l'affichage des commentaires signalés" }));
