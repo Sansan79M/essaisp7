@@ -36,13 +36,13 @@ Au préalable, vous devrez avoir installé localement sur votre ordinateur :
 
 1) Créez un fichier `.env` dans le backend.
 
-2) Notez les infos suivantes avec vos propres données dans les guillemets: 
-- TOKEN=" "
-- HOST_DEV=" "
-- USER_DEV=" "
-- PASSWORD_DEV=" " 
-- DATABASE_DEV=" " 
-- DIALECT_DEV=" "
+2) Notez les infos suivantes avec vos propres données entre les guillemets: 
+- TOKEN="`Votre code avec lettres majuscules, minuscules et chiffres`"
+- HOST_DEV="localhost"
+- USER_DEV="`Votre nom d'utilisateur`"
+- PASSWORD_DEV="`Votre mot de passe`" 
+- DATABASE_DEV="database_groupomania" 
+- DIALECT_DEV="mysql"
 
 
 ### Fonctionnalités des serveurs ###
