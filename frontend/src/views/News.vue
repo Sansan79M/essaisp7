@@ -190,7 +190,7 @@ main {
   margin: 0;
   padding: 0;
   background-color: rgba(252, 94, 59, 0.8) !important;
-  height: 400vh;
+  height: 500vh;
 }
 #news .container #news-row #news-column #news-box {
   margin-top: 20px;

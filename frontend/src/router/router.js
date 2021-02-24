@@ -3,9 +3,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
-//Importation de la page d'accueil et d'erreur 403
+//Importation de la page d'accueil et d'erreur 403 et 404
 import Home from '../views/Home.vue'
 import Error403 from '../components/Error403.vue'
+import Error404 from '../components/Error404.vue'
 
 //Importation des différentes pages concernant les utilisateurs
 import Signup from '../views/Signup.vue'
@@ -32,6 +33,7 @@ const router = new VueRouter({
     //Chemins et titres des pages accueil et erreur 403
     { path: "/", component: Home, name: 'home', meta: { title: "Accueil Groupomania" } },
     { path: "/error403", component: Error403, name: 'error403', meta: { title: "Erreur 403" } },
+    { path: "*", component: Error404, name: 'error404', meta: { title: "Erreur 404" } },
 
     //Chemins et titres des pages concernant les utilisateurs
     { path: "/user/signup", component: Signup, name: 'signup', meta: { title: "Inscription à Groupomania" } },

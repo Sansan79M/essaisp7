@@ -144,6 +144,7 @@ export default {
           .then((success) => {
             alert("Le votre profil est supprimé");
             this.$router.push({ path: "/" });
+            localStorage.clear();
             console.log(success + "Le profil utilisateur a été supprimé");
           })
           .catch((error) => {
