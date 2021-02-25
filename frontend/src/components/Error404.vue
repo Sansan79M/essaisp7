@@ -7,6 +7,11 @@
     <main>
       <div id="error404" class="container">
         <div class="row-column justify-content-center text-center text-color">
+          <img
+            class="img-fluid"
+            src="../assets/oups.png"
+            alt="Erreur 404"
+          />
           <h1 class="font-weight-bold">404</h1>
           <p class="font-weight-bold">
             LA PAGE QUE VOUS RECHERCHEZ SEMBLE INTROUVABLE
@@ -28,7 +33,7 @@ export default {
 
 <style scoped>
 h1 {
-  font-size: 10em;
+  font-size: 5em;
 }
 main {
   margin: 0;

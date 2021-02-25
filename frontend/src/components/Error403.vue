@@ -10,7 +10,7 @@
           <img
             class="img-fluid"
             src="../assets/stop.jpg"
-            alt="Grand logo Groupomania"
+            alt="Erreur 403"
           />
           <h1 class="font-weight-bold">ERREUR 403</h1>
           <p class="font-weight-bold">

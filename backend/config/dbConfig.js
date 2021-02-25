@@ -24,17 +24,9 @@ db.sequelize = sequelize;
 
 //Importation des différents fichiers models
 db.user = require('../models/userModels')(sequelize, Sequelize);
-db.post = require('../models/postModels')(sequelize, Sequelize);
-db.comment = require('../models/commentModels')(sequelize, Sequelize);
+db.post = require('../models/postModels')(sequelize, Sequelize, db.user);
+db.comment = require('../models/commentModels')(sequelize, Sequelize, db.user, db.post);
 
-//Jointures entre les tables
-db.user.hasMany(db.post, { onDelete: 'cascade', hooks: true }); //L'utilisateur est l'auteur de plusieurs posts
-db.user.hasMany(db.comment, { onDelete: 'cascade', hooks: true }); //L'utilisateur est l'auteur de plusieurs commentaires
-db.post.hasMany(db.comment, { onDelete: 'cascade', hooks: true }); //Un post peut avoir plusieurs commentaires
-
-db.post.belongsTo(db.user, { foreignKey: 'userId' }); //Un post n'a qu'un utilisateur
-db.comment.belongsTo(db.user, { foreignKey: 'userId' }); //Un commentaire n'a qu'un utilisateur
-db.comment.belongsTo(db.post, { foreignKey: 'postId' }); //Un commentaire n'a qu'un post
 
 //Authentification à la base de donnée
 sequelize.authenticate()

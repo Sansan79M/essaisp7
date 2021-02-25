@@ -33,7 +33,7 @@ const router = new VueRouter({
     //Chemins et titres des pages accueil et erreur 403
     { path: "/", component: Home, name: 'home', meta: { title: "Accueil Groupomania" } },
     { path: "/error403", component: Error403, name: 'error403', meta: { title: "Erreur 403" } },
-    { path: "*", component: Error404, name: 'error404', meta: { title: "Erreur 404" } },
+    
 
     //Chemins et titres des pages concernant les utilisateurs
     { path: "/user/signup", component: Signup, name: 'signup', meta: { title: "Inscription à Groupomania" } },
@@ -51,6 +51,11 @@ const router = new VueRouter({
 
     //Chemin et titre du tableau de bord de l'administrateur
     { path: "/trafic", component: Trafic, name: 'trafic', meta: { title: "Trafic GSN" } },
+
+    
+    //Chemins et titres de la page erreur 404
+    {path: "/error404", component: Error404, name: 'error404', meta: { title: "Erreur 404" } },
+    {path: "*", component: Error404, name: 'error404', meta: { title: "Erreur 404" } },
   ]
 
 });

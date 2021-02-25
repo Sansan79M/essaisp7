@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, user, post) => {
   const Comment = sequelize.define("comment", {
     userId: { type: Sequelize.INTEGER, allowNull: false },
     postId: { type: Sequelize.INTEGER, allowNull: false },
@@ -6,6 +6,10 @@ module.exports = (sequelize, Sequelize) => {
     isSignaled: { type: Sequelize.BOOLEAN, defaultValue: false }
   });
 
+  //Jointures
+  Comment.belongsTo(user, { foreignKey: 'userId', onDelete: 'cascade' }); //Un commentaire n'a qu'un utilisateur
+  Comment.belongsTo(post, { foreignKey: 'postId', onDelete: 'cascade' }); //Un commentaire n'a qu'un post
+  
   return Comment;
 };
 

@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, user) => {
   const Post = sequelize.define("post", {
     userId: { type: Sequelize.INTEGER, allowNull: false },
     title: { type: Sequelize.STRING(255), allowNull: false },
@@ -6,6 +6,9 @@ module.exports = (sequelize, Sequelize) => {
     isSignaled: { type: Sequelize.BOOLEAN, defaultValue: false }
   });
 
+  //Jointure
+  Post.belongsTo(user, { foreignKey: 'userId', onDelete:'cascade' }); //Un post n'a qu'un utilisateur
+  
   return Post;
 };
 

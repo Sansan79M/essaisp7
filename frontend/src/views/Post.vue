@@ -2,6 +2,9 @@
   <div v-if="!connected">
     <error-403></error-403>
   </div>
+  <div v-else-if="!post">
+    <error-404></error-404>
+  </div>
   <body v-else> 
 
     <!--<header>-->
@@ -107,13 +110,16 @@
 <script>
 import HeaderConnected from "../components/HeaderConnected.vue";
 import Error403 from "../components/Error403";
+import Error404 from '../components/Error404.vue';
 import CommentForm from "../components/CommentForm";
 import Comment from "../components/Comment";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 
+
+
 export default {
-  components: { HeaderConnected, CommentForm, Comment, Error403 },
+  components: { HeaderConnected, CommentForm, Comment, Error403, Error404 },
   name: "post",
   data() {
     return {
@@ -132,9 +138,7 @@ export default {
   },
 
   mounted() {
-    //Affichage des posts et des commentaires
     this.getOnePost();
-    this.getComments();
     this.connect();
 
     //Affichage des boutons (modifier et supprimer) si auteur ou administrateur identifié
@@ -167,7 +171,9 @@ export default {
         .then((response) => {
           response.json().then((post) => {
             this.post = post;
+            this.getComments();
             //console.log(post);
+            
           });
           console.log(response + "Le message s'affiche");
         })

@@ -2,6 +2,9 @@
   <div v-if="!connected">
     <error-403></error-403>
   </div>
+  <div v-else-if="!post">
+    <error-404></error-404>
+  </div>
   <body v-else>
 
     <!--<header>-->
@@ -91,10 +94,11 @@ import HeaderConnected from "../components/HeaderConnected";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 import Error403 from "../components/Error403";
+import Error404 from '../components/Error404.vue';
 
 export default {
   name: "update",
-  components: { HeaderConnected, Error403 },
+  components: { HeaderConnected, Error403, Error404 },
   data() {
     return {
       post: {

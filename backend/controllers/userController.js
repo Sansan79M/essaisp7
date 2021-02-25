@@ -11,17 +11,27 @@ const TOKEN = process.env.TOKEN;
 
 //Création d'un nouveau nouvel utilisateur
 exports.signup = (req, res, next) => {
-  bcrypt.hash((req.body.password), 10)
-    .then(hash => {
-      User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: hash,
-        isAdmin: false
+  User.findOne({
+    where: { email: req.body.email },
+    attributes :['email']
+  })
+  .then(user => {
+    if (!user){
+      bcrypt.hash((req.body.password), 10)
+      .then(hash => {
+        User.create({
+          username: req.body.username,
+          email: req.body.email,
+          password: hash,
+          isAdmin: false
+        })
+          .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+          .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la création d'un nouveau compte utilisateur" }));
       })
-        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error: "Une erreur est survenue dans la création d'un nouveau compte utilisateur" }));
-    })
+    } else {
+      return res.status(401).json({ error: "L'adresse email est déjà enregistrée !" });
+    }
+  })
     .catch(error => res.status(500).json({ error }));
 };
 
