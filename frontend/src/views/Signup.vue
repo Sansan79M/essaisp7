@@ -174,13 +174,13 @@ export default {
         //console.log(JSON.parse(myInit.body));
         fetch("http://localhost:3000/api/user/signup", myInit)
           .then((success) => {
-            if (success.status == 200) {
-            this.$router.push({ path: "/user/confirmSignup" });
-            console.log(success, "Le compte a bien été créé");
-            } else {
-              console.log("L'utilisateur est déjà enregistré");
+            if (success.status == 401) {
+              console.log(success + "L'utilisateur est déjà enregistré");
               alert("Votre adresse mail est déjà enregistrée, veuillez vous connecter.");
               this.$router.push({ path: "/user/login" });
+            } else {
+              this.$router.push({ path: "/user/confirmSignup" });
+              console.log(success + "Le compte a bien été créé");
             }
           })
           .catch((error) => {
